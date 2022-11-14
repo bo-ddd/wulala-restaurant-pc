@@ -11,7 +11,7 @@
                     <input type="password" name='pwd' id='pwd' required>
                     <label for="pwd">密码</label>
                 </div>
-                <a href="javascript:void(0)">
+                <a>
                     登录
                     <span></span>
                     <span></span>
@@ -25,19 +25,21 @@
 </template>
 
 <style scoped>
-.content{
+.content {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     min-width: 700px;
-    background-image: url('@/assets/images/wll-bj-image.jpg');
+    background-image: url('@/assets/images/login-bj.webp');
     background-size: 100% 100%;
 }
-.logo-wulala{
+
+.logo-wulala {
     filter: invert(100%);
     height: 100px;
 }
+
 * {
     /*初始化 清除页面元素的内外边距*/
     padding: 0;
@@ -64,7 +66,7 @@ body {
     align-items: center;
     width: 400px;
     padding: 40px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
 
 }
@@ -222,5 +224,10 @@ body {
 </style>
 
 <script lang="ts" setup>
-
+// import { loginApi } from "@/api/api.js";
+// function loginBtn() {
+//     this.$router.push({
+//         name: 'loginview'
+//     })
+// }
 </script>
