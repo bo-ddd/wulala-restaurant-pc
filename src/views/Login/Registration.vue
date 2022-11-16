@@ -26,7 +26,7 @@
             <span></span>
             <span></span>
          </a>
-        </div>
+      </div>
     </div>
 </template>
 
