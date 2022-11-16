@@ -10,6 +10,13 @@ const router = createRouter({
       path: '/',
       name: 'layout',
       component: Layout,
+      children:[
+        {
+          path:'/shoppercar',
+          name:'shoppercar',
+          component:() => import("@/views/ShopperCar/shopperCar.vue")
+        }
+      ]
     },{
       path: '/login',
       name: 'login',
