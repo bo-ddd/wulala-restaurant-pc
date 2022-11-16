@@ -1,25 +1,24 @@
 <template>
     <div class="content">
         <div class="login">
-                <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
-                
-                <div class="login_box">
-                    <input type="text" name='name' id='name' required  />
-                    <label for="name" >用户名</label>
-                </div>
-                <div class="login_box">
-                    <input type="password" name='pwd' id='pwd' required>
-                    <label for="pwd">密码</label>
-                </div>
-                <a>
-                    登录
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
+            <div class="register" @click="toRegisterView">注册 </div>  
+            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala"> 
+            <div class="login_box">
+                <input type="text" name='name' id='name' v-model="username" required  />
+                <label for="name" >用户名</label>
+            </div>
+            <div class="login_box">
+                <input type="password" name='pwd' id='pwd' v-model="password" required>
+                <label for="pwd">密码</label>
+            </div>
+            <a @click="userLogin">
+                登录
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
         </div>
-        <div></div>
     </div>
     
 </template>
@@ -29,8 +28,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
     height: 100vh;
-    min-width: 700px;
+    min-width: 1300px;
     background-image: url('@/assets/images/login-bj.webp');
     background-size: 100% 100%;
 }
@@ -119,6 +119,7 @@ body {
     text-decoration: none;
     /*同样加个过渡*/
     transition: all 0.5s;
+    cursor: pointer;
 }
 
 .login a:hover {
@@ -221,13 +222,44 @@ body {
         bottom: 100%;
     }
 }
+.register{
+    width: 100%;
+    text-align: right;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+}
 </style>
 
 <script lang="ts" setup>
-// import { loginApi } from "@/api/api.js";
-// function loginBtn() {
-//     this.$router.push({
-//         name: 'loginview'
-//     })
-// }
+import { useRouter } from 'vue-router';
+// import { useCounterStore } from '@/stores/counter';
+import { loginApi } from "@/api/api.js";
+import { ref } from 'vue';
+// let {count} = useCounterStore();
+// console.log(count);
+let username = ref();
+let password = ref();
+let router = useRouter();
+
+function toRegisterView(){
+    router.push({
+        name:'registration'
+    })
+}
+async function userLogin() {
+    let res = await loginApi({
+        username: username.value,
+        password: password.value,
+    });
+    if(res.status == 1){
+        // $message(
+        //   type: "success",
+        //   message: "登录成功",
+        // });
+        sessionStorage.setItem('token',res.data.token);
+    }
+    console.log(res);
+
+}
 </script>
