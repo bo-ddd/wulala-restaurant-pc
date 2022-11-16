@@ -7,9 +7,6 @@ export const useCounterStore = defineStore('counter', () => {
   function increment() {
     count.value++
   }
-  function setpass(payload :any){
-
-  }
 
   return { count, doubleCount, increment }
 })

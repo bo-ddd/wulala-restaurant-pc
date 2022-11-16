@@ -5,8 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "types":["element-plus/global"]
+    }
   },
 
   "references": [
@@ -14,5 +13,4 @@
       "path": "./tsconfig.config.json"
     }
   ]
-
 }
