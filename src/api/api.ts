@@ -50,11 +50,18 @@ export const registerApi = function (payload = {}) {
     return instance.post('/user/register', payload)
 }
 
-
 /**
  * @description 获取类目接口
  * @param payload object
  */
-export const getCCategoryListApi = function (payload = {}) {
+export const getCategoryListApi = function (payload = {}) {
     return instance.post('/category/list', payload)
+}
+
+/**
+ * @description 获取菜肴列表接口
+ * @param payload object
+ */
+ export const gatFoodListApi = function (payload = {}) {
+    return instance.post('/food/list', payload)
 }

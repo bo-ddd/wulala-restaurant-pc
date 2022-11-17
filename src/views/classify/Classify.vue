@@ -4,13 +4,23 @@
         <div class="tapbox wrap">
             <ul class="tapqiehuan">
                 <li v-for="(item, index) in tapli" :key="index" :class="[index == idxon ? 'on' : '']"
-                    @click="tapqie(index)">
-                    {{ item }}
+                    @click="tapqie(index, item)">
+                    {{ item.name }}
                 </li>
             </ul>
             <div class="tapbombox">
-                <div class="bombox" v-for="(item, index) in bomtxt" :key="item.id" v-show="index == idxon">
-                    {{ item.txt }}
+                <div class="box-text">
+                    <span>菜肴图片</span>
+                    <span>菜肴名称</span>
+                    <span>菜肴介绍</span>
+                    <span>菜肴价格</span>
+                    <span>加入购物车</span>
+                </div>
+                <div class="bombox" v-for="(item, index) in bomtxt" :key="index">
+                    <div class="box-bannerurl_png"><img class="bannerurl-png" :src="item.bannerUrl" alt=""></div>
+                    <div> <span class="food-name">{{ item.foodName }}</span></div>
+                    <div class="box-description"><span class="description">{{ item.description }}</span></div>
+                    <div><span class="price">￥{{ item.price }}</span></div>
                 </div>
             </div>
         </div>
@@ -19,32 +29,26 @@
   
 <script setup lang="ts">
 import { ref } from 'vue'
-import { getCCategoryListApi } from '@/api/api'
-let tapli = ref(["全部", "川菜", "东北菜", '粤菜'])
+import { getCategoryListApi, gatFoodListApi } from '@/api/api'
+let tapli: any = ref()
 let idxon = ref(0)
-let bomtxt = ref([
-    {
-        txt: "切换的内容切换的内容切换的内容01",
-        id: 0
-    },
-    {
-        txt: "切换的内容切换的内容切换的内容02",
-        id: 1
-    },
-    {
-        txt: "切换的内容切换的内容切换的内容03",
-        id: 2
-    },
-    {
-        txt: "切换的内容切换的内容切换的内容04",
-        id: 3
-    },
-])
-getCCategoryListApi({}).then(res => {
-    console.log(res);
+let bomtxt: any = ref({})
+getCategoryListApi({}).then(res => {
+    tapli.value = res.data
+    gatFoodListApi({
+        categoryId: tapli.value[0].id
+    }).then(res => {
+        bomtxt.value = res.data.list
+        console.log(res.data.list);
+
+    })
 })
-const tapqie = (index: number) => {
-    idxon.value = index
+const tapqie = (index: number, el: any) => {
+    gatFoodListApi({
+        categoryId: el.id
+    }).then(res => {
+        bomtxt.value = res.data.list
+    })
 }
 </script>
   
@@ -52,10 +56,10 @@ const tapqie = (index: number) => {
 .box {
     padding: 20px;
     background-color: #fff;
+    min-height: calc(100vh - 220px);
 }
 
 .tapbox {
-    position: relative;
     width: 100%;
     margin: 0 auto;
 }
@@ -85,19 +89,36 @@ li:hover {
     color: #409eff;
 }
 
-.tapbombox {
-    position: relative;
-    padding: 0 0.3rem;
-    font-size: 0.28rem;
-    line-height: 0.6rem;
-    text-align: center;
-    border: 1px solid #666;
-}
-
 .bombox {
     width: 100%;
-    height: 6rem;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
 }
+
+.bannerurl-png {
+    width: 150px;
+    height: 100px;
+    margin: 15px 0;
+}
+
+.box-text {
+    padding: 0 50px;
+    display: flex;
+    justify-content: space-between;
+}
+.food-name{
+    margin-left: 235px;
+}
+.price{
+    margin-left: 235px;
+
+}
+.description{
+    margin-left: 235px;
+
+}
+
 </style>
   
   
