@@ -62,18 +62,19 @@
 .logo {
   width: 60px;
   height: 60px;
-  margin-left: 25px;
+  margin: 0 25px;
 }
 
 .el-header {
   height: 80px;
   border-bottom: 1px solid #ccc;
+  padding: 0 60px;
 }
 
 .box-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .box-rigth {
@@ -126,6 +127,9 @@
 }
 .el-carousel__container{
   min-height: 600px;
+  border-bottom: 1px solid #ccc;
+
+  border-radius: 20px;
 }
 </style>
 <script setup lang="ts">
