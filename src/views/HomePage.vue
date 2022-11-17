@@ -1,27 +1,28 @@
 <template>
-    <div class="warp">
-        <el-carousel indicator-position="outside">
+    <div >
+  <el-carousel indicator-position="outside">
     <el-carousel-item v-for="item in Carousel" :key="item">
-      <img :src="item.src" alt="">
-      {{item.src}}
+      <img class="carousel" :src="parsrAsssetFile(item.src)" alt="">
     </el-carousel-item>
   </el-carousel>
     </div>
 </template>
 <script lang="ts" setup>
+import useUtil from "@/assets/util"
+let { parsrAsssetFile } = useUtil()
 let Carousel = [
     {
         id:1,
-        src:"@/assets/images/Carousel-01.png"
+        src:"Carousel-01.png"
     }, {
         id:2,
-        src:"@/assets/images/Carousel-02.png"
+        src:"Carousel-02.png"
     }, {
         id:3,
-        src:"@/assets/images/Carousel-03.png"
+        src:"Carousel-03.png"
     }, {
         id:4,
-        src:"@/assets/images/Carousel-04.png"
+        src:"Carousel-04.png"
     },
 ]
 </script>
@@ -33,12 +34,9 @@ let Carousel = [
   line-height: 300px;
   margin: 0;
 }
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
+.carousel{
+    width: 100%;
+    height: 100%;
 }
 
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
 </style>
