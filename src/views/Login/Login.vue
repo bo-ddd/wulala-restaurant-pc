@@ -1,54 +1,52 @@
 <template>
-
-
-        <div class="content">
-            <div class="login" v-if="isActiveRegister == true">
-                <div class="register-text" @click="toRegisterView">注册 </div>  
-                <img src="@/assets/images/icon-bj_2.png" class="logo-wulala"> 
-                <div class="login_box">
-                    <input type="text" name='name' id='name' v-model="loginFrom.username" required  />
-                    <label for="name" >用户名</label>
-                </div>
-                <div class="login_box">
-                    <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
-                    <label for="pwd">密码</label>
-                </div>
-                <a @click="userLogin">
-                    登录
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
+    <div class="content">
+        <div class="login" v-if="isActiveRegister == true">
+            <div class="register-text" @click="toRegisterView">注册 </div>  
+            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala"> 
+            <div class="login_box">
+                <input type="text" name='name' id='name' v-model="loginFrom.username" required  />
+                <label for="name" >用户名</label>
             </div>
-            <div class="register" v-else>
-                <div class="login-text" @click="toLoginView">登录</div>  
-                <img src="@/assets/images/icon-bj_2.png" class="logo-wulala"> 
-                <div class="register_box">
-                        <input type="text" name='name' id='username' v-model="registerFrom.username" required />
-                        <label for="name" >用户名</label>
-                    </div>
-                    <div class="register_box">
-                        <input type="text" name='name' id='password' v-model="registerFrom.password" required />
-                        <label for="name" >密码</label>
-                    </div>
-                    <div class="register_box">
-                        <input type="text" name='name' id='nickname' v-model="registerFrom.avatarName" required />
-                        <label for="nickname" >昵称</label>
-                    </div>
-                    <div class="register_box">
-                        <input type="text" name='name' id='phone' v-model="registerFrom.phoneNumber" required />
-                        <label for="name" >手机号</label>
-                    </div>
-                <a @click="userRegister">
-                    注册
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </a>
+            <div class="login_box">
+                <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
+                <label for="pwd">密码</label>
             </div>
+            <a @click="userLogin">
+                登录
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
         </div>
+        <div class="register" v-else>
+            <div class="login-text" @click="toLoginView">登录</div>  
+            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala"> 
+            <div class="register_box">
+                <input type="text" name='name' id='username' v-model="registerFrom.username" required />
+                <label for="name" >用户名</label>
+            </div>
+            <div class="register_box">
+                <input type="text" name='name' id='password' v-model="registerFrom.password" required />
+                <label for="name" >密码</label>
+            </div>
+            <div class="register_box">
+                <input type="text" name='name' id='nickname' v-model="registerFrom.avatarName" required />
+                <label for="nickname" >昵称</label>
+            </div>
+            <div class="register_box">
+                <input type="text" name='name' id='phone' v-model="registerFrom.phoneNumber" required />
+                <label for="name" >手机号</label>
+            </div>
+            <a @click="userRegister">
+                注册
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+    </div>
 </template>
 
 <style scoped>
