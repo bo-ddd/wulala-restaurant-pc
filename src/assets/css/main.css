@@ -20,3 +20,13 @@ body,p{
 .mb-20{
   margin-bottom: 20px;
 }
+.pl-10{
+  padding-left: 10px;
+}
+.ml-10{
+  margin-left: 10px;
+}
+.cl-red{
+  color: #E2231A;
+  font-weight: 550;
+}
