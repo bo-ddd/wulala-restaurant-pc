@@ -11,5 +11,6 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+     // 本地创建一个服务器
+}
 })
