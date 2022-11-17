@@ -1,7 +1,22 @@
 body,p{
   margin: 0 auto;
 }
-/* .warp{
+.warp{
+  width: 100%;
   margin: 0 auto;
-  width: 1200px;
-} */
+}
+.w-300{
+  width: 300px;
+} 
+.m-20{
+  margin: 20px 0;
+}
+.pd-10{
+  padding: 10px 0;
+}
+.pr-10{
+  padding-right: 10px;
+}
+.mb-20{
+  margin-bottom: 20px;
+}
