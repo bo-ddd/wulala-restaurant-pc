@@ -1,4 +1,6 @@
 <template>
+
+
         <div class="content">
             <div class="login" v-if="isActiveRegister == true">
                 <div class="register-text" @click="toRegisterView">注册 </div>  
@@ -57,7 +59,7 @@
     height: 100vh;
     min-height: 700px;
     min-width: 1300px;
-    background-image: url('@/assets/images/login-bj.webp');
+    /* background-image: url('@/assets/images/login-bj.webp'); */
     background-size: 100% 100%;
 }
 
