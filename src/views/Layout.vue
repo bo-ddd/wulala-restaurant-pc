@@ -55,10 +55,6 @@
 .bb{
   display: flex;
 }
-.warp{
-  width: 100%;
-  margin: 0 auto;
-}
 .logo {
   width: 60px;
   height: 60px;
