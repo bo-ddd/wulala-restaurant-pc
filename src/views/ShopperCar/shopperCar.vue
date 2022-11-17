@@ -91,15 +91,15 @@
                 </el-table-column>
             </el-table>
             <!-- 去结算 -->
-            <div class="go-settlement">
+            <div class="go-settlement mb-20">
                 <div class="go-settlement_left">
-                    <el-checkbox v-model="checked2">全选</el-checkbox>
-                    <p>删除选中的商品</p>
+                    <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox>
+                    <p class="ml-10">删除选中的商品</p>
                 </div>
                 <div class="go-settlement_right">
-                    <p>已选择{{1}}件商品</p>
-                    <p>总价：<span>￥0.00</span></p>
-                    <el-button type="danger">去结算</el-button>
+                    <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
+                    <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
+                    <el-button type="danger" class="go-settlement_btn ml-10">去结算</el-button>
                 </div>
             </div>
         </div>
@@ -212,23 +212,37 @@ main{
 /* 结算 */
 ::v-deep .el-button{
     border-radius: 0;
+}
+.go-settlement_btn{
     width: 94px;
     height: 52px;
+    font-size: 16px;
+    font-weight: 550;
 }
 .go-settlement{
     display: flex;
     align-items: center;
     border: 1px solid #ebeef5;
     justify-content: space-between;
+    font-size: 12px;
 }
 .go-settlement_left{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+.go-settlement_left{
+    cursor: pointer;
+}
+.go-settlement_left p:hover{
+    color: #E2231A;
+}
 .go-settlement_right{
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.total-price{
+    font-size: 16px;
 }
 </style>
