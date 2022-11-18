@@ -57,7 +57,7 @@
     height: 100vh;
     min-height: 700px;
     min-width: 1300px;
-    /* background-image: url('@/assets/images/login-bj.webp'); */
+    background-image: url('@/assets/images/login-bj.webp');
     background-size: 100% 100%;
 }
 
