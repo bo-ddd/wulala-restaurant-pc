@@ -5,6 +5,24 @@
       <img class="carousel" :src="parsrAsssetFile(item.src)" alt="">
     </el-carousel-item>
   </el-carousel>
+         <div class="box">
+             <div class="title">所有菜系</div>
+              <div class="box-item">
+                <div class="box-img"><img src="@/assets/images/chuancai.png" alt=""></div>
+                <div class="texts">
+                  <div class="qqq">麻、辣、鲜、香、味蕾盛宴</div>
+                  <el-button type="info" color="#000000" round>查看全部川菜</el-button>
+                </div>
+              </div>
+              <div class="box-item">
+                <div class="texts">
+                  <div class="qqq">麻、辣、鲜、香、味蕾盛宴</div>
+                  <el-button type="info" color="#000000" round>查看全部川菜</el-button>
+                </div>
+                <div class="box-img"><img src="@/assets/images/chuancai.png" alt=""></div>
+              </div>
+         </div>  
+         
     </div>
 </template>
 <script lang="ts" setup>
@@ -37,6 +55,46 @@ let Carousel = [
 .carousel{
     width: 100%;
     height: 100%;
+    border-radius: 20px;
 }
 
+.el-carousel__container{
+  
+  min-height: 600px;
+  border-bottom: 1px solid #ccc;
+  border-radius: 20px;
+}
+.box-item{
+  border-radius: 30px;
+  margin-bottom: 50px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.box-item img{
+  display: inline-block;
+  width: 100%;
+  height:100%;
+  border-radius: 30px 0 0 30px;
+}
+.box-img{
+  width: 40%;
+height: 450px;
+}
+.texts{
+  width: 30%;
+  margin:0 120px 0 150px;
+  padding-top: 150px;
+}
+.title{
+  font-size: 50px;
+  font-weight: 700;
+  margin: 20px 20px;
+}
+
+.qqq {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 60px;
+}
 </style>
