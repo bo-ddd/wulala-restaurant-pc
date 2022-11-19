@@ -9,13 +9,6 @@
                 </li>
             </ul>
             <div class="tapbombox">
-                <div class="box-text">
-                    <span>菜肴图片</span>
-                    <span>菜肴名称</span>
-                    <span>菜肴介绍</span>
-                    <span>菜肴价格</span>
-                    <span>加入购物车</span>
-                </div>
                 <div class="bombox" v-for="(item, index) in bomtxt" :key="index">
                     <div class="box-bannerurl_png"><img class="bannerurl-png" :src="item.bannerUrl" alt=""></div>
                     <div> <span class="food-name">{{ item.foodName }}</span></div>
@@ -54,11 +47,7 @@ const tapqie = (index: number, el: any) => {
 </script>
   
 <style scoped >
-.box {
-    padding: 20px;
-    background-color: #fff;
-    min-height: calc(100vh - 220px);
-}
+
 
 .tapbox {
     width: 100%;
