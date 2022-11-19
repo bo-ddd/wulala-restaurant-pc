@@ -3,6 +3,7 @@
     <el-container>
       <el-header>
         <div class="warp box-header">
+          
           <div class="bb">
             <div>
               <img class="logo" src="@/assets/images/icon-wll_logo.png" alt=""/>
@@ -12,8 +13,12 @@
               <p>WULALAFOOD</p>
             </div>
           </div>
+
           <div class="box-rigth">
             <div class="login">
+              <div class="header-fw" @click="navigator('home')">首页</div>
+              <div class="header-fw" @click="navigator('mall')">购物中心</div>
+              <div class="header-fw" @click="navigator('shoppercar')">购物车</div>
               <div class="header-fw">服务</div>
               <div class="header-fw">线下门店</div>
               <el-icon class="icon" size="24">
@@ -38,6 +43,7 @@
               </div>
             </div>
           </div>
+        
         </div>
       </el-header>
 
@@ -52,9 +58,10 @@
   </div>
 </template>
 <style>
-.bb{
+.bb {
   display: flex;
 }
+
 .logo {
   width: 60px;
   height: 60px;
@@ -111,17 +118,25 @@
 
 .header-fw {
   margin-right: 20px;
+  cursor: pointer;
 }
+
+.header-fw:active{
+  color: red;
+}
+
 .example-showcase .el-dropdown-link {
   cursor: pointer;
   color: var(--el-color-primary);
   display: flex;
   align-items: center;
 }
-.el-main{
-  padding:20px 80px;
+
+.el-main {
+  padding: 20px 80px;
 }
-.el-carousel__container{
+
+.el-carousel__container {
   min-height: 600px;
   border-bottom: 1px solid #ccc;
 
@@ -129,7 +144,11 @@
 }
 </style>
 <script setup lang="ts">
-
-import { ArrowDown } from '@element-plus/icons-vue'
-import { Edit, Search, User } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router';
+import { ArrowDown } from '@element-plus/icons-vue';
+import { Edit, Search, User } from '@element-plus/icons-vue';
+let router = useRouter();
+function navigator(name:string){
+  router.push({name:name})
+}
 </script>

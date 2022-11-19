@@ -44,3 +44,9 @@ body,p,h1,h2,h3,h4,h5,h6{
   align-items: center;
   justify-content: space-between;
 }
+
+.box {
+  padding: 20px;
+  background-color: #fff;
+  min-height: calc(100vh - 220px);
+}
