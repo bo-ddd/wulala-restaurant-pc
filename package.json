@@ -13,6 +13,7 @@
     "@element-plus/icons-vue": "^2.0.10",
     "axios": "^1.1.3",
     "element-plus": "^2.2.20",
+    "elui-china-area-dht": "^2.0.0",
     "pinia": "^2.0.23",
     "vue": "^3.2.41",
     "vue-router": "^4.1.5"
