@@ -3,8 +3,12 @@
         <div class="warp center">
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
-            <div class="nav pd-10">
+            <div class="nav pd-10 df-al">
                 <p>全部商品 {{ 1 }}</p>
+                <div>
+                    <!--带isall参数和leave参数示例-->
+                    配送至：<elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
+                </div>
             </div>
             <el-table
                 ref="multipleTableRef"
@@ -93,23 +97,30 @@
             <!-- 去结算 -->
             <div class="go-settlement mb-20">
                 <div class="go-settlement_left">
-                    <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox>
+                    <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
                     <p class="ml-10">删除选中的商品</p>
                 </div>
                 <div class="go-settlement_right">
                     <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
                     <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
-                    <el-button type="danger" class="go-settlement_btn ml-10">去结算</el-button>
+                    <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
                 </div>
             </div>
         </div>
+        <el-backtop :right="100" :bottom="100" />
     </main>
 </template>
 
 <script lang="ts" setup>
+// 三级联动
+import { defineComponent } from 'vue'
+import { EluiChinaAreaDht}  from 'elui-china-area-dht'
+
 import { Search } from '@element-plus/icons-vue'
 import {ref } from 'vue';
 import { ElTable } from 'element-plus'
+import { useRouter } from 'vue-router';
+let router = useRouter();
 const checked2 = ref(true)
 let input = ref();
 
@@ -135,6 +146,18 @@ const num = ref(1)
 const handleChange = (value: number) => {
   console.log(value)
 }
+// 结算按钮
+const toSettlement = function(){
+    router.push({name:'settlement'});
+}
+// 三级联动
+const chinaData = new EluiChinaAreaDht.ChinaArea().chinaAreaflat;
+function onChange(e:any) {
+  const one = chinaData[e[0]]
+  const two = chinaData[e[1]]
+  const three = chinaData[e[2]]
+  console.log(one, two,three)
+}
 </script>
 
 <style scoped>
@@ -149,7 +172,8 @@ main{
     clear: both;
     font-size: 16px;
     color: #f7d347;
-    font-weight: 550 ;
+    font-weight: 550;
+    margin: 0px;
 }
 .center{
     width: 1200px;
