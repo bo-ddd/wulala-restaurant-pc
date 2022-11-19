@@ -49,6 +49,7 @@ const tapqie = (index: number, el: any) => {
     }).then(res => {
         bomtxt.value = res.data.list
     })
+    idxon.value = index
 }
 </script>
   
