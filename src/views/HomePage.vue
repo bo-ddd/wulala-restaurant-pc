@@ -7,25 +7,15 @@
   </el-carousel>
          <div class="box">
              <div class="title">所有菜系</div>
-              <div class="box-item">
-                <div class="box-img"><img src="@/assets/images/chuancai.png" alt=""></div>
-                <div class="texts">
-                  <div class="qqq">麻、辣、鲜、香、味蕾盛宴</div>
-                  <el-button type="info" color="#000000" round>查看全部川菜</el-button>
-                </div>
-              </div>
-              <div class="box-item">
-                <div class="texts">
-                  <div class="qqq">麻、辣、鲜、香、味蕾盛宴</div>
-                  <el-button type="info" color="#000000" round>查看全部川菜</el-button>
-                </div>
-                <div class="box-img"><img src="@/assets/images/chuancai.png" alt=""></div>
-              </div>
+              <ProductCategory.Wrapper v-for="el in ProductCategoryList">
+                <ProductCategory.Item  :ProductCategory=el ></ProductCategory.Item>
+              </ProductCategory.Wrapper>
          </div>  
          
     </div>
 </template>
 <script lang="ts" setup>
+import ProductCategory from "@/components/ProductCategory"
 import useUtil from "@/assets/util"
 let { parsrAsssetFile } = useUtil()
 let Carousel = [
@@ -43,8 +33,39 @@ let Carousel = [
         src:"Carousel-04.png"
     },
 ]
+let ProductCategoryList = [
+  { 
+    direction:"left",
+    text:"麻、辣、鲜、香、味蕾盛宴1",
+    src:"src/assets/images/dongbeicai.png",
+    btntext:"查看全部东北菜"
+  },
+  { 
+    direction:"rigth",
+    text:"麻、辣、鲜、香、味蕾盛宴2",
+    src:"src/assets/images/yuecai.png",
+    btntext:"查看全部粤菜"
+  },
+  { 
+    direction:"left",
+    text:"麻、辣、鲜、香、味蕾盛宴3",
+    src:"src/assets/images/jiachangcai.png",
+    btntext:"查看全部家常菜"
+  },
+  { 
+    direction:"rigth",
+    text:"麻、辣、鲜、香、味蕾盛宴4",
+    src:"src/assets/images/chuancai.png",
+    btntext:"查看全部川菜"
+  }
+]
 </script>
 <style>
+.title{
+  font-size: 50px;
+  font-weight: 700;
+  margin: 20px 20px;
+}
 .el-carousel__item h3 {
   display: flex;
   color: #475669;
@@ -64,37 +85,5 @@ let Carousel = [
   border-bottom: 1px solid #ccc;
   border-radius: 20px;
 }
-.box-item{
-  border-radius: 30px;
-  margin-bottom: 50px;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-}
-.box-item img{
-  display: inline-block;
-  width: 100%;
-  height:100%;
-  border-radius: 30px 0 0 30px;
-}
-.box-img{
-  width: 40%;
-height: 450px;
-}
-.texts{
-  width: 30%;
-  margin:0 120px 0 150px;
-  padding-top: 150px;
-}
-.title{
-  font-size: 50px;
-  font-weight: 700;
-  margin: 20px 20px;
-}
 
-.qqq {
-  font-size: 30px;
-  font-weight: 600;
-  margin-bottom: 60px;
-}
 </style>
