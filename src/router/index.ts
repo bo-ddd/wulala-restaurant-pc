@@ -9,7 +9,7 @@ const router = createRouter({
       path: '/layout',
       name: 'layout',
       component: Layout,
-      children:[
+      children: [
         {
           path:'/shoppercar',
           name:'shoppercar',
@@ -26,9 +26,13 @@ const router = createRouter({
           path:'/settlement',
           name:'settlement',
           component:()=>import("@/views/ShopperCar/Settlement.vue")
+        }, {
+          path: '/classify',
+          name: 'classify',
+          component: () => import("@/views/classify/Classify.vue"),
         }
       ]
-    },{
+    }, {
       path: '/login',
       name: 'login',
       component: Login,

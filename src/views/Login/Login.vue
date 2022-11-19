@@ -57,7 +57,7 @@
     height: 100vh;
     min-height: 700px;
     min-width: 1300px;
-    /* background-image: url('@/assets/images/login-bj.webp'); */
+    background-image: url('@/assets/images/login-bj.webp');
     background-size: 100% 100%;
 }
 
@@ -429,7 +429,7 @@ body {
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 // import { useCounterStore } from '@/stores/counter';
-import { loginApi, registerApi } from "@/api/api.js";
+// import { loginApi, registerApi } from "@/api/api.js";
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
 // import { removeStyle } from 'element-plus/es/utils';

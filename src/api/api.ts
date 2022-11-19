@@ -49,3 +49,19 @@ export const registerApi = function (payload = {}) {
     //就是网页的预览
     return instance.post('/user/register', payload)
 }
+
+/**
+ * @description 获取类目接口
+ * @param payload object
+ */
+export const getCategoryListApi = function (payload = {}) {
+    return instance.post('/category/list', payload)
+}
+
+/**
+ * @description 获取菜肴列表接口
+ * @param payload object
+ */
+ export const gatFoodListApi = function (payload = {}) {
+    return instance.post('/food/list', payload)
+}
