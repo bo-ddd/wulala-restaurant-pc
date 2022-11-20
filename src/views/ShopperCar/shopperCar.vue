@@ -5,10 +5,10 @@
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
             <div class="nav pd-10 df-al">
                 <p>全部商品 {{ 1 }}</p>
-                <div>
-                    <!--带isall参数和leave参数示例-->
+                <!-- <div>
+                    带isall参数和leave参数示例
                     配送至：<elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
-                </div>
+                </div> -->
             </div>
             <el-table
                 ref="multipleTableRef"
@@ -112,10 +112,6 @@
 </template>
 
 <script lang="ts" setup>
-// 三级联动
-import { defineComponent } from 'vue'
-import { EluiChinaAreaDht}  from 'elui-china-area-dht'
-
 import { Search } from '@element-plus/icons-vue'
 import {ref } from 'vue';
 import { ElTable } from 'element-plus'
@@ -149,14 +145,6 @@ const handleChange = (value: number) => {
 // 结算按钮
 const toSettlement = function(){
     router.push({name:'settlement'});
-}
-// 三级联动
-const chinaData = new EluiChinaAreaDht.ChinaArea().chinaAreaflat;
-function onChange(e:any) {
-  const one = chinaData[e[0]]
-  const two = chinaData[e[1]]
-  const three = chinaData[e[2]]
-  console.log(one, two,three)
 }
 </script>
 

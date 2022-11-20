@@ -23,25 +23,36 @@
                             新增收货地址
                         </el-button>
     
-                        <el-dialog v-model="dialogFormVisible" title="Shipping address">
+                        <el-dialog v-model="dialogFormVisible" title="新增收货人信息">
                             <el-form :model="form">
-                            <el-form-item label="Promotion name" :label-width="formLabelWidth">
-                                <el-input v-model="form.name" autocomplete="off" />
-                            </el-form-item>
-                            <el-form-item label="Zones" :label-width="formLabelWidth">
-                                <el-select v-model="form.region" placeholder="Please select a zone">
-                                <el-option label="Zone No.1" value="shanghai" />
-                                <el-option label="Zone No.2" value="beijing" />
-                                </el-select>
-                            </el-form-item>
+                                <el-form-item label="所在地区" :label-width="formLabelWidth">
+                                    <elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
+                                </el-form-item>
+                                <el-form-item label="收货人" :label-width="formLabelWidth">
+                                    <el-input v-model="form.name" autocomplete="off" />
+                                </el-form-item>
+                                <el-form-item label="详细地址" :label-width="formLabelWidth">
+                                    <el-input v-model="form.address" autocomplete="off" />
+                                </el-form-item>
+                                <el-form-item label="手机号码" :label-width="formLabelWidth">
+                                    <el-input v-model="form.phone" autocomplete="off" placeholder="86+" />
+                                </el-form-item>
+                                <el-form-item label="固定电话" :label-width="formLabelWidth">
+                                    <el-input v-model="form.lockPhone" autocomplete="off" placeholder="86+" />
+                                </el-form-item>
+                                <el-form-item label="地址别名" :label-width="formLabelWidth">
+                                    <el-select v-model="form.region" placeholder="">
+                                    <el-option label="家" value="shanghai" />
+                                    <el-option label="父母家" value="beijing" />
+                                    <el-option label="公司" value="beijing" />
+                                    </el-select>
+                                </el-form-item>
                             </el-form>
                             <template #footer>
-                            <span class="dialog-footer">
-                                <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                                <el-button type="primary" @click="dialogFormVisible = false">
-                                Confirm
-                                </el-button>
-                            </span>
+                                <span class="dialog-footer">
+                                    <el-button @click="dialogFormVisible = false">取消</el-button>
+                                    <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
+                                </span>
                             </template>
                         </el-dialog>
                     </div>
@@ -61,14 +72,12 @@ const dialogFormVisible = ref(false)
 const formLabelWidth = '140px'
 
 const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
+  address:'',//详细地址
+  phone:'',//手机号
+  lockPhone:'',//固定手机号
+  name: '',//收货人
+  region: '',//地址别名
   type: [],
-  resource: '',
-  desc: '',
 })
 // 三级联动
 const chinaData = new EluiChinaAreaDht.ChinaArea().chinaAreaflat;
