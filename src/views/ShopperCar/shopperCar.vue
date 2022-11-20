@@ -1,5 +1,5 @@
 <template>
-    <main>
+   
         <div class="warp center">
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
@@ -19,7 +19,7 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column label="商品" width="">
+                <el-table-column label="商品" width="370px">
                     <template #default>
                         <div class="commodity">
                             <img class="commodity-icon" src="@/assets/images/Carousel-02.png" alt="">
@@ -108,7 +108,6 @@
             </div>
         </div>
         <el-backtop :right="100" :bottom="100" />
-    </main>
 </template>
 
 <script lang="ts" setup>
@@ -149,10 +148,6 @@ const toSettlement = function(){
 </script>
 
 <style scoped>
-main{
-    background:#fff;
-    overflow: hidden;
-}
 .input{
     float: right;
 }
@@ -164,8 +159,12 @@ main{
     margin: 0px;
 }
 .center{
+    background:#fff;
+    overflow: hidden;
     width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 20px;
 }
 .commodity-icon{
     width: 80px;
