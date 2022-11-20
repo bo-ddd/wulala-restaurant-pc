@@ -139,6 +139,8 @@ main{
 .center{
     width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
+    padding: 20px;
 }
 ::v-deep .el-steps--horizontal{
     width: 500px;
@@ -154,6 +156,7 @@ main{
 }
 .content{
     border: 1px solid #ebeef5;
+    box-shadow: 4px 4px 20px #ccc;
 }
 .user-info{
     display: flex;
