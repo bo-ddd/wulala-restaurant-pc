@@ -106,7 +106,6 @@ li:hover {
 }
 .description{
     margin-left: 235px;
-
 }
 
 </style>
