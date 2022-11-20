@@ -11,16 +11,16 @@
         </div>
         <div class="minsu-ls-view clearfix">
             <div class="products" style="display: flex;">
-                <div class="minsu-item" v-for="(item, index) in bomtxt" :key="index">
+                <div class="minsu-item active" v-for="(item, index) in bomtxt" :key="index">
                     <div class="product-card-header"><img class="product-img" :src="item.bannerUrl" alt=""></div>
                     <div>
-                        <p class="food-name">{{ item.foodName }}</p>
+                        <span class="food-name">{{ item.foodName }}</span>
                     </div>
                     <div class="box-description">
                         <p class="description">{{ item.description }}</p>
                     </div>
-                    <div>
-                        <p class="price"><span class="symbol">￥</span>{{ item.price }}</p>
+                    <div class="product-info">
+                        <span class="price"><span class="symbol">￥</span>{{ item.price }}</span>
                     </div>
                 </div>
             </div>
@@ -84,19 +84,8 @@ li {
 
 .nav-item {
     padding: 0 5px;
+    font-size: 15px;
 }
-
-/* .classify-body {
-    padding: 20px;
-    padding-right: 0;
-    padding-bottom: 0;
-    border: 1px solid #E5E5E5;
-    border-top: 0px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    background: #fff;
-    display: flex;
-} */
 
 .minsu-ls-view {
     padding: 20px;
@@ -107,7 +96,12 @@ li {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     background: #fff;
-    /* height: calc(100vh - 290px); */
+    overflow-y: scroll;
+    height: calc(100vh - 284px);
+}
+
+::-webkit-scrollbar {
+    display: none
 }
 
 .clearfix:after {
@@ -127,26 +121,22 @@ li {
 }
 
 .minsu-ls-view .minsu-item {
-    /* float: left; */
+    float: left;
     margin-right: 18px;
 }
 
 .minsu-ls-view .minsu-item .product-card-header .product-img {
-    width: 417px;
+    width: 276px;
     height: 208px;
     border-radius: 4px;
     background-size: cover;
     background-position: 50%;
     max-width: 100%;
-    height: 306px;
+    height: 200px;
     margin-bottom: 11px;
     cursor: pointer;
 }
 
-.bombox {
-    float: left;
-    margin-right: 18px;
-}
 
 .products {
     flex-wrap: wrap;
@@ -158,17 +148,6 @@ li {
     font-family: "MFShangHei-Regular";
 }
 
-.bannerurl-png {
-    width: 418px;
-    height: 285px;
-    border-radius: 4px;
-    background-size: cover;
-    background-position: 50%;
-    max-width: 100%;
-    margin-bottom: 11px;
-    cursor: pointer;
-}
-
 .food-name {
     color: #222222;
     overflow: hidden;
@@ -177,22 +156,27 @@ li {
     margin: 7px 0;
     font-weight: 600;
     width: 297px;
+    font-size: 15px;
 }
 
 .description {
-    font-size: 16px;
+    font-size: 15px;
     color: #999999;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin: 7px 0;
+    margin: 5px 0 0 0;
     font-weight: 400;
-    width: 297px;
+    width: 228px;
+    white-space: nowrap;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .price {
     font-weight: 500;
-    font-size: 22px;
+    font-size: 20px;
     color: #FF6600;
     letter-spacing: -0.8px;
     padding: 4px 0
@@ -200,6 +184,9 @@ li {
 
 .symbol {
     color: #FF6600;
-    font-size: 17px;
+    font-size: 14px;
+}
+.product-info{
+    padding-bottom: 20px;
 }
 </style>
