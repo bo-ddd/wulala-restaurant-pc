@@ -16,7 +16,7 @@
                 <!-- <div>
                 配送至：<elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
                 </div> -->
-                <div class="df-sp">
+                <div class="df-sp m-20">
                     <h3>收货人信息</h3>
                     <div>
                         <el-button text @click="dialogFormVisible = true">
@@ -57,6 +57,34 @@
                         </el-dialog>
                     </div>
                 </div>
+                <!-- consignee  收货人 -->
+                <div class="consignee-content mb-20" @mouseover="mouseover" @mouseout="mouseout">
+                    <div class="df-sp">
+                        <div class="user-info mb-10">
+                            <p class="name">刘伟耨</p>
+                            <p class="phones">13145674567</p>
+                            <div class="default">默认地址</div>
+                        </div>
+                        <!-- 操作 -->
+                        <div class="operation" :class="{none : isActive}">
+                            <el-popconfirm 
+                            title="您确认要删除该地址吗?" 
+                            width="200px"
+                            confirm-button-text="确认"
+                            cancel-button-text="取消"
+                            >
+                                <template #reference>
+                                    <span class="delete">删除</span>
+                                </template>
+                            </el-popconfirm>
+                            <p class="delete" @click="dialogFormVisible = true">编辑</p>
+                        </div>
+                    </div>
+                    <!-- 地址 -->
+                    <div class="address">
+                        <p>山西省 阳泉市 盂县 吸烟者 南村</p>
+                    </div>
+                </div> 
             </div>
         </div>
     </main>
@@ -86,6 +114,13 @@ function onChange(e:any) {
   const two = chinaData[e[1]]
   const three = chinaData[e[2]]
   console.log(one, two,three)
+}
+const isActive = ref(true);
+const mouseover = function(){
+    isActive.value = false;
+}
+const mouseout = function(){
+    isActive.value = true;
 }
 </script>
 
@@ -119,5 +154,41 @@ main{
 }
 .content{
     border: 1px solid #ebeef5;
+}
+.user-info{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+}
+.address{
+    color: #9a9a9a;
+    height: 20px;
+    font-size: 14px;
+}
+.default{
+    padding: 0 1px;
+    font-size: 12px;
+    color: #E64566;
+    border: 1px solid #E64566;
+    border-radius: 2px;
+}
+.consignee-content{
+    padding: 16px;
+    border: 1px solid red;
+}
+.consignee-content:hover{
+    cursor: pointer;
+}
+.delete:hover{
+    color: red;
+}
+.operation{
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+}
+.none{
+    display: none;
 }
 </style>
