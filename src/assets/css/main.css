@@ -49,5 +49,5 @@ body,p,h1,h2,h3,h4,h5,h6{
   padding: 20px;
   background-color: #fff;
   min-height: calc(100vh - 220px);
-  min-width: 1600px;
+  min-width: 1200px;
 }
