@@ -9,17 +9,19 @@
                 </li>
             </ul>
         </div>
-        <div class="classify-body clearfix">
-            <div class="bombox" v-for="(item, index) in bomtxt" :key="index">
-                <div class="box-bannerurl_png"><img class="bannerurl-png" :src="item.bannerUrl" alt=""></div>
-                <div>
-                    <p class="food-name">{{ item.foodName }}</p>
-                </div>
-                <div class="box-description">
-                    <p class="description">{{ item.description }}</p>
-                </div>
-                <div>
-                    <p class="price"><span class="symbol">￥</span>{{ item.price }}</p>
+        <div class="minsu-ls-view clearfix">
+            <div class="products" style="display: flex;">
+                <div class="minsu-item" v-for="(item, index) in bomtxt" :key="index">
+                    <div class="product-card-header"><img class="product-img" :src="item.bannerUrl" alt=""></div>
+                    <div>
+                        <p class="food-name">{{ item.foodName }}</p>
+                    </div>
+                    <div class="box-description">
+                        <p class="description">{{ item.description }}</p>
+                    </div>
+                    <div>
+                        <p class="price"><span class="symbol">￥</span>{{ item.price }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,6 +75,7 @@ li {
     list-style: none;
     margin: 0;
     padding: 0;
+    cursor: pointer;
 }
 
 .tapqiehuan {
@@ -83,7 +86,7 @@ li {
     padding: 0 5px;
 }
 
-.classify-body {
+/* .classify-body {
     padding: 20px;
     padding-right: 0;
     padding-bottom: 0;
@@ -93,10 +96,20 @@ li {
     border-bottom-right-radius: 4px;
     background: #fff;
     display: flex;
-    height: calc(100vh - 290px);
+} */
+
+.minsu-ls-view {
+    padding: 20px;
+    padding-right: 0;
+    padding-bottom: 0;
+    border: 1px solid #E5E5E5;
+    border-top: 0px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background: #fff;
+    /* height: calc(100vh - 290px); */
 }
 
-.clearfix:before,
 .clearfix:after {
     content: " ";
     visibility: hidden;
@@ -105,10 +118,38 @@ li {
     clear: both;
 }
 
+.clearfix:before {
+    content: " ";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+.minsu-ls-view .minsu-item {
+    /* float: left; */
+    margin-right: 18px;
+}
+
+.minsu-ls-view .minsu-item .product-card-header .product-img {
+    width: 417px;
+    height: 208px;
+    border-radius: 4px;
+    background-size: cover;
+    background-position: 50%;
+    max-width: 100%;
+    height: 306px;
+    margin-bottom: 11px;
+    cursor: pointer;
+}
+
 .bombox {
-    flex-wrap: wrap;
     float: left;
     margin-right: 18px;
+}
+
+.products {
+    flex-wrap: wrap;
 }
 
 .title {

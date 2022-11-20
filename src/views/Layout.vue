@@ -1,8 +1,7 @@
 <template>
-  <div class="common-layout">
-    <el-container>
-      <el-header>
-        <div class="warp box-header">
+    <el-container class="warp">
+      <el-header class="warp">
+        <div class="box-header">
           
           <div class="bb">
             <div>
@@ -43,7 +42,6 @@
               </div>
             </div>
           </div>
-        
         </div>
       </el-header>
 
@@ -55,7 +53,6 @@
       </el-main>
       <el-footer>Footer</el-footer>
     </el-container>
-  </div>
 </template>
 <style>
 .bb {
@@ -65,13 +62,12 @@
 .logo {
   width: 60px;
   height: 60px;
-  margin: 0 25px;
+  margin-right: 25px;
 }
 
 .el-header {
   height: 80px;
   border-bottom: 1px solid #ccc;
-  padding: 0 60px;
 }
 
 .box-header {
@@ -81,7 +77,7 @@
 }
 
 .box-rigth {
-  margin: 10px 30px;
+  margin: 10px 0px;
   /* min-width: 1080px; */
   display: flex;
   justify-content: space-between;
@@ -133,7 +129,7 @@
 }
 
 .el-main {
-  padding: 20px 80px;
+  padding: 20px 0px;
 }
 
 .el-carousel__container {

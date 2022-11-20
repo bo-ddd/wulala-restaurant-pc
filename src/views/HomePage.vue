@@ -1,14 +1,14 @@
 <template>
-    <div >
+    <div class="warp" >
   <el-carousel indicator-position="outside">
     <el-carousel-item v-for="item in Carousel" :key="item">
       <img class="carousel" :src="parsrAsssetFile(item.src)" alt="">
     </el-carousel-item>
   </el-carousel>
-         <div class="box">
+         <div class="boxs">
              <div class="title">所有菜系</div>
               <ProductCategory.Wrapper v-for="el in ProductCategoryList">
-                <ProductCategory.Item  :ProductCategory=el ></ProductCategory.Item>
+                <ProductCategory.Item  :ProductCategory=el></ProductCategory.Item>
               </ProductCategory.Wrapper>
          </div>  
          
