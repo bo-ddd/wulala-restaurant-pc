@@ -23,6 +23,11 @@ const router = createRouter({
           name: 'mall',
           component: () => import("@/views/Mall/MallPage.vue"),
         },
+        {
+          path: '/orderview',
+          name: 'orderview',
+          component: () => import("@/views/order/OrderView.vue"),
+        },
       ]
     },{
       path: '/login',
