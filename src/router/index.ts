@@ -22,10 +22,16 @@ const router = createRouter({
           path: '/mall',
           name: 'mall',
           component: () => import("@/views/Mall/MallPage.vue"),
-        }, {
-          path: '/settlement',
-          name: 'settlement',
-          component: () => import("@/views/ShopperCar/Settlement.vue")
+        },
+        {
+          path: '/orderview',
+          name: 'orderview',
+          component: () => import("@/views/order/OrderView.vue"),
+        },
+        {
+          path:'/settlement',
+          name:'settlement',
+          component:()=>import("@/views/ShopperCar/Settlement.vue")
         }, {
           path: '/classify',
           name: 'classify',

@@ -15,9 +15,9 @@
 
           <div class="box-rigth">
             <div class="login">
-              <div class="header-fw" @click="navigator('home')">首页</div>
-              <div class="header-fw" @click="navigator('mall')">购物中心</div>
-              <div class="header-fw" @click="navigator('shoppercar')">购物车</div>
+              <div class="header-fw" :class="{active:isActive}" @click="navigator('home')">首页</div>
+              <div class="header-fw" :class="{active:isActive1}" @click="navigator('mall')">购物中心</div>
+              <div class="header-fw" :class="{active:isActive2}" @click="navigator('shoppercar')">购物车</div>
               <div class="header-fw">服务</div>
               <div class="header-fw">线下门店</div>
               <el-icon class="icon" size="24">
@@ -30,9 +30,13 @@
                   </el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu>
+                  <el-dropdown-menu v-if="token == null">
                     <el-dropdown-item>登录</el-dropdown-item>
                     <el-dropdown-item divided>注册</el-dropdown-item>
+                  </el-dropdown-menu>
+                  <el-dropdown-menu v-else>
+                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <el-dropdown-item divided>退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -115,11 +119,9 @@
 .header-fw {
   margin-right: 20px;
   cursor: pointer;
+  /* color: v-bind(aa); */
 }
 
-.header-fw:active{
-  color: red;
-}
 
 .example-showcase .el-dropdown-link {
   cursor: pointer;
@@ -138,13 +140,48 @@
 
   border-radius: 20px;
 }
+
+.active {
+  color: red;
+}
 </style>
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { ref } from "vue"
+import { useRouter, useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';
 let router = useRouter();
-function navigator(name:string){
-  router.push({name:name})
+let route = useRoute()
+let token = sessionStorage.getItem('token') 
+console.log(token);
+
+const isActive = ref(false)
+    const isActive1 = ref(true)
+    const isActive2 = ref(false)
+    const isActive3 = ref(false)
+    const isActive4 = ref(false)
+function navigator(name: string) {
+  router.push({ name: name })
+  if (name == 'home') {
+    isActive.value = (true)
+    isActive1.value = (false)
+    isActive2.value = (false)
+    isActive3.value = (false)
+    isActive4.value = (false)
+  }else if (name=='mall') {
+    console.log(2);
+    
+    isActive.value = (false)
+    isActive1.value = (true)
+    isActive2.value = (false)
+    isActive3.value = (false)
+    isActive4.value = (false)
+  }else if(name == 'shoppercar'){
+    isActive.value = (false)
+    isActive1.value = (false)
+    isActive2.value = (true)
+    isActive3.value = (false)
+    isActive4.value = (false)
+  }
 }
 </script>

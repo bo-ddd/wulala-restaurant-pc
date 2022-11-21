@@ -5,6 +5,10 @@
       <img class="carousel" :src="parsrAsssetFile(item.src)" alt="">
     </el-carousel-item>
   </el-carousel>
+  <div class="boxs">
+         <div class="title">每日推荐</div>
+              
+         </div>
          <div class="boxs">
              <div class="title">所有菜系</div>
               <ProductCategory.Wrapper v-for="el in ProductCategoryList">

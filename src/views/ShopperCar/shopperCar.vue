@@ -1,5 +1,5 @@
 <template>
-    <main>
+   
         <div class="warp center">
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
@@ -19,13 +19,13 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column label="商品" width="">
+                <el-table-column label="商品" width="370px">
                     <template #default>
                         <div class="commodity">
                             <img class="commodity-icon" src="@/assets/images/Carousel-02.png" alt="">
                             <div>
                                 <p>撒旦解放上的飞机螺丝钉法律上的会计分录撒旦解放老师看了电视剧k</p>
-                                <el-tooltip
+                                <!-- <el-tooltip
                                     class="box-item"
                                     effect="dark"
                                     content="Bottom Right prompts info"
@@ -57,7 +57,7 @@
                                     </div>
                                 </template>
                                     <el-button><img class="option-service pr-10" src="@/assets/images/option-service.png" alt=""> 选服务</el-button>
-                                </el-tooltip>
+                                </el-tooltip> -->
                             </div>
                         </div>
                     </template>
@@ -72,7 +72,11 @@
                             placement="bottom-end"
                         >
                         <template #content>
-                            <el-checkbox v-model="checked2">满2000元减20元，包邮（限中国内地）</el-checkbox>
+                            <span class="checked-content">
+                                <el-checkbox v-model="checked2">
+                                    满2000元减20元，包邮（限中国内地）
+                                </el-checkbox>
+                            </span>
                         </template>
                             <el-button>促销</el-button>
                         </el-tooltip>
@@ -108,7 +112,6 @@
             </div>
         </div>
         <el-backtop :right="100" :bottom="100" />
-    </main>
 </template>
 
 <script lang="ts" setup>
@@ -117,7 +120,7 @@ import {ref } from 'vue';
 import { ElTable } from 'element-plus'
 import { useRouter } from 'vue-router';
 let router = useRouter();
-const checked2 = ref(true)
+const checked2 = ref(false)
 let input = ref();
 
 interface User {
@@ -149,10 +152,6 @@ const toSettlement = function(){
 </script>
 
 <style scoped>
-main{
-    background:#fff;
-    overflow: hidden;
-}
 .input{
     float: right;
 }
@@ -164,8 +163,12 @@ main{
     margin: 0px;
 }
 .center{
+    background:#fff;
+    overflow: hidden;
     width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 20px;
 }
 .commodity-icon{
     width: 80px;
@@ -256,5 +259,8 @@ main{
 }
 .total-price{
     font-size: 16px;
+}
+.checked-content{
+    color: #fff;
 }
 </style>
