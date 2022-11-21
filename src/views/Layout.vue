@@ -1,8 +1,8 @@
 <template>
-  <div class="common-layout">
-    <el-container>
-      <el-header>
-        <div class="warp box-header">
+    <el-container class="warp">
+      <el-header class="warp">
+        <div class="box-header">
+          
           <div class="bb">
             <div>
               <img class="logo" src="@/assets/images/icon-wll_logo.png" alt=""/>
@@ -12,8 +12,12 @@
               <p>WULALAFOOD</p>
             </div>
           </div>
+
           <div class="box-rigth">
             <div class="login">
+              <div class="header-fw" :class="{active:isActive}" @click="navigator('home')">首页</div>
+              <div class="header-fw" :class="{active:isActive1}" @click="navigator('mall')">购物中心</div>
+              <div class="header-fw" :class="{active:isActive2}" @click="navigator('shoppercar')">购物车</div>
               <div class="header-fw">服务</div>
               <div class="header-fw">线下门店</div>
               <el-icon class="icon" size="24">
@@ -49,16 +53,16 @@
       </el-main>
       <el-footer>Footer</el-footer>
     </el-container>
-  </div>
 </template>
 <style>
-.bb{
+.bb {
   display: flex;
 }
+
 .logo {
   width: 60px;
   height: 60px;
-  margin-left: 25px;
+  margin-right: 25px;
 }
 
 .el-header {
@@ -69,11 +73,11 @@
 .box-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .box-rigth {
-  margin: 10px 30px;
+  margin: 10px 0px;
   /* min-width: 1080px; */
   display: flex;
   justify-content: space-between;
@@ -110,22 +114,68 @@
 
 .header-fw {
   margin-right: 20px;
+  cursor: pointer;
+  /* color: v-bind(aa); */
 }
+
+
 .example-showcase .el-dropdown-link {
   cursor: pointer;
   color: var(--el-color-primary);
   display: flex;
   align-items: center;
 }
-.el-main{
-  padding:20px 80px;
+
+.el-main {
+  padding: 20px 0px;
 }
-.el-carousel__container{
+
+.el-carousel__container {
   min-height: 600px;
+  border-bottom: 1px solid #ccc;
+
+  border-radius: 20px;
+}
+
+.active {
+  color: red;
 }
 </style>
 <script setup lang="ts">
-
-import { ArrowDown } from '@element-plus/icons-vue'
-import { Edit, Search, User } from '@element-plus/icons-vue'
+import { ref } from "vue"
+import { useRouter, useRoute } from 'vue-router';
+import { ArrowDown } from '@element-plus/icons-vue';
+import { Edit, Search, User } from '@element-plus/icons-vue';
+let router = useRouter();
+let route = useRoute()
+// let aa = ref("")
+const isActive = ref(false)
+    const isActive1 = ref(true)
+    const isActive2 = ref(false)
+    const isActive3 = ref(false)
+    const isActive4 = ref(false)
+function navigator(name: string) {
+  router.push({ name: name })
+  if (name == 'home') {
+    isActive.value = (true)
+    isActive1.value = (false)
+    isActive2.value = (false)
+    isActive3.value = (false)
+    isActive4.value = (false)
+  }else if (name=='mall') {
+    console.log(2);
+    
+    isActive.value = (false)
+    isActive1.value = (true)
+    isActive2.value = (false)
+    isActive3.value = (false)
+    isActive4.value = (false)
+  }else if(name == 'shoppercar'){
+    isActive.value = (false)
+    isActive1.value = (false)
+    isActive2.value = (true)
+    isActive3.value = (false)
+    isActive4.value = (false)
+  }
+}
 </script>

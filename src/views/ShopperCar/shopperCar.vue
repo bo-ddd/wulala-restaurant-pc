@@ -1,10 +1,14 @@
 <template>
-    <main>
+   
         <div class="warp center">
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
-            <div class="nav pd-10">
+            <div class="nav pd-10 df-al">
                 <p>全部商品 {{ 1 }}</p>
+                <!-- <div>
+                    带isall参数和leave参数示例
+                    配送至：<elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
+                </div> -->
             </div>
             <el-table
                 ref="multipleTableRef"
@@ -15,7 +19,7 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" />
-                <el-table-column label="商品" width="">
+                <el-table-column label="商品" width="370px">
                     <template #default>
                         <div class="commodity">
                             <img class="commodity-icon" src="@/assets/images/Carousel-02.png" alt="">
@@ -91,25 +95,27 @@
                 </el-table-column>
             </el-table>
             <!-- 去结算 -->
-            <div class="go-settlement">
+            <div class="go-settlement mb-20">
                 <div class="go-settlement_left">
-                    <el-checkbox v-model="checked2">全选</el-checkbox>
-                    <p>删除选中的商品</p>
+                    <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
+                    <p class="ml-10">删除选中的商品</p>
                 </div>
                 <div class="go-settlement_right">
-                    <p>已选择{{1}}件商品</p>
-                    <p>总价：<span>￥0.00</span></p>
-                    <el-button type="danger">去结算</el-button>
+                    <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
+                    <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
+                    <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
                 </div>
             </div>
         </div>
-    </main>
+        <el-backtop :right="100" :bottom="100" />
 </template>
 
 <script lang="ts" setup>
 import { Search } from '@element-plus/icons-vue'
 import {ref } from 'vue';
 import { ElTable } from 'element-plus'
+import { useRouter } from 'vue-router';
+let router = useRouter();
 const checked2 = ref(true)
 let input = ref();
 
@@ -135,13 +141,13 @@ const num = ref(1)
 const handleChange = (value: number) => {
   console.log(value)
 }
+// 结算按钮
+const toSettlement = function(){
+    router.push({name:'settlement'});
+}
 </script>
 
 <style scoped>
-main{
-    background:#fff;
-    overflow: hidden;
-}
 .input{
     float: right;
 }
@@ -149,11 +155,16 @@ main{
     clear: both;
     font-size: 16px;
     color: #f7d347;
-    font-weight: 550 ;
+    font-weight: 550;
+    margin: 0px;
 }
 .center{
+    background:#fff;
+    overflow: hidden;
     width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 20px;
 }
 .commodity-icon{
     width: 80px;
@@ -212,23 +223,37 @@ main{
 /* 结算 */
 ::v-deep .el-button{
     border-radius: 0;
+}
+.go-settlement_btn{
     width: 94px;
     height: 52px;
+    font-size: 16px;
+    font-weight: 550;
 }
 .go-settlement{
     display: flex;
     align-items: center;
     border: 1px solid #ebeef5;
     justify-content: space-between;
+    font-size: 12px;
 }
 .go-settlement_left{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+.go-settlement_left{
+    cursor: pointer;
+}
+.go-settlement_left p:hover{
+    color: #E2231A;
+}
 .go-settlement_right{
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.total-price{
+    font-size: 16px;
 }
 </style>

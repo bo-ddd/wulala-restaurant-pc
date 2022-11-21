@@ -1,9 +1,12 @@
-body,p{
-  margin: 0 auto;
+body,p,h1,h2,h3,h4,h5,h6{
+  margin: 0;
 }
 .warp{
-  width: 100%;
+  width: 1200px;
   margin: 0 auto;
+}
+.mb-10{
+  margin-bottom: 10px;
 }
 .w-300{
   width: 300px;
@@ -19,4 +22,33 @@ body,p{
 }
 .mb-20{
   margin-bottom: 20px;
+}
+.pl-10{
+  padding-left: 10px;
+}
+.ml-10{
+  margin-left: 10px;
+}
+.cl-red{
+  color: #E2231A;
+  font-weight: 550;
+}
+.df-al{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  clear: both;
+}
+.plr-20{
+  padding: 0 20px;
+}
+.df-sp{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.box {
+  background-color: #fff;
+  min-height: calc(100vh - 220px);
 }
