@@ -11,10 +11,10 @@ const router = createRouter({
       component: Layout,
       children: [
         {
-          path:'/shoppercar',
-          name:'shoppercar',
-          component:() => import("@/views/ShopperCar/shopperCar.vue")
-        },{
+          path: '/shoppercar',
+          name: 'shoppercar',
+          component: () => import("@/views/ShopperCar/shopperCar.vue")
+        }, {
           path: '/',
           name: 'home',
           component: Home,
@@ -22,7 +22,13 @@ const router = createRouter({
           path: '/mall',
           name: 'mall',
           component: () => import("@/views/Mall/MallPage.vue"),
-        },{
+        },
+        {
+          path: '/orderview',
+          name: 'orderview',
+          component: () => import("@/views/order/OrderView.vue"),
+        },
+        {
           path:'/settlement',
           name:'settlement',
           component:()=>import("@/views/ShopperCar/Settlement.vue")
@@ -30,6 +36,10 @@ const router = createRouter({
           path: '/classify',
           name: 'classify',
           component: () => import("@/views/classify/Classify.vue"),
+        }, {
+          path: '/shoppingDetalis',
+          name: 'shoppingDetalis',
+          component: () => import("@/views/shoppingDetails/ShoppingDetalis.vue"),
         }
       ]
     }, {

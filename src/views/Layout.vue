@@ -30,9 +30,13 @@
                   </el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu>
+                  <el-dropdown-menu v-if="token == null">
                     <el-dropdown-item>登录</el-dropdown-item>
                     <el-dropdown-item divided>注册</el-dropdown-item>
+                  </el-dropdown-menu>
+                  <el-dropdown-menu v-else>
+                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <el-dropdown-item divided>退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -148,7 +152,9 @@ import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';
 let router = useRouter();
 let route = useRoute()
-// let aa = ref("")
+let token = sessionStorage.getItem('token') 
+console.log(token);
+
 const isActive = ref(false)
     const isActive1 = ref(true)
     const isActive2 = ref(false)

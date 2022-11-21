@@ -11,7 +11,7 @@
         </div>
         <div class="minsu-ls-view clearfix">
             <div class="products" style="display: flex;">
-                <div class="minsu-item active" v-for="(item, index) in bomtxt" :key="index">
+                <div class="minsu-item " v-for="(item, index) in bomtxt" :key="index" @click='toShoppingDetails(item)'>
                     <div class="product-card-header"><img class="product-img" :src="item.bannerUrl" alt=""></div>
                     <div>
                         <span class="food-name">{{ item.foodName }}</span>
@@ -31,17 +31,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { getCategoryListApi, gatFoodListApi } from '@/api/api'
+import { useRouter } from 'vue-router'
 let tapli: any = ref()
 let idxon = ref(0)
 let bomtxt: any = ref({})
+let router = useRouter()
 getCategoryListApi({}).then(res => {
     tapli.value = res.data
     gatFoodListApi({
         categoryId: tapli.value[0].id
     }).then(res => {
         bomtxt.value = res.data.list
-        console.log(res.data.list);
-
     })
 })
 const tapqie = (index: number, el: any) => {
@@ -51,6 +51,16 @@ const tapqie = (index: number, el: any) => {
         bomtxt.value = res.data.list
     })
     idxon.value = index
+}
+
+const toShoppingDetails = (item: any) => {
+    router.push({
+        name: 'shoppingDetalis',
+        query: {
+            shoppingDetalisId: item.foodId
+        }
+    })
+
 }
 </script>
 
@@ -63,7 +73,8 @@ const tapqie = (index: number, el: any) => {
     color: #fff;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
-    background: linear-gradient(to right, rgb(250, 60, 104) 2%, rgb(254, 70, 77) 97%) rgb(250, 60, 104);
+    /* background: linear-gradient(to right, rgb(250, 60, 104) 2%, rgb(254, 70, 77) 97%) rgb(250, 60, 104); */
+    background-color: #222222;
 }
 
 ul {
@@ -186,7 +197,12 @@ li {
     color: #FF6600;
     font-size: 14px;
 }
-.product-info{
+
+.product-info {
     padding-bottom: 20px;
+}
+
+.on {
+    color: #409eff;
 }
 </style>
