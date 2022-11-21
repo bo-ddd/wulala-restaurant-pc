@@ -59,7 +59,3 @@ ul li{
   justify-content: space-between;
 }
 
-.box {
-  background-color: #fff;
-  min-height: calc(100vh - 220px);
-}
