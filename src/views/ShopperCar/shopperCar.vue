@@ -25,39 +25,6 @@
                             <img class="commodity-icon" src="@/assets/images/Carousel-02.png" alt="">
                             <div>
                                 <p>撒旦解放上的飞机螺丝钉法律上的会计分录撒旦解放老师看了电视剧k</p>
-                                <!-- <el-tooltip
-                                    class="box-item"
-                                    effect="dark"
-                                    content="Bottom Right prompts info"
-                                    placement="bottom-end"
-                                >
-                                <template #content>
-                                    <div class="content">
-                                        <div class="btn-content_item">
-                                            <p>全面保障</p>
-                                            <div class="btn-content">
-                                                腐烂包换
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                        <div class="btn-content_item">
-                                            <p>意外保护</p>
-                                            <div class="btn-content">
-                                                物品损坏
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                        <div class="btn-content_item">
-                                            <p>延长保修</p>
-                                            <div class="btn-content">
-                                                1年保修
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                                    <el-button><img class="option-service pr-10" src="@/assets/images/option-service.png" alt=""> 选服务</el-button>
-                                </el-tooltip> -->
                             </div>
                         </div>
                     </template>
@@ -89,7 +56,7 @@
                 </el-table-column>
                 <el-table-column label="小计" width="120" >
                     <template #default>
-                        $5,000.00
+                        <span class="cl-r">$5,000.00</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="120" >
@@ -262,5 +229,11 @@ const toSettlement = function(){
 }
 .checked-content{
     color: #fff;
+}
+.cl-r{
+    color: #E2231A;
+}
+::v-deep .el-table tr{
+    background: #fff4e8;
 }
 </style>
