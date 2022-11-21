@@ -25,7 +25,7 @@
                             <img class="commodity-icon" src="@/assets/images/Carousel-02.png" alt="">
                             <div>
                                 <p>撒旦解放上的飞机螺丝钉法律上的会计分录撒旦解放老师看了电视剧k</p>
-                                <el-tooltip
+                                <!-- <el-tooltip
                                     class="box-item"
                                     effect="dark"
                                     content="Bottom Right prompts info"
@@ -57,7 +57,7 @@
                                     </div>
                                 </template>
                                     <el-button><img class="option-service pr-10" src="@/assets/images/option-service.png" alt=""> 选服务</el-button>
-                                </el-tooltip>
+                                </el-tooltip> -->
                             </div>
                         </div>
                     </template>
@@ -72,7 +72,11 @@
                             placement="bottom-end"
                         >
                         <template #content>
-                            <el-checkbox v-model="checked2">满2000元减20元，包邮（限中国内地）</el-checkbox>
+                            <span class="checked-content">
+                                <el-checkbox v-model="checked2">
+                                    满2000元减20元，包邮（限中国内地）
+                                </el-checkbox>
+                            </span>
                         </template>
                             <el-button>促销</el-button>
                         </el-tooltip>
@@ -116,7 +120,7 @@ import {ref } from 'vue';
 import { ElTable } from 'element-plus'
 import { useRouter } from 'vue-router';
 let router = useRouter();
-const checked2 = ref(true)
+const checked2 = ref(false)
 let input = ref();
 
 interface User {
@@ -255,5 +259,8 @@ const toSettlement = function(){
 }
 .total-price{
     font-size: 16px;
+}
+.checked-content{
+    color: #fff;
 }
 </style>
