@@ -65,3 +65,10 @@ export const getCategoryListApi = function (payload = {}) {
  export const gatFoodListApi = function (payload = {}) {
     return instance.post('/food/list', payload)
 }
+/**
+ * @description 获取菜肴详情接口
+ * @param payload object
+ */
+ export const gatFoodDetailApi = function (payload = {}) {
+    return instance.post('/food/detail', payload)
+}

@@ -47,8 +47,6 @@ const tapqie = (index: number, el: any) => {
 </script>
   
 <style scoped >
-
-
 .tapbox {
     width: 100%;
     margin: 0 auto;
