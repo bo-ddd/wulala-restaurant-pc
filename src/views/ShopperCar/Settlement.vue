@@ -92,7 +92,7 @@
                 </div>
             </div>
             <!-- 订单信息 -->
-            <div class="order-info pd-20">
+            <div class="order-info pd-20 mb-20">
                 <div class="order-info_content">
                     <div class="order-list">
                         <!--商品信息 -->
@@ -132,12 +132,15 @@
                                 </li>
                                 <li>
                                     <strong>结算金额：</strong>
-                                    <span class="price settlement">￥4,800.00</span>
+                                    <span class="price settlements">￥4,800.00</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="order-info pd-20">
+                a
             </div>
         </div>
     </main>
@@ -381,13 +384,13 @@ main{
     bottom: 0;
     right: 0;
     padding:0  20px;
-    line-height: 25px;
+    line-height: 28px;
 }
 .order-total-price li{
     display: flex;
     align-items: center;
 }
-.settlement{
+.settlements{
     font-weight: normal;
     color: #ca141d;
     font-size: 24px;
