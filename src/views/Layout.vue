@@ -151,8 +151,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';
 let router = useRouter();
-let route = useRoute()
-let token = sessionStorage.getItem('token') 
+let route = useRoute();
+let token = sessionStorage.getItem('token');
 console.log(token);
 
 const isActive = ref(false)

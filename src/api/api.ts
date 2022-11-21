@@ -72,3 +72,17 @@ export const getCategoryListApi = function (payload = {}) {
  export const gatFoodDetailApi = function (payload = {}) {
     return instance.post('/food/detail', payload)
 }
+/**
+ * @description 菜肴评价列表接口
+ * @param payload object
+ */
+ export const foodAppraiseListApi = function (payload = {}) {
+    return instance.post('comment/food/list', payload)
+}
+/**
+ * @description 新增菜肴评价
+ * @param payload object
+ */
+ export const addFoodAppraiseApi = function (payload = {}) {
+    return instance.post('comment/food/list', payload)
+}
