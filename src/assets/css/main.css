@@ -58,4 +58,9 @@ ul li{
   align-items: center;
   justify-content: space-between;
 }
-
+.pd{
+  padding: 40px 40px 16px;
+}
+.ptb-15{
+  padding: 15px 0;
+}

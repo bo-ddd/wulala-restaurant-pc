@@ -139,10 +139,29 @@
                     </div>
                 </div>
             </div>
-            <div class="order-info pd-20">
-                a
+            <div class="order-info pd">
+                <div class="order-submit">
+                    <p>应付金额：<b class="order-submit_price">￥4800.00</b></p>
+                </div>
+                <!-- 无收货地址 -->
+                <!-- <div class="ship-to_add pd-20">
+                    <span>无收货地址不可下单，<a href="#">点击填充</a></span>
+                </div> -->
+                <!-- 配送至 -->
+                <div class="delivery-to">
+                    <p class="delivery">配送至：</p>
+                    <div>
+                        <p>山西省 阳泉市 盂县 吸烟者 南村</p>
+                        <p>刘伟耨 13145674567</p>
+                    </div>
+                </div>
+                <!-- 结算按钮 -->
+                <div class="settlement-btn ptb-15">
+                    <a>提交订单</a>
+                </div>
             </div>
         </div>
+        <el-backtop :right="80" :bottom="100" />
     </main>
 </template>
 
@@ -290,6 +309,12 @@ main{
 .order-info{
     border: 1px solid #ebeef5;
     box-shadow: 4px 4px 20px #ccc;
+    clear: both;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
 }
 .order-info_content{
     background: #f6f6f6;
@@ -323,7 +348,7 @@ main{
     justify-content: space-between;
 }
 .name{
-    width: 360px;
+    /* width: 360px; */
     text-align: left;
 }
 .order-name p{
@@ -394,5 +419,54 @@ main{
     font-weight: normal;
     color: #ca141d;
     font-size: 24px;
+}
+.order-submit{
+    font-size: 18px;
+    text-align: right;
+}
+.order-submit_price{
+    color: #ca141d;
+    font-size: 30px;
+}
+.ship-to_add{
+    background: #fef2f2;
+    border: 1px solid #ea9393;
+    color: #ca141d;
+    font-size: 12px;
+}
+.ship-to_add a{
+    text-decoration: underline;
+    color: #ca141d;
+}
+.ship-to_add span::before{
+    content: "";
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    background: url('https://res8.vmallres.com/bp_20221016/images/echannel/icon/icon-tips01.png') no-repeat;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+}
+.settlement-btn{
+    margin-top: 20px;
+    text-align: center;
+    background: #ca141d;
+    color: #fff;
+    width: 172px;
+    font-size:18px;
+    border-radius: 2px;
+}
+.delivery-to{
+    display: flex;
+    justify-content: space-between;
+    background: #fef6f3;
+    border: 1px solid #fbd4c4;
+    padding: 7px 20px;
+    max-width: 350px;
+    font-size: 12px;
+}
+.delivery{
+    color: #9a9a9a;
 }
 </style>
