@@ -65,26 +65,26 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- 去结算 -->
-            <div class="go-settlement mb-20">
-                <div class="go-settlement_left">
-                    <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
-                    <p class="ml-10">删除选中的商品</p>
-                </div>
-                <div class="go-settlement_right">
-                    <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
-                    <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
-                    <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
-                </div>
+        </div>
+        <!-- 去结算 -->
+        <div class="go-settlement mt-20 mb-20">
+            <div class="go-settlement_left">
+                <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
+                <p class="ml-10">删除选中的商品</p>
+            </div>
+            <div class="go-settlement_right">
+                <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
+                <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
+                <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
             </div>
         </div>
         <el-backtop :right="100" :bottom="100" />
 </template>
 
 <script lang="ts" setup>
-import { Search } from '@element-plus/icons-vue'
+import { Search } from '@element-plus/icons-vue';
 import {ref } from 'vue';
-import { ElTable } from 'element-plus'
+import { ElTable } from 'element-plus';
 import { useRouter } from 'vue-router';
 let router = useRouter();
 const checked2 = ref(false)
@@ -207,6 +207,7 @@ const toSettlement = function(){
     border: 1px solid #ebeef5;
     justify-content: space-between;
     font-size: 12px;
+    background-color: #fff;
 }
 .go-settlement_left{
     display: flex;

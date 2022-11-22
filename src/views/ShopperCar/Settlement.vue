@@ -469,4 +469,7 @@ main{
 .delivery{
     color: #9a9a9a;
 }
+.settlement-btn a:hover{
+    cursor: pointer;
+}
 </style>
