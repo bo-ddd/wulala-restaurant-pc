@@ -29,8 +29,8 @@
             <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
                 <el-tab-pane label="全部评价(20W+)" name="first">
                     <div class="bj-white grid" v-for="item in foodAppraise">
-                        <div>
-                            <img class="avatar-size" src="" alt="">
+                        <div v-for="users in item.users">
+                            <img class="avatar-size" :src=users.avatarImg alt="">
                             <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
                         </div>
                         <div>
@@ -40,8 +40,32 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="好评" name="second">暂无评论</el-tab-pane>
-                <el-tab-pane label="中评" name="third">暂无评论</el-tab-pane>
+                <el-tab-pane label="好评" name="second">
+                    <div class="bj-white grid" v-for="item in foodAppraise">
+                        <div v-for="users in item.users" v-if="item.star >= 4">
+                            <img class="avatar-size" :src=users.avatarImg alt="">
+                            <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                        </div>
+                        <div>
+                            <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
+                            <div class="user-appraise">{{ item.content }}</div>
+                            <div>用户上传的图片</div>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="中评" name="third">
+                    <div class="bj-white grid" v-for="item in foodAppraise">
+                        <div v-for="users in item.users" v-if="item.star == 3">
+                            <img class="avatar-size" :src=users.avatarImg alt="">
+                            <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                        </div>
+                        <div>
+                            <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
+                            <div class="user-appraise">{{ item.content }}</div>
+                            <div>用户上传的图片</div>
+                        </div>
+                    </div>
+                </el-tab-pane>
                 <el-tab-pane label="差评" name="fourth">暂无评论</el-tab-pane>
             </el-tabs>
         </div>
@@ -208,5 +232,12 @@ async function submitAppraise() {
 
 .user-appraise {
     margin: 10px 0;
+}
+.avatar-size{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    vertical-align: middle;
+    border-radius: 10px;
 }
 </style>
