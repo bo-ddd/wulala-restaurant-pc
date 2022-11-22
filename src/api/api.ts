@@ -87,8 +87,9 @@ export const getCategoryListApi = function (payload = {}) {
     return instance.post('comment/food/list', payload)
 }
 /**
- * @description 查看我的购物车列表
+ * @description 查看我的购物车；列表
+ * @param payload object
  */
-export const cartList = function(payload={}){
-    return instance.post('/cart/list',payload)
+ export const cartListApi = function (payload = {}) {
+    return instance.post('/cart/list', payload)
 }

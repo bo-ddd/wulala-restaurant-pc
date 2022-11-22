@@ -82,10 +82,15 @@
 </template>
 
 <script lang="ts" setup>
+import { cartListApi } from '@/api/api';
 import { Search } from '@element-plus/icons-vue';
 import {ref } from 'vue';
 import { ElTable } from 'element-plus';
 import { useRouter } from 'vue-router';
+cartListApi().then(res => {
+    console.log(res);
+    
+})
 let router = useRouter();
 const checked2 = ref(false)
 let input = ref();
@@ -115,7 +120,7 @@ const handleChange = (value: number) => {
 // 结算按钮
 const toSettlement = function(){
     router.push({name:'settlement'});
-}
+};
 </script>
 
 <style scoped>
