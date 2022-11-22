@@ -1,6 +1,11 @@
 body,p,h1,h2,h3,h4,h5,h6{
   margin: 0;
 }
+ul li{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 .warp{
   width: 1200px;
   margin: 0 auto;
@@ -26,8 +31,14 @@ body,p,h1,h2,h3,h4,h5,h6{
 .pl-10{
   padding-left: 10px;
 }
+.mr-20{
+  margin-right: 20px;
+}
 .ml-10{
   margin-left: 10px;
+}
+.pd-20{
+  padding: 20px;
 }
 .cl-red{
   color: #E2231A;
@@ -47,8 +58,12 @@ body,p,h1,h2,h3,h4,h5,h6{
   align-items: center;
   justify-content: space-between;
 }
-
-.box {
-  background-color: #fff;
-  min-height: calc(100vh - 220px);
+.pd{
+  padding: 40px 40px 16px;
+}
+.ptb-15{
+  padding: 15px 0;
+}
+.mt-20{
+  margin-top: 10px;
 }

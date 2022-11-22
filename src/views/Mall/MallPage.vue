@@ -73,7 +73,6 @@ const toShoppingDetails = (item: any) => {
     color: #fff;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
-    /* background: linear-gradient(to right, rgb(250, 60, 104) 2%, rgb(254, 70, 77) 97%) rgb(250, 60, 104); */
     background-color: #222222;
 }
 

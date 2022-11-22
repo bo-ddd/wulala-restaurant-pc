@@ -25,39 +25,6 @@
                             <img class="commodity-icon" src="@/assets/images/Carousel-02.png" alt="">
                             <div>
                                 <p>撒旦解放上的飞机螺丝钉法律上的会计分录撒旦解放老师看了电视剧k</p>
-                                <!-- <el-tooltip
-                                    class="box-item"
-                                    effect="dark"
-                                    content="Bottom Right prompts info"
-                                    placement="bottom-end"
-                                >
-                                <template #content>
-                                    <div class="content">
-                                        <div class="btn-content_item">
-                                            <p>全面保障</p>
-                                            <div class="btn-content">
-                                                腐烂包换
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                        <div class="btn-content_item">
-                                            <p>意外保护</p>
-                                            <div class="btn-content">
-                                                物品损坏
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                        <div class="btn-content_item">
-                                            <p>延长保修</p>
-                                            <div class="btn-content">
-                                                1年保修
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                                    <el-button><img class="option-service pr-10" src="@/assets/images/option-service.png" alt=""> 选服务</el-button>
-                                </el-tooltip> -->
                             </div>
                         </div>
                     </template>
@@ -89,7 +56,7 @@
                 </el-table-column>
                 <el-table-column label="小计" width="120" >
                     <template #default>
-                        $5,000.00
+                        <span class="cl-r">$5,000.00</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="120" >
@@ -98,27 +65,32 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- 去结算 -->
-            <div class="go-settlement mb-20">
-                <div class="go-settlement_left">
-                    <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
-                    <p class="ml-10">删除选中的商品</p>
-                </div>
-                <div class="go-settlement_right">
-                    <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
-                    <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
-                    <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
-                </div>
+        </div>
+        <!-- 去结算 -->
+        <div class="go-settlement mt-20 mb-20">
+            <div class="go-settlement_left">
+                <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
+                <p class="ml-10">删除选中的商品</p>
+            </div>
+            <div class="go-settlement_right">
+                <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
+                <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
+                <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
             </div>
         </div>
         <el-backtop :right="100" :bottom="100" />
 </template>
 
 <script lang="ts" setup>
-import { Search } from '@element-plus/icons-vue'
+import { cartListApi } from '@/api/api';
+import { Search } from '@element-plus/icons-vue';
 import {ref } from 'vue';
-import { ElTable } from 'element-plus'
+import { ElTable } from 'element-plus';
 import { useRouter } from 'vue-router';
+cartListApi().then(res => {
+    console.log(res);
+    
+})
 let router = useRouter();
 const checked2 = ref(false)
 let input = ref();
@@ -148,7 +120,7 @@ const handleChange = (value: number) => {
 // 结算按钮
 const toSettlement = function(){
     router.push({name:'settlement'});
-}
+};
 </script>
 
 <style scoped>
@@ -240,6 +212,7 @@ const toSettlement = function(){
     border: 1px solid #ebeef5;
     justify-content: space-between;
     font-size: 12px;
+    background-color: #fff;
 }
 .go-settlement_left{
     display: flex;
@@ -262,5 +235,11 @@ const toSettlement = function(){
 }
 .checked-content{
     color: #fff;
+}
+.cl-r{
+    color: #E2231A;
+}
+::v-deep .el-table tr{
+    background: #fff4e8;
 }
 </style>
