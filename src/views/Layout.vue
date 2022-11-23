@@ -55,7 +55,11 @@
           <RouterView />
       
       </el-main>
-      <el-footer>Footer</el-footer>
+      <el-footer>
+        <div>
+          akjdiojoijsdoij
+      </div>
+    </el-footer>
     </el-container>
 </template>
 <style>
@@ -153,8 +157,6 @@ import { Edit, Search, User } from '@element-plus/icons-vue';
 let router = useRouter();
 let route = useRoute()
 let token = sessionStorage.getItem('token') 
-console.log(token);
-
 const isActive = ref(false)
     const isActive1 = ref(true)
     const isActive2 = ref(false)
@@ -184,4 +186,5 @@ function navigator(name: string) {
     isActive4.value = (false)
   }
 }
+
 </script>
