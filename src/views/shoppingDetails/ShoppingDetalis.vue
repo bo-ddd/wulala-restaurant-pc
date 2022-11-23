@@ -41,32 +41,50 @@
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="好评" name="second">
-                    <div class="bj-white grid" v-for="item in foodAppraise">
-                        <div v-for="users in item.users" v-if="item.star >= 4">
-                            <img class="avatar-size" :src=users.avatarImg alt="">
-                            <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
-                        </div>
-                        <div>
-                            <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
-                            <div class="user-appraise">{{ item.content }}</div>
-                            <div>用户上传的图片</div>
-                        </div>
+                    <div class="bj-white grid">
+                        <template v-for="item in foodAppraise">
+                            <div v-for="users in item.users"  v-if="item.star >= 4" class="bj-white grid">
+                                <img class="avatar-size" :src=users.avatarImg alt="">
+                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                            </div>
+                            <div  v-if="item.star >= 4" class="bj-white">
+                                <el-rate disabled v-model="item.star" :max="5" allow-half :colors="['#409eff', '#67c23a', '#FF9900']"/>
+                                <div class="user-appraise">{{ item.content }}</div>
+                                <div>用户上传的图片</div>
+                            </div>
+                        </template>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="中评" name="third">
-                    <div class="bj-white grid" v-for="item in foodAppraise">
-                        <div v-for="users in item.users" v-if="item.star == 3">
-                            <img class="avatar-size" :src=users.avatarImg alt="">
-                            <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
-                        </div>
-                        <div>
-                            <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
-                            <div class="user-appraise">{{ item.content }}</div>
-                            <div>用户上传的图片</div>
-                        </div>
+                    <div class="bj-white grid">
+                        <template v-for="item in foodAppraise">
+                            <div v-for="users in item.users" v-if="item.star == 3" class="bj-white grid">
+                                <img class="avatar-size" :src=users.avatarImg alt="">
+                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                            </div>
+                            <div v-if="item.star == 3" class="bj-white">
+                                <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
+                                <div class="user-appraise">{{ item.content }}</div>
+                                <div>用户上传的图片</div>
+                            </div>
+                        </template>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="差评" name="fourth">暂无评论</el-tab-pane>
+                <el-tab-pane label="差评" name="fourth">
+                    <div class="bj-white grid">
+                        <template  v-for="item in foodAppraise">
+                            <div v-for="users in item.users" v-if="item.star <= 2" class="bj-white grid">
+                                <img class="avatar-size" :src=users.avatarImg alt="">
+                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                            </div>
+                            <div v-if="item.star <= 2" class="bj-white">
+                                <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
+                                <div class="user-appraise">{{ item.content }}</div>
+                                <div>用户上传的图片</div>
+                            </div>
+                        </template>
+                    </div>
+                </el-tab-pane>
             </el-tabs>
         </div>
         <el-dialog
@@ -77,7 +95,8 @@
             >
             <div class="appraise-content">
                 <div><textarea rows="6" columns="30" v-model="appraiseContent" placeholder="评价内容"></textarea></div>
-                <input type="number" v-model="star">星评价
+                <input type="number" v-model="star">星评价 
+                <br>
                 <el-switch v-model="value1" />
             </div>
             <template #footer>
@@ -92,7 +111,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { gatFoodListApi, foodAppraiseListApi, addFoodAppraiseApi, queryUserInfoApi } from '@/api/api';
+import { gatFoodListApi, foodAppraiseListApi, addFoodAppraiseApi } from '@/api/api';
 import { useRoute } from 'vue-router';
 import type { TabsPaneContext } from 'element-plus';
 import { ref } from 'vue';
@@ -136,7 +155,7 @@ dishesEva();
  */
 function dishesEva() {
     foodAppraiseListApi({ foodId: route.query.shoppingDetalisId }).then(res => {
-        console.log(res);
+        console.log(res.data.list);
         foodAppraise.value = res.data.list;
     })
 }
@@ -147,7 +166,6 @@ async function submitAppraise() {
     /**
      * 新增菜肴评价
      */
-    console.log(userId.value);
     let res = await addFoodAppraiseApi({
         userId:userId.value,
         foodId: route.query.shoppingDetalisId,
@@ -160,6 +178,7 @@ async function submitAppraise() {
     dishesEva();
     centerDialogVisible.value = false;
 }
+dishesEva();
 </script>
 <style scoped>
 .shop-detail {
@@ -225,7 +244,7 @@ async function submitAppraise() {
 .grid {
     display: grid;
     grid-template-columns: 1fr 5fr;
-    gap: 40px;
+    /* gap: 40px; */
     padding: 15px;
     border-bottom: 1px solid #ddd;
 }
