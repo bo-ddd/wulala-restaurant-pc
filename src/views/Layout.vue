@@ -15,11 +15,15 @@
 
           <div class="box-rigth">
             <div class="login">
-              <div class="header-fw" :class="{active:isActive}" @click="navigator('home')">首页</div>
-              <div class="header-fw" :class="{active:isActive1}" @click="navigator('mall')">购物中心</div>
-              <div class="header-fw" :class="{active:isActive2}" @click="navigator('shoppercar')">购物车</div>
+              <!-- <div class="header-fw" :class="{active:isActive}" @click="navigator('home')">首页</div>
+              <div class="header-fw" @click="navigator('mall')">购物中心</div>
+              <div class="header-fw" @click="navigator('shoppercar')">购物车</div>
               <div class="header-fw">服务</div>
-              <div class="header-fw">线下门店</div>
+              <div class="header-fw">线下门店</div> -->
+              <div class="header-fw" 
+              v-for="(item,index) in routeList"
+              :class="{active:!(index-menuIndex)}" 
+              @click="navigator(item.label,index)">{{item.name}}</div>
               <el-icon class="icon" size="24">
                 <Search />
               </el-icon>
@@ -157,34 +161,45 @@ import { Edit, Search, User } from '@element-plus/icons-vue';
 let router = useRouter();
 let route = useRoute()
 let token = sessionStorage.getItem('token') 
+
 const isActive = ref(false)
-    const isActive1 = ref(true)
-    const isActive2 = ref(false)
-    const isActive3 = ref(false)
-    const isActive4 = ref(false)
-function navigator(name: string) {
+function navigator(name: string,i:number) {
   router.push({ name: name })
-  if (name == 'home') {
-    isActive.value = (true)
-    isActive1.value = (false)
-    isActive2.value = (false)
-    isActive3.value = (false)
-    isActive4.value = (false)
-  }else if (name=='mall') {
-    console.log(2);
-    
-    isActive.value = (false)
-    isActive1.value = (true)
-    isActive2.value = (false)
-    isActive3.value = (false)
-    isActive4.value = (false)
-  }else if(name == 'shoppercar'){
-    isActive.value = (false)
-    isActive1.value = (false)
-    isActive2.value = (true)
-    isActive3.value = (false)
-    isActive4.value = (false)
-  }
+  menuIndex.value = i
 }
 
+
+let menuIndex  = ref(0);
+let routeList = [
+  {
+    name:'首页',
+    label:'home',
+    index:0
+  },
+  {
+    name:'购物中心',
+    label:'mall',
+    index:1
+  },
+  {
+    name:'购物车',
+    label:'shoppercar',
+    index:2
+  },
+  {
+    name:'服务',
+    label:'',
+    index:3
+  },
+  {
+    name:'线下门店',
+    label:'',
+    index:4
+  }
+]
+routeList.forEach(el => {
+  if (route.name == el.label) {
+    menuIndex.value = el.index
+  }
+})
 </script>

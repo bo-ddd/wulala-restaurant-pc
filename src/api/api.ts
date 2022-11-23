@@ -18,7 +18,7 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(function (response) {
     if (response.data.status == 401) {
-        window.location.href = '/'
+        window.location.href = '/login'
     }
     return response.data;
 }, function (error) {
@@ -49,6 +49,13 @@ export const registerApi = function (payload = {}) {
     //就是网页的预览
     return instance.post('/user/register', payload)
 }
+/**
+ * @description 查询用户信息
+ * @params payload
+ */
+export const queryUserInfoApi = function (payload = {}){
+    return instance.post('/user/info',payload);
+}
 
 /**
  * @description 获取类目接口
@@ -64,4 +71,32 @@ export const getCategoryListApi = function (payload = {}) {
  */
  export const gatFoodListApi = function (payload = {}) {
     return instance.post('/food/list', payload)
+}
+/**
+ * @description 获取菜肴详情接口
+ * @param payload object
+ */
+ export const gatFoodDetailApi = function (payload = {}) {
+    return instance.post('/food/detail', payload)
+}
+/**
+ * @description 菜肴评价列表接口
+ * @param payload object
+ */
+ export const foodAppraiseListApi = function (payload = {}) {
+    return instance.post('comment/food/list', payload)
+}
+/**
+ * @description 新增菜肴评价
+ * @param payload object
+ */
+ export const addFoodAppraiseApi = function (payload = {}) {
+    return instance.post('/comment/food/create', payload)
+}
+/**
+ * @description 查看我的购物车；列表
+ * @param payload object
+ */
+ export const cartListApi = function (payload = {}) {
+    return instance.post('/cart/list', payload)
 }

@@ -500,8 +500,7 @@ function validate() {
 }
 
 async function userLogin() {
-    let isvalidate = validate();
-    if(!isvalidate) return
+
     let res = await loginApi({
         username: loginFrom.value.username,
         password: loginFrom.value.password,
@@ -518,13 +517,17 @@ async function userLogin() {
 
 }
 
+
 async function userRegister() {
+    let isvalidate = validate();
+    if(!isvalidate) return
     let res = await registerApi({
         username: registerFrom.value.username,
         password: registerFrom.value.password,
         avatarName: registerFrom.value.avatarName,
         phoneNumber: registerFrom.value.phoneNumber
     });
+    console.log(1);
     if (res.status == 1) {
         router.push({ name: 'login' });
     }
