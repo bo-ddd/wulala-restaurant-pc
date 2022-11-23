@@ -510,7 +510,7 @@ async function userLogin() {
             message: '登录成功',
             type: 'success',
         })
-        router.push({ name: 'layout' });
+        router.push({ name: 'home' });
         sessionStorage.setItem('token', res.data.token);
     }
     console.log(res);
