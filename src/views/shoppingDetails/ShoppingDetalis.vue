@@ -16,7 +16,7 @@
         <div class="shop-appraise">
             <div>
                 <div class="praise">好评度</div>
-                <div class="percent">100%</div>  
+                <div class="percent">90%</div>  
             </div>
             <div>
                 <el-tag>正宗品质</el-tag>
@@ -34,7 +34,7 @@
                             <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
                         </div>
                         <div>
-                            <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
+                            <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
                             <div class="user-appraise">{{ item.content }}</div>
                             <div>用户上传的图片</div>
                         </div>
@@ -63,7 +63,7 @@
                                 <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
                             </div>
                             <div v-if="item.star == 3" class="bj-white">
-                                <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
+                                <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
                                 <div class="user-appraise">{{ item.content }}</div>
                                 <div>用户上传的图片</div>
                             </div>
@@ -78,7 +78,7 @@
                                 <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
                             </div>
                             <div v-if="item.star <= 2" class="bj-white">
-                                <el-rate v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
+                                <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
                                 <div class="user-appraise">{{ item.content }}</div>
                                 <div>用户上传的图片</div>
                             </div>
@@ -119,14 +119,14 @@ import { useId } from '@/stores/getUserId';
 import { storeToRefs } from "pinia";
 let aa = useId()
 aa.getUserIds();
-let { userId } = storeToRefs(aa); 
+let { userId } = storeToRefs(aa);
 console.log(userId.value);
 
 let route = useRoute();
 let centerDialogVisible = ref(false);
 let foodlist: any = ref({});
 let foodAppraise = ref();
-let reviewUserInfo = ref()
+let reviewUserInfo = ref();
 let appraiseContent: any = ref('');
 let star = ref(0);
 const activeName = ref('first');
@@ -135,8 +135,6 @@ const value1 = ref(true);
 const handleClick = (tab: TabsPaneContext, event: Event) => {
     console.log(tab, event)
 }
-
-
 /**
  * 菜肴列表接口
  */
@@ -167,7 +165,7 @@ async function submitAppraise() {
      * 新增菜肴评价
      */
     let res = await addFoodAppraiseApi({
-        userId:userId.value,
+        userId: userId.value,
         foodId: route.query.shoppingDetalisId,
         content: appraiseContent.value,
         star: star.value,
@@ -252,7 +250,8 @@ dishesEva();
 .user-appraise {
     margin: 10px 0;
 }
-.avatar-size{
+
+.avatar-size {
     width: 30px;
     height: 30px;
     margin-right: 10px;
