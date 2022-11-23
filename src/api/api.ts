@@ -18,7 +18,7 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(function (response) {
     if (response.data.status == 401) {
-        window.location.href = '/'
+        window.location.href = '/login'
     }
     return response.data;
 }, function (error) {
@@ -91,7 +91,7 @@ export const getCategoryListApi = function (payload = {}) {
  * @param payload object
  */
  export const addFoodAppraiseApi = function (payload = {}) {
-    return instance.post('comment/food/list', payload)
+    return instance.post('/comment/food/create', payload)
 }
 /**
  * @description 查看我的购物车；列表
