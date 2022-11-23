@@ -1,18 +1,17 @@
 <template>
-   
-        <div class="warp center">
+    <div v-if="cartList != 'undefined' || cartList != 'null'">
+        <el-empty image="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"/>
+    </div>
+    <div v-else>
+        <div class="warp center" >
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
             <div class="nav pd-10 df-al">
                 <p>全部商品 {{ 1 }}</p>
-                <!-- <div>
-                    带isall参数和leave参数示例
-                    配送至：<elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
-                </div> -->
             </div>
             <el-table
                 ref="multipleTableRef"
-                :data="tableData"
+                :data="cartList"
                 class="mb-20"
                 select-all
                 style="width: 100%"
@@ -20,18 +19,19 @@
             >
                 <el-table-column type="selection" width="55" />
                 <el-table-column label="商品" width="370px">
-                    <template #default>
+                    <template #default="scope">
                         <div class="commodity">
-                            <img class="commodity-icon" src="@/assets/images/Carousel-02.png" alt="">
-                            <div>
-                                <p>撒旦解放上的飞机螺丝钉法律上的会计分录撒旦解放老师看了电视剧k</p>
+                            <img class="commodity-icon" :src="scope.row.bannerUrl" alt="">
+                            <div class="df-sub">
+                                <p>{{scope.row.productDesc}}</p>
+                                <div class="type">{{scope.row.categoryName}}</div>
                             </div>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="单价" show-overflow-tooltip>
-                    <template #default>
-                        <p>$5,000.00</p>
+                    <template #default="scope">
+                        <p>￥{{scope.row.originalPrice}}.00</p>
                         <el-tooltip
                             class="box-item"
                             effect="dark"
@@ -50,13 +50,13 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="数量" width="180" >
-                    <template #default>
-                        <el-input-number v-model="num" :min="1" :max="10" @change="handleChange" />
+                    <template #default="scope">
+                        <el-input-number v-model="scope.row.quantity" :min="1" :max="111000" @change="handleChange(scope.row.quantity,scope.row.id,scope.row.originalPrice)" />
                     </template>
                 </el-table-column>
                 <el-table-column label="小计" width="120" >
-                    <template #default>
-                        <span class="cl-r">$5,000.00</span>
+                    <template #default="scope">
+                        <span class="cl-r">￥{{scope.row.id == ids ? prices : scope.row.totalPrice}}.00</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="120" >
@@ -78,23 +78,20 @@
                 <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
             </div>
         </div>
-        <el-backtop :right="100" :bottom="100" />
+        <el-backtop :right="90" :bottom="100" />
+    </div>
 </template>
 
 <script lang="ts" setup>
 import { cartListApi } from '@/api/api';
 import { Search } from '@element-plus/icons-vue';
 import {ref } from 'vue';
-import { ElTable } from 'element-plus';
+import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-cartListApi().then(res => {
-    console.log(res);
-    
-})
+
 let router = useRouter();
 const checked2 = ref(false)
 let input = ref();
-
 interface User {
   date: string
   address: string
@@ -106,21 +103,35 @@ const handleSelectionChange = (val: User[]) => {
   multipleSelection.value = val
 }
 
-const tableData: User[] = [
-  {
-    date: '2016-05-03',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
-
-const num = ref(1)
-const handleChange = (value: number) => {
+const isPlusReduce = ref(false);
+let prices = ref();
+let ids = ref();
+const handleChange = (value: number,id:number,price:number) => {
   console.log(value)
+  console.log('id',id);
+  console.log('price',price);
+
+  isPlusReduce.value = true
+  ids.value = id;
+  prices.value = price * value
 }
 // 结算按钮
 const toSettlement = function(){
     router.push({name:'settlement'});
 };
+const cartList = ref();
+cartListApi().then(res => {
+    if (res.status == 401) {
+        ElMessage({
+            message: '请先登录.',
+            type: 'success',
+        })
+        router.push({name:'login'})
+    }else{
+        cartList.value = res.data;
+        console.log(res.data);
+    }
+})
 </script>
 
 <style scoped>
@@ -143,8 +154,7 @@ const toSettlement = function(){
     padding: 0 20px;
 }
 .commodity-icon{
-    width: 80px;
-    height: 80px;
+    width: 23%;
 }
 .commodity{
     display: flex;
@@ -241,5 +251,16 @@ const toSettlement = function(){
 }
 ::v-deep .el-table tr{
     background: #fff4e8;
+}
+.type{
+    padding: 0 12PX;
+    height: 20PX;
+    line-height: 20PX;
+    text-align: center;
+    color: #fff;
+    background: #cb1f17;
+    display: inline-block;
+    margin-right: 16PX;
+    font-style: normal;
 }
 </style>
