@@ -59,7 +59,11 @@
           <RouterView />
       
       </el-main>
-      <el-footer>Footer</el-footer>
+      <el-footer>
+        <div>
+          akjdiojoijsdoij
+      </div>
+    </el-footer>
     </el-container>
 </template>
 <style>
@@ -157,13 +161,13 @@ import { Edit, Search, User } from '@element-plus/icons-vue';
 let router = useRouter();
 let route = useRoute()
 let token = sessionStorage.getItem('token') 
-// console.log(token);
 
 const isActive = ref(false)
 function navigator(name: string,i:number) {
   router.push({ name: name })
   menuIndex.value = i
 }
+
 
 let menuIndex  = ref(0);
 let routeList = [

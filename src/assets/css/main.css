@@ -67,3 +67,10 @@ ul li{
 .mt-20{
   margin-top: 10px;
 }
+.df-sub{
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: nowrap; */
+  justify-content: space-around;
+  align-items: flex-start;
+}
