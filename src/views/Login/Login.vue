@@ -428,7 +428,6 @@ body {
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-// import { useCounterStore } from '@/stores/counter';
 import { loginApi, registerApi } from "@/api/api.js";
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
@@ -490,14 +489,7 @@ function validate() {
             type: 'warning',
         })
     }
-    if (!res.result) {
-        res.result = false;
-        ElMessage({
-            message: '',
-            type: 'warning',
-        })
-    };
-    return res.result;
+    return true;
 }
 
 const submit = () => {
