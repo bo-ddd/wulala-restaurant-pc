@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { queryUserInfoApi } from '@/api/api'
 
@@ -8,11 +8,20 @@ export const useCounterStore = defineStore('counter', () => {
   // function increment() {
   //   count.value++
   // }
+
+  // 周
+  const commodityInfo = reactive({});
+  
+  const setCommodityInfo = function(playolad={}){
+    Object.assign(commodityInfo , playolad);
+  }
+  
+  // 郝永祥
   const userId = ref();
   async function getUserId() {
     let res = await queryUserInfoApi();
     userId.value = res.data.userId;
     console.log(userId.value);
   }
-  return { userId, getUserId }
+  return { userId, getUserId ,setCommodityInfo ,commodityInfo}
 })

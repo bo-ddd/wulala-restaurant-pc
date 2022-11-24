@@ -98,6 +98,8 @@ import { Search, User } from '@element-plus/icons-vue';
 import {ref, watch } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
+import { useCounterStore } from '@/stores/counter';
+let { setCommodityInfo } = useCounterStore();
 //修改table样式
 // const rowState = () => {
 //   return {
@@ -125,7 +127,7 @@ const handleSelectionChange = (val: User[]) => {
   vals.value = val;
   multipleSelection.value = val;
   multipleSelectionLength.value = multipleSelection.value.length;
-  console.log(val);
+//   console.log(val); //选中的商品
   multipleSelectionPrice.value =  0 
   val.forEach(el => {
     multipleSelectionPrice.value += (el.quantity * el.originalPrice)
@@ -220,8 +222,8 @@ const toSettlement = function(){
             type: 'warning',
         })
     }else{
-        console.log(multipleSelection.value);
-        
+        // console.log(multipleSelection.value); //选中结算的数据
+        setCommodityInfo(multipleSelection.value)
         router.push({name:'settlement'});
     }
 };

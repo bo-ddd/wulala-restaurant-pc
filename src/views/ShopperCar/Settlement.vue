@@ -169,6 +169,9 @@
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
 import { reactive, ref } from 'vue'
+import { useCounterStore } from '@/stores/counter';
+let {commodityInfo} = useCounterStore();
+console.log(commodityInfo);
 
 const dialogTableVisible = ref(false)
 const dialogFormVisible = ref(false)
