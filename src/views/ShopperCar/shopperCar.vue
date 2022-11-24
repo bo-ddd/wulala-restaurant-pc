@@ -1,21 +1,27 @@
 <template>
-    <div v-if="cartList != 'undefined' || cartList != 'null'">
-        <el-empty image="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"/>
-    </div>
-    <div v-else>
+    <!-- <template v-if="cartList == undefined || null ">
+        <el-empty image="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+        description="你的购物车里面什么也没有"
+        >
+            <el-button type="primary">去逛逛</el-button>
+        </el-empty>
+    </template> -->
+    <div>
         <div class="warp center" >
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
             <div class="nav pd-10 df-al">
-                <p>全部商品 {{ 1 }}</p>
+                <p>全部商品 {{ cartListLength }}</p>
             </div>
+            <!-- :row-style="isSelected == true ? rowState : isRowState" -->
             <el-table
                 ref="multipleTableRef"
                 :data="cartList"
-                class="mb-20"
+                class="mb-20 bj"
                 select-all
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
+                @select="handleValue"
             >
                 <el-table-column type="selection" width="55" />
                 <el-table-column label="商品" width="370px">
@@ -23,7 +29,10 @@
                         <div class="commodity">
                             <img class="commodity-icon" :src="scope.row.bannerUrl" alt="">
                             <div class="df-sub">
-                                <p>{{scope.row.productDesc}}</p>
+                                <el-tooltip :content="scope.row.productDesc" placement="right">
+                                    <p>{{scope.row.productName}}</p>
+                                </el-tooltip>
+                                <!-- <p>{{scope.row.productDesc}}</p> -->
                                 <div class="type">{{scope.row.categoryName}}</div>
                             </div>
                         </div>
@@ -38,20 +47,21 @@
                             content="Bottom Right prompts info"
                             placement="bottom-end"
                         >
-                        <template #content>
-                            <span class="checked-content">
-                                <el-checkbox v-model="checked2">
-                                    满2000元减20元，包邮（限中国内地）
-                                </el-checkbox>
-                            </span>
-                        </template>
+                            <template #content>
+                                <span class="checked-content">
+                                    <el-checkbox v-model="checked2">
+                                        满2000元减20元，包邮（限中国内地）
+                                    </el-checkbox>
+                                </span>
+                            </template>
                             <el-button>促销</el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column label="数量" width="180" >
                     <template #default="scope">
-                        <el-input-number v-model="scope.row.quantity" :min="1" :max="111000" @change="handleChange(scope.row.quantity,scope.row.id,scope.row.originalPrice)" />
+                        <el-input-number v-model="scope.row.quantity" :min="1" :max="111000" @change="handleChange(scope.row.quantity,
+                        scope.row.id,scope.row.originalPrice,scope.row)" />
                     </template>
                 </el-table-column>
                 <el-table-column label="小计" width="120" >
@@ -60,8 +70,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="120" >
-                    <template #default>
-                        <p class="delete">删除</p>
+                    <template #default="scope">
+                        <p class="delete" @click="deletes(scope.row)">删除</p>
                     </template>
                 </el-table-column>
             </el-table>
@@ -70,11 +80,11 @@
         <div class="go-settlement mt-20 mb-20">
             <div class="go-settlement_left">
                 <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
-                <p class="ml-10">删除选中的商品</p>
+                <p class="ml-10" @click="deleteCommdoity">删除选中的商品</p>
             </div>
             <div class="go-settlement_right">
-                <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
-                <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
+                <p>已选择 <span class="cl-red">{{multipleSelectionLength}}</span> 件商品</p>
+                <p class="ml-10">总价：<span class="cl-red total-price">￥{{multipleSelectionPrice}}</span></p>
                 <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
             </div>
         </div>
@@ -83,11 +93,18 @@
 </template>
 
 <script lang="ts" setup>
-import { cartListApi } from '@/api/api';
-import { Search } from '@element-plus/icons-vue';
-import {ref } from 'vue';
+import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
+import { Search, User } from '@element-plus/icons-vue';
+import {ref, watch } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
+import type ItemVue from '@/components/ProductCategory/Item.vue';
+//修改table样式
+// const rowState = () => {
+//   return {
+//     backgroundColor: '#fff4e8',
+//   }
+// }  
 
 let router = useRouter();
 const checked2 = ref(false)
@@ -95,43 +112,136 @@ let input = ref();
 interface User {
   date: string
   address: string
+  totalPrice:number
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
-const multipleSelection = ref<User[]>([])
+const multipleSelection = ref<User[]>([]);
+const multipleSelectionLength = ref(0);//勾选商品数量
+const multipleSelectionPrice = ref(0.00);
+let vals = ref();
 const handleSelectionChange = (val: User[]) => {
-  multipleSelection.value = val
+  vals.value = val;
+  multipleSelection.value = val;
+  multipleSelectionLength.value = multipleSelection.value.length;
+  console.log(val);
+  multipleSelectionPrice.value =  0 
+  val.forEach(el => {
+    multipleSelectionPrice.value += el.totalPrice
+  })
+}
+// 选中
+let isSelected = ref();
+const handleValue = (select : any,val : any) => {
+    isSelected.value = select.length && select.indexOf(val) !== -1  // true就是选中，0或者false是取消选中  
 }
 
+const deleteCommdoity = function(){
+    if (multipleSelection.value.length == 0) {
+        ElMessage({
+            message: '您还没选中商品哦',
+            type: 'warning',
+        })
+    }else{
+        multipleSelection.value.forEach((item:any) => {
+            cartDeleteApi({
+                id:item.id
+            }).then(res => {
+                if (res.status == 1) {
+                    cartLists()
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        })
+    }
+}
+
+const deletes = (scope : any)=>{
+    cartDeleteApi({
+        id:scope.id
+    }).then(res => {
+        if (res.status == 1) {
+            cartLists()
+        }
+    }).catch(err => {
+        console.log(err);
+    })
+}
+
+// 计算加减
 const isPlusReduce = ref(false);
 let prices = ref();
 let ids = ref();
-const handleChange = (value: number,id:number,price:number) => {
-  console.log(value)
-  console.log('id',id);
-  console.log('price',price);
-
+const handleChange = (value: number,id:number,price:number,scope:any) => {
   isPlusReduce.value = true
   ids.value = id;
-  prices.value = price * value
-}
+  prices.value = price * value;
+
+  cartAddApi({
+    id:scope.id,
+    productId:scope.productId,
+    quantity:scope.quantity,
+  }).then((res:any) => {
+    if (res.status != 1) {
+        ElMessage({
+            message: res.msg,
+            type: 'warning',
+        })
+    }else{
+        console.log('成功');
+        let commodityId = ref();
+        vals.value.forEach((el: { id: any; }) => {
+            commodityId.value = el.id;
+        });
+        // 同步加减时候的价格
+        multipleSelectionPrice.value = 0
+        cartList.value.forEach((item: any) => {
+            if (item.id == commodityId.value) {
+                console.log(item);
+                multipleSelectionPrice.value += (item.quantity * item.originalPrice)
+            }
+        });
+    }
+    }).catch(err=>{
+        console.log(err);
+    })
+    }
 // 结算按钮
 const toSettlement = function(){
-    router.push({name:'settlement'});
-};
-const cartList = ref();
-cartListApi().then(res => {
-    if (res.status == 401) {
+    if(multipleSelection.value.length == 0){
         ElMessage({
-            message: '请先登录.',
-            type: 'success',
+            message: '请选中你要结算的商品',
+            type: 'warning',
         })
-        router.push({name:'login'})
     }else{
-        cartList.value = res.data;
-        console.log(res.data);
+        console.log(multipleSelection.value);
+        
+        router.push({name:'settlement'});
     }
-})
+};
+
+// 拿购物车列表
+let cartList = ref();
+let cartListLength = ref();
+const cartLists = function(){
+    cartListApi().then(res => {
+        if (res.status != 1) {
+            ElMessage({
+                message: '请先登录.',
+                type: 'success',
+            })
+            router.push({name:'login'})
+        }else{
+            cartList.value = res.data;
+
+            cartListLength.value =cartList.value.length;
+        }
+    }).catch(err => {
+        console.log(err);
+    })
+}
+cartLists();
 </script>
 
 <style scoped>
@@ -155,13 +265,14 @@ cartListApi().then(res => {
 }
 .commodity-icon{
     width: 23%;
+    height: 100%;
 }
 .commodity{
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
 }
 .commodity p{
-    width: 250px;
+    width: 100%;
     cursor: pointer;
 }
 .commodity p:hover{
@@ -249,9 +360,9 @@ cartListApi().then(res => {
 .cl-r{
     color: #E2231A;
 }
-::v-deep .el-table tr{
+/* .bj ::v-deep .el-table tr{
     background: #fff4e8;
-}
+} */
 .type{
     padding: 0 12PX;
     height: 20PX;

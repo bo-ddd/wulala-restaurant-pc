@@ -100,3 +100,17 @@ export const getCategoryListApi = function (payload = {}) {
  export const cartListApi = function (payload = {}) {
     return instance.post('/cart/list', payload)
 }
+/**
+ * @description 删除我的购物车
+ * @param payload object
+ */
+ export const cartDeleteApi = function (payload = {}) {
+    return instance.post('/cart/delete', payload)
+}
+/**
+ * @description 加入购物车
+ * @param payload object
+ */
+ export const cartAddApi = function (payload = {}) {
+    return instance.post('/cart/add', payload)
+}
