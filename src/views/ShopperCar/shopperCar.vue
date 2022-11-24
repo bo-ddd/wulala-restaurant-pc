@@ -98,7 +98,8 @@ import { Search, User } from '@element-plus/icons-vue';
 import {ref, watch } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import type ItemVue from '@/components/ProductCategory/Item.vue';
+import { useCounterStore } from '@/stores/counter';
+let { setCommodityInfo } = useCounterStore();
 //修改table样式
 // const rowState = () => {
 //   return {
@@ -112,7 +113,9 @@ let input = ref();
 interface User {
   date: string
   address: string
-  totalPrice:number
+  totalPrice?:number
+  quantity:number
+  originalPrice:number
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
@@ -124,10 +127,10 @@ const handleSelectionChange = (val: User[]) => {
   vals.value = val;
   multipleSelection.value = val;
   multipleSelectionLength.value = multipleSelection.value.length;
-  console.log(val);
+//   console.log(val); //选中的商品
   multipleSelectionPrice.value =  0 
   val.forEach(el => {
-    multipleSelectionPrice.value += el.totalPrice
+    multipleSelectionPrice.value += (el.quantity * el.originalPrice)
   })
 }
 // 选中
@@ -190,17 +193,21 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
         })
     }else{
         console.log('成功');
-        let commodityId = ref();
+        let commodityId = ref([]);
+        console.log(vals.value);
+        
         vals.value.forEach((el: { id: any; }) => {
-            commodityId.value = el.id;
+            return commodityId.value.push(el.id as never);
         });
         // 同步加减时候的价格
         multipleSelectionPrice.value = 0
         cartList.value.forEach((item: any) => {
-            if (item.id == commodityId.value) {
-                console.log(item);
-                multipleSelectionPrice.value += (item.quantity * item.originalPrice)
-            }
+            commodityId.value.forEach((el)=>{
+                if (item.id == el) {
+                    console.log(item);
+                    multipleSelectionPrice.value += (item.quantity * item.originalPrice)
+                }
+            })
         });
     }
     }).catch(err=>{
@@ -215,8 +222,8 @@ const toSettlement = function(){
             type: 'warning',
         })
     }else{
-        console.log(multipleSelection.value);
-        
+        // console.log(multipleSelection.value); //选中结算的数据
+        setCommodityInfo(multipleSelection.value)
         router.push({name:'settlement'});
     }
 };
