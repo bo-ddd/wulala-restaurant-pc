@@ -98,7 +98,6 @@ import { Search, User } from '@element-plus/icons-vue';
 import {ref, watch } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import type ItemVue from '@/components/ProductCategory/Item.vue';
 //修改table样式
 // const rowState = () => {
 //   return {
@@ -112,7 +111,9 @@ let input = ref();
 interface User {
   date: string
   address: string
-  totalPrice:number
+  totalPrice?:number
+  quantity:number
+  originalPrice:number
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
@@ -127,7 +128,7 @@ const handleSelectionChange = (val: User[]) => {
   console.log(val);
   multipleSelectionPrice.value =  0 
   val.forEach(el => {
-    multipleSelectionPrice.value += el.totalPrice
+    multipleSelectionPrice.value += (el.quantity * el.originalPrice)
   })
 }
 // 选中
@@ -190,17 +191,21 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
         })
     }else{
         console.log('成功');
-        let commodityId = ref();
+        let commodityId = ref([]);
+        console.log(vals.value);
+        
         vals.value.forEach((el: { id: any; }) => {
-            commodityId.value = el.id;
+            return commodityId.value.push(el.id as never);
         });
         // 同步加减时候的价格
         multipleSelectionPrice.value = 0
         cartList.value.forEach((item: any) => {
-            if (item.id == commodityId.value) {
-                console.log(item);
-                multipleSelectionPrice.value += (item.quantity * item.originalPrice)
-            }
+            commodityId.value.forEach((el)=>{
+                if (item.id == el) {
+                    console.log(item);
+                    multipleSelectionPrice.value += (item.quantity * item.originalPrice)
+                }
+            })
         });
     }
     }).catch(err=>{
