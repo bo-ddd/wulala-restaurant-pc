@@ -11,13 +11,13 @@
                 <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
                 <label for="pwd">密码</label>
             </div>
-            <a @click="userLogin">
+            <!-- <a @click="userLogin">
                 登录
                 <span></span>
                 <span></span>
                 <span></span>
                 <span></span>
-            </a>
+            </a> -->
         </div>
         <div class="register" v-else>
             <div class="login-text" @click="toLoginView">登录</div>  
@@ -431,13 +431,14 @@ import { useRouter } from 'vue-router';
 import { loginApi, registerApi } from "@/api/api.js";
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
+import LoginValidate from '@/validate/LoginValidate';
 let router = useRouter();
 let loginFrom = reactive({
     username: '',
     password: ''
 })
 
-let registerFrom = ref({
+let registerFrom = reactive({
     username: '',
     password: '',
     avatarName: '',
@@ -455,8 +456,19 @@ function toLoginView() {
     isActiveRegister.value = true;
 }
 
-const validate =function(){
+const validateLogin =function(cb:Function){
     const { username, password } = loginFrom;
+    if (username.length < 6 || username.length > 20){
+        ElMessage.warning("用户名必须在6-20位之间");
+        return;
+    }else if(password.length < 6 || password.length > 15){
+        ElMessage.warning('密码必须在6-15位之间');
+        return;
+    }
+    cb();
+}
+const validateRegister =function(){
+    const { username, password } = registerFrom;
     if (username.length < 6 || username.length > 20){
         ElMessage.warning("用户名必须在6-20位之间");
         return false;
@@ -468,30 +480,25 @@ const validate =function(){
 }
 
 
-//校验用户名（正则表达式）
-async function userLogin() {
-    let bool = validate();
-    if(!bool) return;
-    let res = await loginApi(loginFrom);
-    if (res.status == 1) {
-        ElMessage({
-            message: '登录成功',
-            type: 'success',
-        })
-        sessionStorage.setItem('token', res.data.token);
-        router.push({ name: 'home' });
-
-    }
-    console.log(res);
-}
+// const submit = function() {
+//     let loginValidate = new LoginValidate(form); 
+//     loginValidate.validate(function(){
+//         loginApi(loginFrom).then(res=>{
+//             sessionStorage.setItem('token', res.data.token);
+//             router.push({ name: 'home' });
+//         })
+//     })
+// }
 
 
 async function userRegister() {
+    let bool = validateRegister();
+    if(!bool) return;
     let res = await registerApi({
-        username: registerFrom.value.username,
-        password: registerFrom.value.password,
-        avatarName: registerFrom.value.avatarName,
-        phoneNumber: registerFrom.value.phoneNumber
+        username: registerFrom.username,
+        password: registerFrom.password,
+        avatarName: registerFrom.avatarName,
+        phoneNumber: registerFrom.phoneNumber
     });
     console.log(1);
     if (res.status == 1) {
