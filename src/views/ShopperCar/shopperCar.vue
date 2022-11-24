@@ -150,7 +150,7 @@ const deleteCommdoity = function(){
             cartDeleteApi({
                 id:item.id
             }).then(res => {
-                if (res.status == 1) {
+                if (res.data.status == 1) {
                     cartLists()
                 }
             }).catch(err => {
@@ -164,7 +164,7 @@ const deletes = (scope : any)=>{
     cartDeleteApi({
         id:scope.id
     }).then(res => {
-        if (res.status == 1) {
+        if (res.data.status == 1) {
             cartLists()
         }
     }).catch(err => {
@@ -186,7 +186,7 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
     productId:scope.productId,
     quantity:scope.quantity,
   }).then((res:any) => {
-    if (res.status != 1) {
+    if (res.data.status != 1) {
         ElMessage({
             message: res.msg,
             type: 'warning',
@@ -233,14 +233,14 @@ let cartList = ref();
 let cartListLength = ref();
 const cartLists = function(){
     cartListApi().then(res => {
-        if (res.status != 1) {
+        if (res.data.status != 1) {
             ElMessage({
                 message: '请先登录.',
                 type: 'success',
             })
             router.push({name:'login'})
         }else{
-            cartList.value = res.data;
+            cartList.value = res.data.data;
 
             cartListLength.value =cartList.value.length;
         }
