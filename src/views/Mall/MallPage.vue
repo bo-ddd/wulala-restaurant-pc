@@ -107,7 +107,7 @@ li {
     border-bottom-right-radius: 4px;
     background: #fff;
     overflow-y: scroll;
-    height: calc(100vh - 284px);
+    height: calc(100vh - 245px);
 }
 
 ::-webkit-scrollbar {
