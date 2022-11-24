@@ -153,7 +153,7 @@ const pageSize = ref(5);       //每页显示的条数
 const small = ref(false);       //是否使用小型分页样式
 const background = ref(false);  //是否需要分页颜色
 const disabled = ref(false);    //是否禁用分页
-let total = ref();              //总数
+let total = ref(0);              //总数
 //分页变量完
 
 /**
@@ -177,7 +177,6 @@ const handleCurrentChange = (val: number) => {
         degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
         allAppraiseLength.value = allAppraise.value.length;
         currentPage.value = res.data.pageNum;
-        total.value = res.data.total;
         // pageSize.value = res.data.pageSize;
     })
     console.log( currentPage.value);
@@ -208,11 +207,7 @@ dishesEva();
  */
  
 function dishesEva() {
-    foodAppraiseListApi({ 
-        foodId: route.query.shoppingDetalisId ,
-        pageSize:pageSize.value,
-        pageNum:currentPage.value
-    }).then(res => {
+    foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:pageSize.value,pageNum:currentPage.value}).then(res => {
         console.log(res.data.list);
         foodAppraise.value = res.data.list;
         // 好评 差评
@@ -222,6 +217,7 @@ function dishesEva() {
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
         degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
         allAppraiseLength.value = allAppraise.value.length;
+        total.value = res.data.total;
     })
 }
 function appraise() {
