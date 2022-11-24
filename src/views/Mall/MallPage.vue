@@ -37,18 +37,18 @@ let idxon = ref(0)
 let bomtxt: any = ref({})
 let router = useRouter()
 getCategoryListApi({}).then(res => {
-    tapli.value = res.data
+    tapli.value = res.data.data
     gatFoodListApi({
         categoryId: tapli.value[0].id
     }).then(res => {
-        bomtxt.value = res.data.list
+        bomtxt.value = res.data.data.list
     })
 })
 const tapqie = (index: number, el: any) => {
     gatFoodListApi({
         categoryId: el.id
     }).then(res => {
-        bomtxt.value = res.data.list
+        bomtxt.value = res.data.data.list
     })
     idxon.value = index
 }

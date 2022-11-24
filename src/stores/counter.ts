@@ -11,7 +11,7 @@ export const useCounterStore = defineStore('counter', () => {
   const userId = ref();
   async function getUserId() {
     let res = await queryUserInfoApi();
-    userId.value = res.data.userId;
+    userId.value = res.data.data.userId;
     console.log(userId.value);
   }
   return { userId, getUserId }
