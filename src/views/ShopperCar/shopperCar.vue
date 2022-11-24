@@ -77,17 +77,19 @@
             </el-table>
         </div>
         <!-- 去结算 -->
-        <div class="go-settlement mt-20 mb-20">
-            <div class="go-settlement_left">
-                <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
-                <p class="ml-10" @click="deleteCommdoity">删除选中的商品</p>
+        <el-affix position="bottom" :offset="10">
+            <div class="go-settlement mt-20 mb-20">
+                <div class="go-settlement_left">
+                    <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
+                    <p class="ml-10" @click="deleteCommdoity">删除选中的商品</p>
+                </div>
+                <div class="go-settlement_right">
+                    <p>已选择 <span class="cl-red">{{multipleSelectionLength}}</span> 件商品</p>
+                    <p class="ml-10">总价：<span class="cl-red total-price">￥{{multipleSelectionPrice}}</span></p>
+                    <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
+                </div>
             </div>
-            <div class="go-settlement_right">
-                <p>已选择 <span class="cl-red">{{multipleSelectionLength}}</span> 件商品</p>
-                <p class="ml-10">总价：<span class="cl-red total-price">￥{{multipleSelectionPrice}}</span></p>
-                <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
-            </div>
-        </div>
+        </el-affix>
         <el-backtop :right="90" :bottom="100" />
     </div>
 </template>
@@ -192,9 +194,9 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
             type: 'warning',
         })
     }else{
-        console.log('成功');
+        // console.log('成功');
         let commodityId = ref([]);
-        console.log(vals.value);
+        // console.log(vals.value); //选中数据
         
         vals.value.forEach((el: { id: any; }) => {
             return commodityId.value.push(el.id as never);
@@ -204,7 +206,7 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
         cartList.value.forEach((item: any) => {
             commodityId.value.forEach((el)=>{
                 if (item.id == el) {
-                    console.log(item);
+                    // console.log(item); 点击加号获取选中数据
                     multipleSelectionPrice.value += (item.quantity * item.originalPrice)
                 }
             })
