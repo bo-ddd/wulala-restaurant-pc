@@ -94,11 +94,11 @@
 
 <script lang="ts" setup>
 import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
-import { Search } from '@element-plus/icons-vue';
-import {ref } from 'vue';
+import { Search, User } from '@element-plus/icons-vue';
+import {ref, watch } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import type { el } from 'element-plus/es/locale';
+import type ItemVue from '@/components/ProductCategory/Item.vue';
 //修改table样式
 // const rowState = () => {
 //   return {
@@ -119,7 +119,9 @@ const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 const multipleSelection = ref<User[]>([]);
 const multipleSelectionLength = ref(0);//勾选商品数量
 const multipleSelectionPrice = ref(0.00);
+let vals = ref();
 const handleSelectionChange = (val: User[]) => {
+  vals.value = val;
   multipleSelection.value = val;
   multipleSelectionLength.value = multipleSelection.value.length;
   console.log(val);
@@ -128,16 +130,10 @@ const handleSelectionChange = (val: User[]) => {
     multipleSelectionPrice.value += el.totalPrice
   })
 }
-
+// 选中
 let isSelected = ref();
 const handleValue = (select : any,val : any) => {
-    // console.log('---------------------');
-    // console.log(select);
-    // console.log(val);  
-    // 选中true
     isSelected.value = select.length && select.indexOf(val) !== -1  // true就是选中，0或者false是取消选中  
-    // console.log(isSelected.value);
-    
 }
 
 const deleteCommdoity = function(){
@@ -181,7 +177,7 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
   isPlusReduce.value = true
   ids.value = id;
   prices.value = price * value;
-  
+
   cartAddApi({
     id:scope.id,
     productId:scope.productId,
@@ -194,11 +190,23 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
         })
     }else{
         console.log('成功');
+        let commodityId = ref();
+        vals.value.forEach((el: { id: any; }) => {
+            commodityId.value = el.id;
+        });
+        // 同步加减时候的价格
+        multipleSelectionPrice.value = 0
+        cartList.value.forEach((item: any) => {
+            if (item.id == commodityId.value) {
+                console.log(item);
+                multipleSelectionPrice.value += (item.quantity * item.originalPrice)
+            }
+        });
     }
-  }).catch(err=>{
-    console.log(err);
-  })
-}
+    }).catch(err=>{
+        console.log(err);
+    })
+    }
 // 结算按钮
 const toSettlement = function(){
     if(multipleSelection.value.length == 0){
