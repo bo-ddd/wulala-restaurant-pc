@@ -428,15 +428,11 @@ body {
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-// import { useCounterStore } from '@/stores/counter';
 import { loginApi, registerApi } from "@/api/api.js";
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
-// import { removeStyle } from 'element-plus/es/utils';
 let router = useRouter();
-// let {count} = useCounterStore();
-// console.log(count);
-let loginFrom = ref({
+let loginFrom = reactive({
     username: '',
     password: ''
 })
@@ -459,68 +455,38 @@ function toLoginView() {
     isActiveRegister.value = true;
 }
 
-//校验用户名（正则表达式）
-// let regexp = '/^[a-zA-Z0-9_-]{4,16}$/';
-// regexp.match(registerFrom.value.username)
-function validate() {
-    let res = { result: true };
-    if (registerFrom.value.username == '') {
-        res.result = false;
-        ElMessage({
-            message: '用户名不能为空',
-            type: 'warning',
-        })
-    } else if (registerFrom.value.password == '') {
-        res.result = false;
-        ElMessage({
-            message: '密码不能为空',
-            type: 'warning',
-        })
-    }else if (registerFrom.value.avatarName == '') {
-        res.result = false;
-        ElMessage({
-            message: '昵称不能为空',
-            type: 'warning',
-        })
-    }else if (registerFrom.value.phoneNumber == '') {
-        res.result = false;
-        ElMessage({
-            message: '手机号不能为空',
-            type: 'warning',
-        })
+const validate =function(){
+    const { username, password } = loginFrom;
+    if (username.length < 6 || username.length > 20){
+        ElMessage.warning("用户名必须在6-20位之间");
+        return false;
+    }else if(password.length < 6 || password.length > 15){
+        ElMessage.warning('密码必须在6-15位之间');
+        return false;
     }
-    if (!res.result) {
-        res.result = false;
-        ElMessage({
-            message: '',
-            type: 'warning',
-        })
-    };
-    return res.result;
+    return true;
 }
 
-async function userLogin() {
 
-    let res = await loginApi({
-        username: loginFrom.value.username,
-        password: loginFrom.value.password,
-    });
+//校验用户名（正则表达式）
+async function userLogin() {
+    let bool = validate();
+    if(!bool) return;
+    let res = await loginApi(loginFrom);
     if (res.status == 1) {
         ElMessage({
             message: '登录成功',
             type: 'success',
         })
-        router.push({ name: 'home' });
         sessionStorage.setItem('token', res.data.token);
+        router.push({ name: 'home' });
+
     }
     console.log(res);
-
 }
 
 
 async function userRegister() {
-    let isvalidate = validate();
-    if(!isvalidate) return
     let res = await registerApi({
         username: registerFrom.value.username,
         password: registerFrom.value.password,

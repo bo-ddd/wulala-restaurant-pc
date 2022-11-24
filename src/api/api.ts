@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
 const instance = axios.create({
     baseURL: '/api',
     timeout: 5000,  //如果接口一秒都没有返回结果，则axios会自动帮我们做一个失败(reject)的处理
@@ -17,6 +18,13 @@ instance.interceptors.request.use(config => {
 })
 
 instance.interceptors.response.use(function (response) {
+    // const { msg } = response.data;
+    // if(response.data.status == 1){
+    //     ElMessage.success(msg);
+    // }else{
+    //     ElMessage.warning(msg);
+    //     return Promise.reject(msg);
+    // }
     if (response.data.status == 401) {
         window.location.href = '/login'
     }
