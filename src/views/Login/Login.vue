@@ -1,17 +1,17 @@
 <template>
     <div class="content">
         <div class="login" v-if="isActiveRegister == true">
-            <div class="register-text" @click="toRegisterView">注册 </div>  
-            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala"> 
+            <div class="register-text" @click="toRegisterView">注册 </div>
+            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
             <div class="login_box">
-                <input type="text" name='name' id='name' v-model="loginFrom.username" required  />
-                <label for="name" >用户名</label>
+                <input type="text" name='name' id='name' v-model="loginFrom.username" required />
+                <label for="name">用户名</label>
             </div>
             <div class="login_box">
                 <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
                 <label for="pwd">密码</label>
             </div>
-            <a @click="userLogin">
+            <a @click="submit">
                 登录
                 <span></span>
                 <span></span>
@@ -20,23 +20,23 @@
             </a>
         </div>
         <div class="register" v-else>
-            <div class="login-text" @click="toLoginView">登录</div>  
-            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala"> 
+            <div class="login-text" @click="toLoginView">登录</div>
+            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
             <div class="register_box">
                 <input type="text" name='name' id='username' v-model="registerFrom.username" required />
-                <label for="name" >用户名</label>
+                <label for="name">用户名</label>
             </div>
             <div class="register_box">
                 <input type="text" name='name' id='password' v-model="registerFrom.password" required />
-                <label for="name" >密码</label>
+                <label for="name">密码</label>
             </div>
             <div class="register_box">
                 <input type="text" name='name' id='nickname' v-model="registerFrom.avatarName" required />
-                <label for="nickname" >昵称</label>
+                <label for="nickname">昵称</label>
             </div>
             <div class="register_box">
                 <input type="text" name='name' id='phone' v-model="registerFrom.phoneNumber" required />
-                <label for="name" >手机号</label>
+                <label for="name">手机号</label>
             </div>
             <a @click="userRegister">
                 注册
@@ -431,7 +431,11 @@ import { useRouter } from 'vue-router';
 import { loginApi, registerApi } from "@/api/api.js";
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus';
+import LoginValidate from '@/validate/LoginValidate'
+// import { removeStyle } from 'element-plus/es/utils';
 let router = useRouter();
+// let {count} = useCounterStore();
+// console.log(count);
 let loginFrom = reactive({
     username: '',
     password: ''
@@ -455,38 +459,57 @@ function toLoginView() {
     isActiveRegister.value = true;
 }
 
-const validate =function(){
-    const { username, password } = loginFrom;
-    if (username.length < 6 || username.length > 20){
-        ElMessage.warning("用户名必须在6-20位之间");
-        return false;
-    }else if(password.length < 6 || password.length > 15){
-        ElMessage.warning('密码必须在6-15位之间');
-        return false;
+//校验用户名（正则表达式）
+// let regexp = '/^[a-zA-Z0-9_-]{4,16}$/';
+// regexp.match(registerFrom.value.username)
+function validate() {
+    let res = { result: true };
+    if (registerFrom.value.username == '') {
+        res.result = false;
+        ElMessage({
+            message: '用户名不能为空',
+            type: 'warning',
+        })
+    } else if (registerFrom.value.password == '') {
+        res.result = false;
+        ElMessage({
+            message: '密码不能为空',
+            type: 'warning',
+        })
+    } else if (registerFrom.value.avatarName == '') {
+        res.result = false;
+        ElMessage({
+            message: '昵称不能为空',
+            type: 'warning',
+        })
+    } else if (registerFrom.value.phoneNumber == '') {
+        res.result = false;
+        ElMessage({
+            message: '手机号不能为空',
+            type: 'warning',
+        })
     }
     return true;
 }
 
-
-//校验用户名（正则表达式）
-async function userLogin() {
-    let bool = validate();
-    if(!bool) return;
-    let res = await loginApi(loginFrom);
-    if (res.status == 1) {
-        ElMessage({
-            message: '登录成功',
-            type: 'success',
+const submit = () => {
+    let v = new LoginValidate(loginFrom)
+    v.validate(function () {
+        loginApi(loginFrom).then(res => {
+            if (res.data.msg == '成功') {
+                sessionStorage.setItem('token', res.data.data.token);
+                ElMessage.success('登录成功')
+                router.push('/');
+            } else {
+                ElMessage.warning(res.data.msg)
+            }
         })
-        sessionStorage.setItem('token', res.data.token);
-        router.push({ name: 'home' });
-
-    }
-    console.log(res);
+    })
 }
 
-
 async function userRegister() {
+    let isvalidate = validate();
+    if (!isvalidate) return
     let res = await registerApi({
         username: registerFrom.value.username,
         password: registerFrom.value.password,
