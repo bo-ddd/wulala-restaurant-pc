@@ -16,7 +16,7 @@
         <div class="shop-appraise">
             <div>
                 <div class="praise">好评度</div>
-                <div class="percent">90%</div>  
+                <div class="percent">{{ Math.ceil(degreePraise  *  100) }}%</div>  
             </div>
             <div>
                 <el-tag>正宗品质</el-tag>
@@ -27,7 +27,10 @@
         </div>
         <div>
             <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-                <el-tab-pane label="全部评价(20W+)" name="first">
+                <el-tab-pane name="first">
+                    <template #label>
+                        全部评价({{ allAppraiseLength}})
+                    </template>
                     <div class="bj-white grid" v-for="item in foodAppraise">
                         <div v-for="users in item.users">
                             <img class="avatar-size" :src=users.avatarImg alt="">
@@ -41,9 +44,8 @@
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="好评" name="second">
-                    <div class="bj-white grid">
-                        <template v-for="item in foodAppraise">
-                            <div v-for="users in item.users"  v-if="item.star >= 4" class="bj-white grid">
+                    <div class="bj-white grid"  v-for="item in goodAppraise">
+                            <div v-for="users in item.users"  v-if="item.star >= 4" class="bj-white">
                                 <img class="avatar-size" :src=users.avatarImg alt="">
                                 <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
                             </div>
@@ -52,13 +54,11 @@
                                 <div class="user-appraise">{{ item.content }}</div>
                                 <div>用户上传的图片</div>
                             </div>
-                        </template>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="中评" name="third">
-                    <div class="bj-white grid">
-                        <template v-for="item in foodAppraise">
-                            <div v-for="users in item.users" v-if="item.star == 3" class="bj-white grid">
+                    <div class="bj-white grid"  v-for="item in midAppraise">
+                            <div v-for="users in item.users" v-if="item.star == 3" class="bj-white">
                                 <img class="avatar-size" :src=users.avatarImg alt="">
                                 <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
                             </div>
@@ -67,13 +67,11 @@
                                 <div class="user-appraise">{{ item.content }}</div>
                                 <div>用户上传的图片</div>
                             </div>
-                        </template>
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="差评" name="fourth">
-                    <div class="bj-white grid">
-                        <template  v-for="item in foodAppraise">
-                            <div v-for="users in item.users" v-if="item.star <= 2" class="bj-white grid">
+                    <div class="bj-white grid" v-for="item in badAppraise">
+                            <div v-for="users in item.users" v-if="item.star <= 2" class="bj-white">
                                 <img class="avatar-size" :src=users.avatarImg alt="">
                                 <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
                             </div>
@@ -82,10 +80,21 @@
                                 <div class="user-appraise">{{ item.content }}</div>
                                 <div>用户上传的图片</div>
                             </div>
-                        </template>
                     </div>
                 </el-tab-pane>
             </el-tabs>
+            <el-pagination
+                v-model:current-page="currentPage"
+                v-model:page-size="pageSize"
+                :page-sizes="[5, 20, 30, 40]"
+                :small="small"
+                :disabled="disabled"
+                :background="background"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total=total
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                />
         </div>
         <el-dialog
             v-model="centerDialogVisible"
@@ -129,17 +138,63 @@ let foodAppraise = ref();
 let reviewUserInfo = ref();
 let appraiseContent: any = ref('');
 let star = ref(0);
+let allAppraise = ref();
+let allAppraiseLength = ref();
+let goodAppraise = ref();
+let midAppraise =ref();
+let badAppraise = ref();
+let degreePraise = ref();
 const activeName = ref('first');
 const value1 = ref(true);
+
+//分页
+const currentPage = ref();     //当前页数
+const pageSize = ref(5);       //每页显示的条数
+const small = ref(false);       //是否使用小型分页样式
+const background = ref(false);  //是否需要分页颜色
+const disabled = ref(false);    //是否禁用分页
+let total = ref();              //总数
+//分页变量完
+
+/**
+ * @description  分页方法 
+ */
+const handleSizeChange = (val: number) => {
+//   console.log(`${val} items per page`)
+    pageSize.value = val;
+    dishesEva();
+}
+const handleCurrentChange = (val: number) => {
+//   console.log(`current page: ${val}`)
+    currentPage.value = val;
+    foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:5,pageNum:currentPage.value}).then(res => {
+        foodAppraise.value = res.data.list;
+        // 好评 差评
+        goodAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 4);
+        midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
+        badAppraise.value = foodAppraise.value.filter((item: any) => item.star <= 2);
+        allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
+        degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
+        allAppraiseLength.value = allAppraise.value.length;
+        currentPage.value = res.data.pageNum;
+        total.value = res.data.total;
+        // pageSize.value = res.data.pageSize;
+    })
+    console.log( currentPage.value);
+    
+    // dishesEva();
+}
+
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
     console.log(tab, event)
 }
+
 /**
  * 菜肴列表接口
  */
 gatFoodListApi().then(res => {
-    console.log(res);
+    // console.log(res);
     res.data.list.forEach((item: any) => {
         if (route.query.shoppingDetalisId == item.foodId) {
             foodlist.value = item;
@@ -151,10 +206,22 @@ dishesEva();
 /**
  * 菜肴评价列表
  */
+ 
 function dishesEva() {
-    foodAppraiseListApi({ foodId: route.query.shoppingDetalisId }).then(res => {
+    foodAppraiseListApi({ 
+        foodId: route.query.shoppingDetalisId ,
+        pageSize:pageSize.value,
+        pageNum:currentPage.value
+    }).then(res => {
         console.log(res.data.list);
         foodAppraise.value = res.data.list;
+        // 好评 差评
+        goodAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 4);
+        midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
+        badAppraise.value = foodAppraise.value.filter((item: any) => item.star <= 2);
+        allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
+        degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
+        allAppraiseLength.value = allAppraise.value.length;
     })
 }
 function appraise() {
@@ -218,6 +285,7 @@ dishesEva();
 .percent {
     color: red;
     font-size: 40px;
+    margin-left: 15px;
 }
 
 .praise {
@@ -242,7 +310,7 @@ dishesEva();
 .grid {
     display: grid;
     grid-template-columns: 1fr 5fr;
-    /* gap: 40px; */
+    gap: 40px;
     padding: 15px;
     border-bottom: 1px solid #ddd;
 }
