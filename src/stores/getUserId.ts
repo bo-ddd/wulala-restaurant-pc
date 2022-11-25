@@ -8,7 +8,7 @@ export const useId = defineStore('counter', () => {
     let userId= computed(() => userIds.value.userId )
     const getUserIds = () => {
        return queryUserInfoApi().then(res => {
-            setUserid(res.data);
+            setUserid(res.data.data);
         })
     }
     const setUserid = (payload: any) => {

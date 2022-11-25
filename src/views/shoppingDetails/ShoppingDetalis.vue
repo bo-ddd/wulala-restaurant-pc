@@ -168,7 +168,7 @@ const handleCurrentChange = (val: number) => {
 //   console.log(`current page: ${val}`)
     currentPage.value = val;
     foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:5,pageNum:currentPage.value}).then(res => {
-        foodAppraise.value = res.data.list;
+        foodAppraise.value = res.data.data.list;
         // 好评 差评
         goodAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 4);
         midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
@@ -176,8 +176,8 @@ const handleCurrentChange = (val: number) => {
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
         degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
         allAppraiseLength.value = allAppraise.value.length;
-        currentPage.value = res.data.pageNum;
-        // pageSize.value = res.data.pageSize;
+        currentPage.value = res.data.data.pageNum;
+        // pageSize.value = res.data.data.pageSize;
     })
     console.log( currentPage.value);
     
@@ -194,7 +194,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
  */
 gatFoodListApi().then(res => {
     // console.log(res);
-    res.data.list.forEach((item: any) => {
+    res.data.data.list.forEach((item: any) => {
         if (route.query.shoppingDetalisId == item.foodId) {
             foodlist.value = item;
             console.log(foodlist.value);
@@ -208,8 +208,9 @@ dishesEva();
  
 function dishesEva() {
     foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:pageSize.value,pageNum:currentPage.value}).then(res => {
-        console.log(res.data.list);
-        foodAppraise.value = res.data.list;
+        console.log(res.data.data.list);
+        
+        foodAppraise.value = res.data.data.list;
         // 好评 差评
         goodAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 4);
         midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
@@ -217,7 +218,7 @@ function dishesEva() {
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
         degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
         allAppraiseLength.value = allAppraise.value.length;
-        total.value = res.data.total;
+        total.value = res.data.data.total;
     })
 }
 function appraise() {
@@ -234,8 +235,8 @@ async function submitAppraise() {
         star: star.value,
         isRealName: 0
     });
-    console.log('又增加了一个评论');
     console.log(res);
+    console.log('又增加了一个评论');
     dishesEva();
     centerDialogVisible.value = false;
 }
