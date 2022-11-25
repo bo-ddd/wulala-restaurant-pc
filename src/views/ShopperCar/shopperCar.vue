@@ -40,7 +40,7 @@
                 </el-table-column>
                 <el-table-column label="单价" show-overflow-tooltip>
                     <template #default="scope">
-                        <p>￥{{scope.row.originalPrice}}.00</p>
+                        <p>￥{{scope.row.originalPrice}}</p>
                         <el-tooltip
                             class="box-item"
                             effect="dark"

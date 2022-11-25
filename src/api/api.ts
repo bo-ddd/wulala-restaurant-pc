@@ -122,6 +122,6 @@ export const cartAddApi = function (payload = {}) {
  * @description 收货地址列表
  * @param payload object
  */
- export const addressList = function (payload = {}) {
-    return $axios.post('/address/list', payload)
+ export const addressListApi = function (payload = {}) {
+    return $axios.post('/delivery/address/list', payload)
 }
