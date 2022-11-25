@@ -100,8 +100,8 @@ import { Search, User } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import { useCounterStore } from '@/stores/counter';
-let { setCommodityInfo } = useCounterStore();
+// import { useCounterStore } from '@/stores/counter';
+// let { setCommodityInfo } = useCounterStore();
 //修改table样式
 // const rowState = () => {
 //   return {
@@ -225,7 +225,8 @@ const toSettlement = function(){
         })
     }else{
         // console.log(multipleSelection.value); //选中结算的数据
-        setCommodityInfo(multipleSelection.value)
+        // setCommodityInfo(multipleSelection.value);
+        sessionStorage.setItem('commodityInfo',JSON.stringify(multipleSelection.value))
         router.push({name:'settlement'});
     }
 };
@@ -273,8 +274,9 @@ cartLists();
     padding: 0 20px;
 }
 .commodity-icon{
-    width: 23%;
+    width: 30%;
     height: 100%;
+    border-radius: 7px;
 }
 .commodity{
     display: flex;

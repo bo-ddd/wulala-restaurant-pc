@@ -118,3 +118,10 @@ export const cartDeleteApi = function (payload = {}) {
 export const cartAddApi = function (payload = {}) {
     return $axios.post('/cart/add', payload)
 }
+/**
+ * @description 收货地址列表
+ * @param payload object
+ */
+ export const addressList = function (payload = {}) {
+    return $axios.post('/address/list', payload)
+}

@@ -62,7 +62,7 @@
                 <div class="consignee-content mb-20" @mouseover="mouseover" @mouseout="mouseout">
                     <div class="df-sp">
                         <div class="user-info mb-10">
-                            <p class="name">刘伟耨</p>
+                            <p class="user-name">刘伟耨</p>
                             <p class="phones">13145674567</p>
                             <div class="default">默认地址</div>
                         </div>
@@ -96,12 +96,17 @@
                 <div class="order-info_content">
                     <div class="order-list">
                         <!--商品信息 -->
-                        <div class="order-main">
-                            <img src="@/assets/images/Carousel-02.png" class="mr-20" alt="">
+                        <div class="order-main" v-for="item in commodityInfo">
+                            <img :src="item.bannerUrl" class="mr-20" alt="">
                             <div class="order-name">
-                                <span class="name">撒旦解放上的飞机螺丝钉法律上的会计分录撒旦解放老师看了电视剧k</span>
-                                <p>x1</p>
-                                <p>￥5,000.00</p>
+                                <span class="name">
+                                    <div>
+                                        <span class="foodname"> {{item.productName}} </span> {{item.productDesc}}
+                                    </div>
+                                    <div><span class="cuisine">菜系 : </span>{{item.categoryName}}</div>
+                                </span>
+                                <p>x{{item.quantity}}</p>
+                                <p>￥{{item.quantity * item.originalPrice}}.00</p>
                             </div>
                         </div>
                         <!-- 发票信息 -->
@@ -120,7 +125,7 @@
                             <ul>
                                 <li>
                                     <strong>商品总金额：</strong>
-                                    <span class="price">￥5,000.00</span>
+                                    <span class="price">￥{{allPrice + 200}}.00</span>
                                 </li>
                                 <li>
                                     <strong>运费：</strong>
@@ -132,7 +137,7 @@
                                 </li>
                                 <li>
                                     <strong>结算金额：</strong>
-                                    <span class="price settlements">￥4,800.00</span>
+                                    <span class="price settlements">￥{{allPrice}}.00</span>
                                 </li>
                             </ul>
                         </div>
@@ -141,7 +146,7 @@
             </div>
             <div class="order-info pd">
                 <div class="order-submit">
-                    <p>应付金额：<b class="order-submit_price">￥4800.00</b></p>
+                    <p>应付金额：<b class="order-submit_price">￥{{allPrice}}.00</b></p>
                 </div>
                 <!-- 无收货地址 -->
                 <!-- <div class="ship-to_add pd-20">
@@ -169,9 +174,18 @@
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
 import { reactive, ref } from 'vue'
-import { useCounterStore } from '@/stores/counter';
-let {commodityInfo} = useCounterStore();
+import { addressList } from '@/api/api';
+interface commodityInfo{
+    quantity: number; 
+    originalPrice: number;
+}
+// 车一页面选购的商品数据
+let commodityInfo = JSON.parse(sessionStorage.getItem('commodityInfo') as any); 
 console.log(commodityInfo);
+let allPrice = ref(0.00);//结算金额
+commodityInfo.forEach((el:commodityInfo) => {
+    allPrice.value += (el.quantity * el.originalPrice);
+});
 
 const dialogTableVisible = ref(false)
 const dialogFormVisible = ref(false)
@@ -241,6 +255,7 @@ main{
     width: 140px;
     align-items: flex-end;
     justify-content: space-between;
+    height: 45px;
 }
 .content{
     border: 1px solid #ebeef5;
@@ -340,22 +355,40 @@ main{
     padding: 20px;
     font-size: 14px;
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 .order-main img{
-    width: 100px;
-    height: 100px;
+    width: 25%;
 }
 .order-name{
     display: flex;
     justify-content: space-between;
+    width: 100%;
+}
+.user-name{
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-start; */
+    justify-content: space-between;
 }
 .name{
-    /* width: 360px; */
+    width: 360px;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-start; */
+    justify-content: space-between;
+}
+.cuisine{
+    font-weight: 550;
+}
+.foodname{
+    color: #ca141d;
+    font-size: 18px;
 }
 .order-name p{
-    width: 150px;
+    /* width: 150px; */
     text-align: center;
 }
 /* 发票 */
@@ -388,8 +421,8 @@ main{
     background: #fff;
     position: absolute;
     z-index: 1;
-    top: 4.2px;
-    left: 3.7px;
+    top: 3.9px;
+    left: 4.2px;
     box-shadow: 0 -2px 2px 0 rgb(146 5 12 / 50%);
 }
 .order-delivery{
