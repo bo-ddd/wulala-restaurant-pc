@@ -1,150 +1,256 @@
 <template>
-   
-        <div class="warp center">
+    <!-- <template v-if="cartList == undefined || null ">
+        <el-empty image="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+        description="你的购物车里面什么也没有"
+        >
+            <el-button type="primary">去逛逛</el-button>
+        </el-empty>
+    </template> -->
+    <div>
+        <div class="warp center" >
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
             <div class="nav pd-10 df-al">
-                <p>全部商品 {{ 1 }}</p>
-                <!-- <div>
-                    带isall参数和leave参数示例
-                    配送至：<elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
-                </div> -->
+                <p>全部商品 {{ cartListLength }}</p>
             </div>
+            <!-- :row-style="isSelected == true ? rowState : isRowState" -->
             <el-table
                 ref="multipleTableRef"
-                :data="tableData"
-                class="mb-20"
+                :data="cartList"
+                class="mb-20 bj"
                 select-all
                 style="width: 100%"
                 @selection-change="handleSelectionChange"
+                @select="handleValue"
             >
                 <el-table-column type="selection" width="55" />
                 <el-table-column label="商品" width="370px">
-                    <template #default>
+                    <template #default="scope">
                         <div class="commodity">
-                            <img class="commodity-icon" src="@/assets/images/Carousel-02.png" alt="">
-                            <div>
-                                <p>撒旦解放上的飞机螺丝钉法律上的会计分录撒旦解放老师看了电视剧k</p>
-                                <el-tooltip
-                                    class="box-item"
-                                    effect="dark"
-                                    content="Bottom Right prompts info"
-                                    placement="bottom-end"
-                                >
-                                <template #content>
-                                    <div class="content">
-                                        <div class="btn-content_item">
-                                            <p>全面保障</p>
-                                            <div class="btn-content">
-                                                腐烂包换
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                        <div class="btn-content_item">
-                                            <p>意外保护</p>
-                                            <div class="btn-content">
-                                                物品损坏
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                        <div class="btn-content_item">
-                                            <p>延长保修</p>
-                                            <div class="btn-content">
-                                                1年保修
-                                                ￥129.00
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                                    <el-button><img class="option-service pr-10" src="@/assets/images/option-service.png" alt=""> 选服务</el-button>
+                            <img class="commodity-icon" :src="scope.row.bannerUrl" alt="">
+                            <div class="df-sub">
+                                <el-tooltip :content="scope.row.productDesc" placement="right">
+                                    <p>{{scope.row.productName}}</p>
                                 </el-tooltip>
+                                <!-- <p>{{scope.row.productDesc}}</p> -->
+                                <div class="type">{{scope.row.categoryName}}</div>
                             </div>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="单价" show-overflow-tooltip>
-                    <template #default>
-                        <p>$5,000.00</p>
+                    <template #default="scope">
+                        <p>￥{{scope.row.originalPrice}}.00</p>
                         <el-tooltip
                             class="box-item"
                             effect="dark"
                             content="Bottom Right prompts info"
                             placement="bottom-end"
                         >
-                        <template #content>
-                            <el-checkbox v-model="checked2">满2000元减20元，包邮（限中国内地）</el-checkbox>
-                        </template>
+                            <template #content>
+                                <span class="checked-content">
+                                    <el-checkbox v-model="checked2">
+                                        满2000元减20元，包邮（限中国内地）
+                                    </el-checkbox>
+                                </span>
+                            </template>
                             <el-button>促销</el-button>
                         </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column label="数量" width="180" >
-                    <template #default>
-                        <el-input-number v-model="num" :min="1" :max="10" @change="handleChange" />
+                    <template #default="scope">
+                        <el-input-number v-model="scope.row.quantity" :min="1" :max="111000" @change="handleChange(scope.row.quantity,
+                        scope.row.id,scope.row.originalPrice,scope.row)" />
                     </template>
                 </el-table-column>
                 <el-table-column label="小计" width="120" >
-                    <template #default>
-                        $5,000.00
+                    <template #default="scope">
+                        <span class="cl-r">￥{{scope.row.id == ids ? prices : scope.row.totalPrice}}.00</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="120" >
-                    <template #default>
-                        <p class="delete">删除</p>
+                    <template #default="scope">
+                        <p class="delete" @click="deletes(scope.row)">删除</p>
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- 去结算 -->
-            <div class="go-settlement mb-20">
+        </div>
+        <!-- 去结算 -->
+        <el-affix position="bottom" :offset="10">
+            <div class="go-settlement mt-20 mb-20">
                 <div class="go-settlement_left">
                     <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
-                    <p class="ml-10">删除选中的商品</p>
+                    <p class="ml-10" @click="deleteCommdoity">删除选中的商品</p>
                 </div>
                 <div class="go-settlement_right">
-                    <p>已选择 <span class="cl-red">{{1}}</span> 件商品</p>
-                    <p class="ml-10">总价：<span class="cl-red total-price">￥0.00</span></p>
+                    <p>已选择 <span class="cl-red">{{multipleSelectionLength}}</span> 件商品</p>
+                    <p class="ml-10">总价：<span class="cl-red total-price">￥{{multipleSelectionPrice}}</span></p>
                     <el-button @click="toSettlement" type="danger" class="go-settlement_btn ml-10">去结算</el-button>
                 </div>
             </div>
-        </div>
-        <el-backtop :right="100" :bottom="100" />
+        </el-affix>
+        <el-backtop :right="90" :bottom="100" />
+    </div>
 </template>
 
 <script lang="ts" setup>
-import { Search } from '@element-plus/icons-vue'
-import {ref } from 'vue';
-import { ElTable } from 'element-plus'
+import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
+import { Search, User } from '@element-plus/icons-vue';
+import { ref } from 'vue';
+import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-let router = useRouter();
-const checked2 = ref(true)
-let input = ref();
+import { useCounterStore } from '@/stores/counter';
+let { setCommodityInfo } = useCounterStore();
+//修改table样式
+// const rowState = () => {
+//   return {
+//     backgroundColor: '#fff4e8',
+//   }
+// }  
 
+let router = useRouter();
+const checked2 = ref(false)
+let input = ref();
 interface User {
   date: string
   address: string
+  totalPrice?:number
+  quantity:number
+  originalPrice:number
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
-const multipleSelection = ref<User[]>([])
+const multipleSelection = ref<User[]>([]);
+const multipleSelectionLength = ref(0);//勾选商品数量
+const multipleSelectionPrice = ref(0.00);
+let vals = ref();
 const handleSelectionChange = (val: User[]) => {
-  multipleSelection.value = val
+  vals.value = val;
+  multipleSelection.value = val;
+  multipleSelectionLength.value = multipleSelection.value.length;
+//   console.log(val); //选中的商品
+  multipleSelectionPrice.value =  0 
+  val.forEach(el => {
+    multipleSelectionPrice.value += (el.quantity * el.originalPrice)
+  })
+}
+// 选中
+let isSelected = ref();
+const handleValue = (select : any,val : any) => {
+    isSelected.value = select.length && select.indexOf(val) !== -1  // true就是选中，0或者false是取消选中  
 }
 
-const tableData: User[] = [
-  {
-    date: '2016-05-03',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
-
-const num = ref(1)
-const handleChange = (value: number) => {
-  console.log(value)
+const deleteCommdoity = function(){
+    if (multipleSelection.value.length == 0) {
+        ElMessage({
+            message: '您还没选中商品哦',
+            type: 'warning',
+        })
+    }else{
+        multipleSelection.value.forEach((item:any) => {
+            cartDeleteApi({
+                id:item.id
+            }).then(res => {
+                if (res.data.status == 1) {
+                    cartLists()
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        })
+    }
 }
+
+const deletes = (scope : any)=>{
+    cartDeleteApi({
+        id:scope.id
+    }).then(res => {
+        if (res.data.status == 1) {
+            cartLists()
+        }
+    }).catch(err => {
+        console.log(err);
+    })
+}
+
+// 计算加减
+const isPlusReduce = ref(false);
+let prices = ref();
+let ids = ref();
+const handleChange = (value: number,id:number,price:number,scope:any) => {
+  isPlusReduce.value = true
+  ids.value = id;
+  prices.value = price * value;
+
+  cartAddApi({
+    id:scope.id,
+    productId:scope.productId,
+    quantity:scope.quantity,
+  }).then((res:any) => {
+    if (res.data.status != 1) {
+        ElMessage({
+            message: res.msg,
+            type: 'warning',
+        })
+    }else{
+        // console.log('成功');
+        let commodityId = ref([]);
+        // console.log(vals.value); //选中数据
+        
+        vals.value.forEach((el: { id: any; }) => {
+            return commodityId.value.push(el.id as never);
+        });
+        // 同步加减时候的价格
+        multipleSelectionPrice.value = 0
+        cartList.value.forEach((item: any) => {
+            commodityId.value.forEach((el)=>{
+                if (item.id == el) {
+                    // console.log(item); 点击加号获取选中数据
+                    multipleSelectionPrice.value += (item.quantity * item.originalPrice)
+                }
+            })
+        });
+    }
+    }).catch(err=>{
+        console.log(err);
+    })
+    }
 // 结算按钮
 const toSettlement = function(){
-    router.push({name:'settlement'});
+    if(multipleSelection.value.length == 0){
+        ElMessage({
+            message: '请选中你要结算的商品',
+            type: 'warning',
+        })
+    }else{
+        // console.log(multipleSelection.value); //选中结算的数据
+        setCommodityInfo(multipleSelection.value)
+        router.push({name:'settlement'});
+    }
+};
+
+// 拿购物车列表
+let cartList = ref();
+let cartListLength = ref();
+const cartLists = function(){
+    cartListApi().then(res => {
+        if (res.data.status != 1) {
+            ElMessage({
+                message: '请先登录.',
+                type: 'success',
+            })
+            router.push({name:'login'})
+        }else{
+            cartList.value = res.data.data;
+
+            cartListLength.value =cartList.value.length;
+        }
+    }).catch(err => {
+        console.log(err);
+    })
 }
+cartLists();
 </script>
 
 <style scoped>
@@ -167,15 +273,15 @@ const toSettlement = function(){
     padding: 0 20px;
 }
 .commodity-icon{
-    width: 80px;
-    height: 80px;
+    width: 23%;
+    height: 100%;
 }
 .commodity{
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
 }
 .commodity p{
-    width: 250px;
+    width: 100%;
     cursor: pointer;
 }
 .commodity p:hover{
@@ -236,6 +342,7 @@ const toSettlement = function(){
     border: 1px solid #ebeef5;
     justify-content: space-between;
     font-size: 12px;
+    background-color: #fff;
 }
 .go-settlement_left{
     display: flex;
@@ -255,5 +362,25 @@ const toSettlement = function(){
 }
 .total-price{
     font-size: 16px;
+}
+.checked-content{
+    color: #fff;
+}
+.cl-r{
+    color: #E2231A;
+}
+/* .bj ::v-deep .el-table tr{
+    background: #fff4e8;
+} */
+.type{
+    padding: 0 12PX;
+    height: 20PX;
+    line-height: 20PX;
+    text-align: center;
+    color: #fff;
+    background: #cb1f17;
+    display: inline-block;
+    margin-right: 16PX;
+    font-style: normal;
 }
 </style>
