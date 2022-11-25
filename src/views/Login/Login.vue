@@ -1,25 +1,6 @@
 <template>
     <div class="content">
-        <div class="login" v-if="isActiveRegister == true">
-            <div class="register-text" @click="toRegisterView">注册 </div>
-            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
-            <div class="login_box">
-                <input type="text" name='name' id='name' v-model="loginFrom.username" required />
-                <label for="name">用户名</label>
-            </div>
-            <div class="login_box">
-                <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
-                <label for="pwd">密码</label>
-            </div>
-            <a @click="submit">
-                登录
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
-        </div>
-        <div class="register" v-else>
+        <div class="register" v-if="isActiveRegister == true">
             <div class="login-text" @click="toLoginView">登录</div>
             <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
             <div class="register_box">
@@ -40,6 +21,25 @@
             </div>
             <a @click="userRegister">
                 注册
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+        <div class="login" v-else>
+            <div class="register-text" @click="toRegisterView">注册 </div>
+            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
+            <div class="login_box">
+                <input type="text" name='name' id='name' v-model="loginFrom.username" required />
+                <label for="name">用户名</label>
+            </div>
+            <div class="login_box">
+                <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
+                <label for="pwd">密码</label>
+            </div>
+            <a @click="submit">
+                登录
                 <span></span>
                 <span></span>
                 <span></span>
@@ -451,12 +451,12 @@ let isActiveRegister = ref(false);
 let isActive1 = ref(false);
 
 function toRegisterView() {
-    isActiveRegister.value = false;
-    isActive1.value = true;
+    isActiveRegister.value = true;
+    isActive1.value = false;
 }
 function toLoginView() {
-    isActive1.value = false;
-    isActiveRegister.value = true;
+    isActive1.value = true;
+    isActiveRegister.value = false;
 }
 
 //校验用户名（正则表达式）
