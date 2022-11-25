@@ -23,7 +23,7 @@
               <div class="header-fw" 
               v-for="(item,index) in routeList"
               :class="{active:!(index-menuIndex)}" 
-              @click="navigator(item.label,index)">{{item.name}}</div>
+              @click="clickList(item.label,index)">{{item.name}}</div>
               <el-icon class="icon" size="24">
                 <Search />
               </el-icon>
@@ -34,13 +34,13 @@
                   </el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu v-if="token == null">
-                    <el-dropdown-item>登录</el-dropdown-item>
-                    <el-dropdown-item divided>注册</el-dropdown-item>
+                  <el-dropdown-menu v-if="token == ''">
+                    <el-dropdown-item @click="navigator('login')">登录</el-dropdown-item>
+                    <el-dropdown-item divided @click="navigator('register')">注册</el-dropdown-item>
                   </el-dropdown-menu>
                   <el-dropdown-menu v-else>
                     <el-dropdown-item>个人中心</el-dropdown-item>
-                    <el-dropdown-item divided>退出</el-dropdown-item>
+                    <el-dropdown-item divided @click="exitLogin">退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -54,7 +54,6 @@
       </el-header>
 
       <el-main>
-       
 
           <RouterView />
       
@@ -163,11 +162,18 @@ let route = useRoute()
 let token = sessionStorage.getItem('token') 
 
 const isActive = ref(false)
-function navigator(name: string,i:number) {
+function navigator(name: string) {
+  router.push({ name: name })
+}
+function clickList(name: string,i:number){
   router.push({ name: name })
   menuIndex.value = i
 }
+function exitLogin(){
+  sessionStorage.setItem('token','');
+  router.push({name:'home'});
 
+}
 
 let menuIndex  = ref(0);
 let routeList = [
