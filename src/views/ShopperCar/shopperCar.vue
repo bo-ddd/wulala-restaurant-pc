@@ -97,7 +97,7 @@
 <script lang="ts" setup>
 import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
 import { Search, User } from '@element-plus/icons-vue';
-import {ref, watch } from 'vue';
+import { ref } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import { useCounterStore } from '@/stores/counter';
