@@ -1,7 +1,6 @@
 <template>
     <div class="content">
         <div class="register" v-if="isActiveRegister == true">
-            <div class="login-text" @click="toLoginView">登录</div>
             <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
             <div class="register_box">
                 <input type="text" name='name' id='username' v-model="registerFrom.username" required />
@@ -26,17 +25,22 @@
                 <span></span>
                 <span></span>
             </a>
+            <div class="register_box">
+                <div @click="toLoginView">已有账号，请登录</div>
+            </div>
         </div>
         <div class="login" v-else>
-            <div class="register-text" @click="toRegisterView">注册 </div>
             <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
-            <div class="login_box">
-                <input type="text" name='name' id='name' v-model="loginFrom.username" required />
+            <div class="login_box username-login_box">
+                <input type="text" name='name' id='name' v-model="loginFrom.username" required class="mb-30"/>
                 <label for="name">用户名</label>
             </div>
             <div class="login_box">
                 <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
                 <label for="pwd">密码</label>
+            </div>
+            <div class="login_box">
+                <div class="login-text" @click="toRegisterView">没有账号，注册一个</div>
             </div>
             <a @click="submit">
                 登录
@@ -65,13 +69,6 @@
     filter: invert(100%);
     height: 100px;
 }
-
-/* * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-} */
-
 body {
     /*弹性布局 让页面元素垂直+水平居中*/
     display: flex;
@@ -93,7 +90,9 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
 }
-
+.login_box{
+    text-align: left;
+}
 .login h2 {
     color: #fff;
     margin-bottom: 30px;
@@ -104,12 +103,20 @@ body {
     width: 100%;
 }
 
+.login-text{
+    margin: 15px 0 20px 0;
+    text-align: right;
+    font-size: 12px;
+}
+.login-text:hover{
+    color: rgb(3, 233, 244);
+}
 .login .login_box input {
     outline: none;
     border: none;
     width: 100%;
     padding: 10px 0;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     color: #fff;
     font-size: 16px;
     border-bottom: 1px solid #fff;
