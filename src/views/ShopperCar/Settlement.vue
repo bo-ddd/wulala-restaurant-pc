@@ -27,7 +27,7 @@
                         <el-dialog v-model="dialogFormVisible" title="新增收货人信息">
                             <el-form :model="form">
                                 <el-form-item label="所在地区" :label-width="formLabelWidth">
-                                    <elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
+                                    <elui-china-area-dht isall :leave="4" @change="onChange" placeholder="请选择地区"></elui-china-area-dht>
                                 </el-form-item>
                                 <el-form-item label="收货人" :label-width="formLabelWidth">
                                     <el-input v-model="form.name" autocomplete="off" />
@@ -59,11 +59,11 @@
                     </div>
                 </div>
                 <!-- consignee  收货人 -->
-                <div class="consignee-content mb-20" @mouseover="mouseover" @mouseout="mouseout">
+                <div class="consignee-content mb-20" @mouseover="mouseover" @mouseout="mouseout" v-for="item in receiptList">
                     <div class="df-sp">
                         <div class="user-info mb-10">
-                            <p class="user-name">刘伟耨</p>
-                            <p class="phones">13145674567</p>
+                            <p class="user-name">{{item.receiver}}</p>
+                            <p class="phones">{{item.phoneNumber}}</p>
                             <div class="default">默认地址</div>
                         </div>
                         <!-- 操作 -->
@@ -83,7 +83,12 @@
                     </div>
                     <!-- 地址 -->
                     <div class="address">
-                        <p>山西省 阳泉市 盂县 吸烟者 南村</p>
+                        <p>
+                            <span v-if="itemss.code == item.provinceCode">{{itemss.name}}</span> 
+                            <span v-if="itemss.code == item.cityCode">{{itemss.name}}</span> 
+                            <span v-if="itemss.code == item.areaCode">{{itemss.name}}</span>
+                            <span>{{item.address}}</span>
+                        </p>
                     </div>
                 </div> 
                 <div class="order-add mb-20">
@@ -174,10 +179,55 @@
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
 import { reactive, ref } from 'vue'
-import { addressList } from '@/api/api';
-interface commodityInfo{
-    quantity: number; 
-    originalPrice: number;
+import { addressListApi } from '@/api/api';
+import  codeLists from './codeList';
+let { selectedOptions } = codeLists()
+console.log(selectedOptions);
+let receiptList = ref();//地址数据
+let codeList :any = [];//coed码对应是name
+let itemss = ref();
+// 获取收货地址
+addressListApi({}).then(res => {
+    console.log(res.data.data);
+    receiptList.value = res.data.data;
+    res.data.data.forEach((el:any) => {
+        selectedOptions.forEach((item:any)=>{
+            if (item.code == el.provinceCode) {
+                console.log(item);
+                codeList.push(item)
+            }
+            item.children.forEach((els:any)=>{
+                if (els.code == el.cityCode) {
+                    console.log(els);
+                    codeList.push(els)
+                }
+                if (!els.children) {
+                    return
+                }else{
+                    els.children.forEach((elss:any) => {
+                        if (elss.code == el.areaCode) {
+                            console.log(elss);
+                            codeList.push(elss)
+                        }
+                    });
+                }
+            })
+            
+        })
+        console.log([...new Set(codeList)]);
+        console.log(el.areaCode);//地区
+        console.log(el.cityCode);//城市
+        console.log(el.provinceCode);//省份
+        [...new Set(codeList)].forEach((items:any) => {
+            itemss.value = items;
+            console.log(itemss.value);
+        })
+    })
+});
+    
+    interface commodityInfo{
+        quantity: number; 
+        originalPrice: number;
 }
 // 车一页面选购的商品数据
 let commodityInfo = JSON.parse(sessionStorage.getItem('commodityInfo') as any); 
@@ -359,6 +409,7 @@ main{
 }
 .order-main img{
     width: 25%;
+    border-radius: 12px;
 }
 .order-name{
     display: flex;
