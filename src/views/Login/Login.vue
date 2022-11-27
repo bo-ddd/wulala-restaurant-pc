@@ -1,9 +1,9 @@
 <template>
     <div class="content">
-        <div>
+        <!-- <div>
             <img class="content-bjt" src="@/assets/images/bg-color.jpg" alt="">
-        </div>
-        <div class="content-login">
+        </div> -->
+        <!-- <div class="content-login"> -->
             <div class="register" v-if="isActiveRegister == true">
                 <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
                 <div class="register_box">
@@ -48,7 +48,7 @@
                 </div>
                 <div class="login-btn" @click="submit">登录</div>
             </div>
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -59,19 +59,22 @@
     justify-content: center;
     height: 100vh;
     min-height: 700px;
-    min-width: 1300px;
-    position: relative;
+    min-width: 1500px;
+    background-image: url('@/assets/images/bg-image.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    /* position: relative; */
 }
-.content-login{
+/* .content-login{
     z-index: 1;
-}
-.content-bjt{
+} */
+/* .content-bjt{
     position: absolute;
     top: 0;
     left: 0;
     min-width: 100vw;
     min-height: 100vh;
-}
+} */
 .logo-wulala {
     /* filter: invert(100%); */
     height: 100px;
@@ -103,7 +106,8 @@ body {
     width: 400px !important;
     padding: 40px;
     border-radius: 10px;
-    background-color: #a8f2cf;
+    /* background-color: #a8f2cf; */
+    background-color: #ffffffad;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
 }
 .login_box{
