@@ -83,10 +83,12 @@
                     </div>
                     <!-- 地址 -->
                     <div class="address">
-                        <p>
-                            <span v-if="itemss.code == item.provinceCode">{{itemss.name}}</span> 
-                            <span v-if="itemss.code == item.cityCode">{{itemss.name}}</span> 
-                            <span v-if="itemss.code == item.areaCode">{{itemss.name}}</span>
+                        <p class="codeList">
+                            <span v-for="element in codeListGoRepeat">
+                                <span v-if="element.code == item.provinceCode">{{element.name}}</span> 
+                                <span v-if="element.code == item.cityCode">{{element.name}}</span> 
+                                <span v-if="element.code == item.areaCode">{{element.name}}</span>
+                            </span>
                             <span>{{item.address}}</span>
                         </p>
                     </div>
@@ -185,7 +187,7 @@ let { selectedOptions } = codeLists()
 console.log(selectedOptions);
 let receiptList = ref();//地址数据
 let codeList :any = [];//coed码对应是name
-let itemss = ref();
+let codeListGoRepeat = ref();
 // 获取收货地址
 addressListApi({}).then(res => {
     console.log(res.data.data);
@@ -193,12 +195,12 @@ addressListApi({}).then(res => {
     res.data.data.forEach((el:any) => {
         selectedOptions.forEach((item:any)=>{
             if (item.code == el.provinceCode) {
-                console.log(item);
+                console.log(item);//拿到省的code码和name
                 codeList.push(item)
             }
             item.children.forEach((els:any)=>{
                 if (els.code == el.cityCode) {
-                    console.log(els);
+                    console.log(els);//拿到市的code码和name
                     codeList.push(els)
                 }
                 if (!els.children) {
@@ -206,7 +208,7 @@ addressListApi({}).then(res => {
                 }else{
                     els.children.forEach((elss:any) => {
                         if (elss.code == el.areaCode) {
-                            console.log(elss);
+                            console.log(elss);//拿到区的code码和name
                             codeList.push(elss)
                         }
                     });
@@ -214,22 +216,19 @@ addressListApi({}).then(res => {
             })
             
         })
+        codeListGoRepeat.value = [...new Set(codeList)]
         console.log([...new Set(codeList)]);
-        console.log(el.areaCode);//地区
-        console.log(el.cityCode);//城市
-        console.log(el.provinceCode);//省份
-        [...new Set(codeList)].forEach((items:any) => {
-            itemss.value = items;
-            console.log(itemss.value);
-        })
+        // console.log(el.areaCode);//地区
+        // console.log(el.cityCode);//城市
+        // console.log(el.provinceCode);//省份
     })
 });
     
-    interface commodityInfo{
-        quantity: number; 
-        originalPrice: number;
-}
 // 车一页面选购的商品数据
+interface commodityInfo{
+    quantity: number; 
+    originalPrice: number;
+}
 let commodityInfo = JSON.parse(sessionStorage.getItem('commodityInfo') as any); 
 console.log(commodityInfo);
 let allPrice = ref(0.00);//结算金额
@@ -558,5 +557,10 @@ main{
 }
 .settlement-btn a:hover{
     cursor: pointer;
+}
+.codeList{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 </style>
