@@ -64,7 +64,7 @@
                         <div class="user-info mb-10">
                             <p class="user-name">{{item.receiver}}</p>
                             <p class="phones">{{item.phoneNumber}}</p>
-                            <div class="default">默认地址</div>
+                            <div class="default" :class="{none:item.isDefaultActive == 0 ? true : false}" >默认地址</div>
                         </div>
                         <!-- 操作 -->
                         <div class="operation" :class="{none : isActive}">
@@ -132,11 +132,11 @@
                             <ul>
                                 <li>
                                     <strong>商品总金额：</strong>
-                                    <span class="price">￥{{allPrice + 200}}.00</span>
+                                    <span class="price">￥{{allPrice}}.00</span>
                                 </li>
                                 <li>
                                     <strong>运费：</strong>
-                                    <span class="price">￥0.00</span>
+                                    <span class="price">￥200.00</span>
                                 </li>
                                 <li>
                                     <strong>优惠金额：</strong>
