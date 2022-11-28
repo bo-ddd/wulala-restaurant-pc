@@ -27,7 +27,7 @@
                         <el-dialog v-model="dialogFormVisible" title="新增收货人信息">
                             <el-form :model="form">
                                 <el-form-item label="所在地区" :label-width="formLabelWidth">
-                                    <elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
+                                    <elui-china-area-dht isall :leave="4" @change="onChange" placeholder="请选择地区"></elui-china-area-dht>
                                 </el-form-item>
                                 <el-form-item label="收货人" :label-width="formLabelWidth">
                                     <el-input v-model="form.name" autocomplete="off" />
@@ -59,12 +59,12 @@
                     </div>
                 </div>
                 <!-- consignee  收货人 -->
-                <div class="consignee-content mb-20" @mouseover="mouseover" @mouseout="mouseout">
+                <div class="consignee-content mb-20" @mouseover="mouseover" @mouseout="mouseout" v-for="item in receiptList">
                     <div class="df-sp">
                         <div class="user-info mb-10">
-                            <p class="name">刘伟耨</p>
-                            <p class="phones">13145674567</p>
-                            <div class="default">默认地址</div>
+                            <p class="user-name">{{item.receiver}}</p>
+                            <p class="phones">{{item.phoneNumber}}</p>
+                            <div class="default" :class="{none:item.isDefaultActive == 0 ? true : false}" >默认地址</div>
                         </div>
                         <!-- 操作 -->
                         <div class="operation" :class="{none : isActive}">
@@ -83,7 +83,14 @@
                     </div>
                     <!-- 地址 -->
                     <div class="address">
-                        <p>山西省 阳泉市 盂县 吸烟者 南村</p>
+                        <p class="codeList">
+                            <span v-for="element in codeListGoRepeat">
+                                <span v-if="element.code == item.provinceCode">{{element.name}}</span> 
+                                <span v-if="element.code == item.cityCode">{{element.name}}</span> 
+                                <span v-if="element.code == item.areaCode">{{element.name}}</span>
+                            </span>
+                            <span>{{item.address}}</span>
+                        </p>
                     </div>
                 </div> 
                 <div class="order-add mb-20">
@@ -96,12 +103,17 @@
                 <div class="order-info_content">
                     <div class="order-list">
                         <!--商品信息 -->
-                        <div class="order-main">
-                            <img src="@/assets/images/Carousel-02.png" class="mr-20" alt="">
+                        <div class="order-main" v-for="item in commodityInfo">
+                            <img :src="item.bannerUrl" class="mr-20" alt="">
                             <div class="order-name">
-                                <span class="name">撒旦解放上的飞机螺丝钉法律上的会计分录撒旦解放老师看了电视剧k</span>
-                                <p>x1</p>
-                                <p>￥5,000.00</p>
+                                <span class="name">
+                                    <div>
+                                        <span class="foodname"> {{item.productName}} </span> {{item.productDesc}}
+                                    </div>
+                                    <div><span class="cuisine">菜系 : </span>{{item.categoryName}}</div>
+                                </span>
+                                <p>x{{item.quantity}}</p>
+                                <p>￥{{item.quantity * item.originalPrice}}.00</p>
                             </div>
                         </div>
                         <!-- 发票信息 -->
@@ -120,11 +132,11 @@
                             <ul>
                                 <li>
                                     <strong>商品总金额：</strong>
-                                    <span class="price">￥5,000.00</span>
+                                    <span class="price">￥{{allPrice}}.00</span>
                                 </li>
                                 <li>
                                     <strong>运费：</strong>
-                                    <span class="price">￥0.00</span>
+                                    <span class="price">￥200.00</span>
                                 </li>
                                 <li>
                                     <strong>优惠金额：</strong>
@@ -132,7 +144,7 @@
                                 </li>
                                 <li>
                                     <strong>结算金额：</strong>
-                                    <span class="price settlements">￥4,800.00</span>
+                                    <span class="price settlements">￥{{allPrice}}.00</span>
                                 </li>
                             </ul>
                         </div>
@@ -141,7 +153,7 @@
             </div>
             <div class="order-info pd">
                 <div class="order-submit">
-                    <p>应付金额：<b class="order-submit_price">￥4800.00</b></p>
+                    <p>应付金额：<b class="order-submit_price">￥{{allPrice}}.00</b></p>
                 </div>
                 <!-- 无收货地址 -->
                 <!-- <div class="ship-to_add pd-20">
@@ -169,9 +181,60 @@
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
 import { reactive, ref } from 'vue'
-import { useCounterStore } from '@/stores/counter';
-let {commodityInfo} = useCounterStore();
+import { addressListApi } from '@/api/api';
+import  codeLists from './codeList';
+let { selectedOptions } = codeLists()
+console.log(selectedOptions);
+let receiptList = ref();//地址数据
+let codeList :any = [];//coed码对应是name
+let codeListGoRepeat = ref();
+// 获取收货地址
+addressListApi({}).then(res => {
+    console.log(res.data.data);
+    receiptList.value = res.data.data;
+    res.data.data.forEach((el:any) => {
+        selectedOptions.forEach((item:any)=>{
+            if (item.code == el.provinceCode) {
+                console.log(item);//拿到省的code码和name
+                codeList.push(item)
+            }
+            item.children.forEach((els:any)=>{
+                if (els.code == el.cityCode) {
+                    console.log(els);//拿到市的code码和name
+                    codeList.push(els)
+                }
+                if (!els.children) {
+                    return
+                }else{
+                    els.children.forEach((elss:any) => {
+                        if (elss.code == el.areaCode) {
+                            console.log(elss);//拿到区的code码和name
+                            codeList.push(elss)
+                        }
+                    });
+                }
+            })
+            
+        })
+        codeListGoRepeat.value = [...new Set(codeList)]
+        console.log([...new Set(codeList)]);
+        // console.log(el.areaCode);//地区
+        // console.log(el.cityCode);//城市
+        // console.log(el.provinceCode);//省份
+    })
+});
+    
+// 车一页面选购的商品数据
+interface commodityInfo{
+    quantity: number; 
+    originalPrice: number;
+}
+let commodityInfo = JSON.parse(sessionStorage.getItem('commodityInfo') as any); 
 console.log(commodityInfo);
+let allPrice = ref(0.00);//结算金额
+commodityInfo.forEach((el:commodityInfo) => {
+    allPrice.value += (el.quantity * el.originalPrice);
+});
 
 const dialogTableVisible = ref(false)
 const dialogFormVisible = ref(false)
@@ -241,6 +304,7 @@ main{
     width: 140px;
     align-items: flex-end;
     justify-content: space-between;
+    height: 45px;
 }
 .content{
     border: 1px solid #ebeef5;
@@ -340,22 +404,41 @@ main{
     padding: 20px;
     font-size: 14px;
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 .order-main img{
-    width: 100px;
-    height: 100px;
+    width: 25%;
+    border-radius: 12px;
 }
 .order-name{
     display: flex;
     justify-content: space-between;
+    width: 100%;
+}
+.user-name{
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-start; */
+    justify-content: space-between;
 }
 .name{
-    /* width: 360px; */
+    width: 360px;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-start; */
+    justify-content: space-between;
+}
+.cuisine{
+    font-weight: 550;
+}
+.foodname{
+    color: #ca141d;
+    font-size: 18px;
 }
 .order-name p{
-    width: 150px;
+    /* width: 150px; */
     text-align: center;
 }
 /* 发票 */
@@ -388,8 +471,8 @@ main{
     background: #fff;
     position: absolute;
     z-index: 1;
-    top: 4.2px;
-    left: 3.7px;
+    top: 3.9px;
+    left: 4.2px;
     box-shadow: 0 -2px 2px 0 rgb(146 5 12 / 50%);
 }
 .order-delivery{
@@ -474,5 +557,10 @@ main{
 }
 .settlement-btn a:hover{
     cursor: pointer;
+}
+.codeList{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 </style>

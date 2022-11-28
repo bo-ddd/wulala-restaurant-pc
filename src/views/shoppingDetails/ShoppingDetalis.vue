@@ -34,7 +34,7 @@
                     <div class="bj-white grid" v-for="item in foodAppraise">
                         <div v-for="users in item.users">
                             <img class="avatar-size" :src=users.avatarImg alt="">
-                            <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                            <span class="user-name">{{ item.isRealName == 0 ? '匿名' : users.avatarName }}</span>
                         </div>
                         <div>
                             <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
@@ -47,7 +47,7 @@
                     <div class="bj-white grid"  v-for="item in goodAppraise">
                             <div v-for="users in item.users"  v-if="item.star >= 4" class="bj-white">
                                 <img class="avatar-size" :src=users.avatarImg alt="">
-                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : users.avatarName }}</span>
                             </div>
                             <div  v-if="item.star >= 4" class="bj-white">
                                 <el-rate disabled v-model="item.star" :max="5" allow-half :colors="['#409eff', '#67c23a', '#FF9900']"/>
@@ -60,7 +60,7 @@
                     <div class="bj-white grid"  v-for="item in midAppraise">
                             <div v-for="users in item.users" v-if="item.star == 3" class="bj-white">
                                 <img class="avatar-size" :src=users.avatarImg alt="">
-                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : users.avatarName }}</span>
                             </div>
                             <div v-if="item.star == 3" class="bj-white">
                                 <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
@@ -73,7 +73,7 @@
                     <div class="bj-white grid" v-for="item in badAppraise">
                             <div v-for="users in item.users" v-if="item.star <= 2" class="bj-white">
                                 <img class="avatar-size" :src=users.avatarImg alt="">
-                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : reviewUserInfo.avatarName }}</span>
+                                <span class="user-name">{{ item.isRealName == 0 ? '匿名' : users.avatarName }}</span>
                             </div>
                             <div v-if="item.star <= 2" class="bj-white">
                                 <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
@@ -135,7 +135,6 @@ let route = useRoute();
 let centerDialogVisible = ref(false);
 let foodlist: any = ref({});
 let foodAppraise = ref();
-let reviewUserInfo = ref();
 let appraiseContent: any = ref('');
 let star = ref(0);
 let allAppraise = ref();
@@ -168,7 +167,7 @@ const handleCurrentChange = (val: number) => {
 //   console.log(`current page: ${val}`)
     currentPage.value = val;
     foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:5,pageNum:currentPage.value}).then(res => {
-        foodAppraise.value = res.data.list;
+        foodAppraise.value = res.data.data.list;
         // 好评 差评
         goodAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 4);
         midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
@@ -176,11 +175,10 @@ const handleCurrentChange = (val: number) => {
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
         degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
         allAppraiseLength.value = allAppraise.value.length;
-        currentPage.value = res.data.pageNum;
-        // pageSize.value = res.data.pageSize;
+        currentPage.value = res.data.data.pageNum;
+        // pageSize.value = res.data.data.pageSize;
     })
     console.log( currentPage.value);
-    
     // dishesEva();
 }
 
@@ -194,10 +192,9 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
  */
 gatFoodListApi().then(res => {
     // console.log(res);
-    res.data.list.forEach((item: any) => {
+    res.data.data.list.forEach((item: any) => {
         if (route.query.shoppingDetalisId == item.foodId) {
             foodlist.value = item;
-            console.log(foodlist.value);
         }
     })
 })
@@ -208,8 +205,9 @@ dishesEva();
  
 function dishesEva() {
     foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:pageSize.value,pageNum:currentPage.value}).then(res => {
-        console.log(res.data.list);
-        foodAppraise.value = res.data.list;
+        console.log(res.data.data.list);
+        
+        foodAppraise.value = res.data.data.list;
         // 好评 差评
         goodAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 4);
         midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
@@ -217,7 +215,8 @@ function dishesEva() {
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
         degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
         allAppraiseLength.value = allAppraise.value.length;
-        total.value = res.data.total;
+        total.value = res.data.data.total;
+
     })
 }
 function appraise() {
@@ -232,10 +231,10 @@ async function submitAppraise() {
         foodId: route.query.shoppingDetalisId,
         content: appraiseContent.value,
         star: star.value,
-        isRealName: 0
+        isRealName: value1.value == true ? 1 : 0
     });
-    console.log('又增加了一个评论');
     console.log(res);
+    console.log('又增加了一个评论');
     dishesEva();
     centerDialogVisible.value = false;
 }

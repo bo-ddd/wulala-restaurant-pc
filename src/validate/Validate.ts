@@ -15,7 +15,7 @@ export default abstract class Validate<T> {
     private rule: Rule<T>
 
     constructor(payload: T) {
-        this.payload = payload
+        this.payload = payload;
         this.rule = this.ruleConfig();
     }
 
