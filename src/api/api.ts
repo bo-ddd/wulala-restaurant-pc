@@ -125,3 +125,10 @@ export const cartAddApi = function (payload = {}) {
  export const addressListApi = function (payload = {}) {
     return $axios.post('/delivery/address/list', payload)
 }
+/**
+ * @description 加入购物车
+ * @param payload object
+ */
+ export const  addShoppingCartApi = function (payload = {}) {
+    return $axios.post('/cart/add', payload)
+}
