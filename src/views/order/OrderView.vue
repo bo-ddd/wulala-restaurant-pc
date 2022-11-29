@@ -419,6 +419,8 @@
 </template>
 
 <script setup lang="ts">
+import { useId } from '@/stores/getUserId';
+import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import type { TabsPaneContext } from "element-plus";
 import {
@@ -428,6 +430,10 @@ import {
   Setting,
   Search,
 } from "@element-plus/icons-vue";
+let aa = useId()
+aa.getUserIds();
+let { userId } = storeToRefs(aa);
+console.log(userId.value);
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
