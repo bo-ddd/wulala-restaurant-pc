@@ -34,7 +34,6 @@ export default abstract class Validate<T> {
             let fn: Function = this.rule[key]
             let v: ValidaResult = fn(this.payload[key])
             console.log('-----------v------------');
-            
             console.log(v);
             if (!v.isOk) return v;
         }

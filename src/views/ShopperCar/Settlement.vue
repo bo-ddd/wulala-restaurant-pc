@@ -41,18 +41,21 @@
                                 <el-form-item label="固定电话" :label-width="formLabelWidth">
                                     <el-input v-model="form.lockPhone" autocomplete="off" placeholder="86+" />
                                 </el-form-item>
+                                <el-form-item label="是否设为默认地址" :label-width="formLabelWidth">
+                                    <el-checkbox v-model="checked" label="设为默认地址" size="large" />
+                                </el-form-item>
                                 <el-form-item label="地址别名" :label-width="formLabelWidth">
                                     <el-select v-model="form.region" placeholder="">
-                                    <el-option label="家" value="shanghai" />
-                                    <el-option label="父母家" value="beijing" />
-                                    <el-option label="公司" value="beijing" />
+                                    <el-option label="家" value="家" />
+                                    <el-option label="父母家" value="父母家" />
+                                    <el-option label="公司" value="公司" />
                                     </el-select>
                                 </el-form-item>
                             </el-form>
                             <template #footer>
                                 <span class="dialog-footer">
                                     <el-button @click="dialogFormVisible = false">取消</el-button>
-                                    <el-button type="primary" @click="dialogFormVisible = false">确定</el-button>
+                                    <el-button type="primary" @click="addCreate()">确定</el-button>
                                 </span>
                             </template>
                         </el-dialog>
@@ -181,8 +184,10 @@
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
 import { reactive, ref } from 'vue'
-import { addressListApi } from '@/api/api';
+import { addressListApi , addressCreateApi} from '@/api/api';
 import  codeLists from './codeList';
+import {ElMessage} from 'element-plus';
+import AddAddressValidate from '@/validate/AddAddressValidate';
 let { selectedOptions } = codeLists()
 console.log(selectedOptions);
 let receiptList = ref();//地址数据
@@ -237,7 +242,7 @@ commodityInfo.forEach((el:commodityInfo) => {
 });
 
 const dialogTableVisible = ref(false)
-const dialogFormVisible = ref(false)
+const dialogFormVisible = ref(false);//新增收货地址弹层
 const formLabelWidth = '140px'
 
 const form = reactive({
@@ -248,12 +253,17 @@ const form = reactive({
   region: '',//地址别名
   type: [],
 })
+
+let checked = ref(false);//是否设为默认地址
 // 三级联动
-const chinaData = new EluiChinaAreaDht.ChinaArea().chinaAreaflat;
+const one = ref();
+const two = ref();
+const three = ref();
+const chinaData = new EluiChinaAreaDht.ChinaArea().chinaAreaflat;//收货地址
 function onChange(e:any) {
-  const one = chinaData[e[0]]
-  const two = chinaData[e[1]]
-  const three = chinaData[e[2]]
+    one.value = chinaData[e[0]]
+    two.value = chinaData[e[1]]
+    three.value = chinaData[e[2]]
   console.log(one, two,three)
 }
 const isActive = ref(true);
@@ -272,6 +282,36 @@ const ViewAllAdd = function(){
 const StowAdd = function(){
     isViewAllAdd.value = false;
     isStowAdd.value = true
+}
+// 新增收货地址
+const addCreate = function(){
+    const formAddress = reactive({
+        address:form.address,//详细地址
+        phone:form.phone,//手机号
+        lockPhone:form.lockPhone,//固定手机号
+        name:form.name,//收货人
+        chinaDatas:one.value,//地址
+    })
+    let v = new AddAddressValidate(formAddress);
+    v.validate(function () {
+        addressCreateApi({
+            provinceCode:one.value.value,//省编码
+            cityCode:two.value.value,//市编码
+            areaCode:three.value.value,//区编码
+            address:formAddress.address,//详细地址
+            isDefaultActive:checked.value==false  ? '0' : '1',//默认地址
+            phoneNumber:formAddress.phone,//手机号
+            receiver:formAddress.name,//收货人名字
+        }).then(res => {
+            if (res.data.msg == '成功') {
+                console.log(res);
+                ElMessage.warning('添加成功');
+                dialogFormVisible.value = false;
+            } else {
+                ElMessage.warning(res.data.msg)
+            }
+        })
+    })
 }
 </script>
 
