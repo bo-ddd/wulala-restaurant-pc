@@ -122,14 +122,20 @@ export const cartAddApi = function (payload = {}) {
  * @description 收货地址列表
  * @param payload object
  */
- export const addressListApi = function (payload = {}) {
+export const addressListApi = function (payload = {}) {
     return $axios.post('/delivery/address/list', payload)
 }
 /**
- * @description 新增收货地址
+ * @description 加入购物车
  * @param payload object
  */
- export const addressCreateApi = function (payload = {}) {
+export const addShoppingCartApi = function (payload = {}) {
+    return $axios.post('/cart/add', payload)
+}
+/* @description 新增收货地址
+* @param payload object
+*/
+export const addressCreateApi = function (payload = {}) {
     return $axios.post('/delivery/address/create', payload)
 }
 /**
