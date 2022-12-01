@@ -16,4 +16,5 @@ export interface AddressPayLoad {
     phone: string, 
     lockPhone:string,
     name:string,
+    chinaDatas:Function,
 }

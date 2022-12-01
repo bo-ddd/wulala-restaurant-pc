@@ -14,9 +14,6 @@
             </div>
             <!-- 收货人信息 -->
             <div class="content plr-20 m-20">
-                <!-- <div>
-                配送至：<elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
-                </div> -->
                 <div class="df-sp m-20">
                     <h3>收货人信息</h3>
                     <div>
@@ -62,36 +59,40 @@
                     </div>
                 </div>
                 <!-- consignee  收货人 -->
-                <div class="consignee-content mb-20" @mouseover="mouseover(item)" @mouseout="mouseout(item)" v-for="item in receiptList">
-                    <div class="df-sp ps-r">
-                        <div class="user-info mb-10">
-                            <p class="user-name">{{item.receiver}}</p>
-                            <p class="phones">{{item.phoneNumber}}</p>
-                            <div class="default" :class="{none:item.isDefaultActive == 0 ? true : false}" >默认地址</div>
+                <div v-for="(item,index) in receiptList">
+                    <div class="consignee-content mb-20" 
+                        @mouseover="mouseover(item)" 
+                        @mouseout="mouseout(item)" 
+                        @click="choiceAddress(index)"
+                        :class="{br:index == indexs?true:false}"
+                        >
+                        <div class="df-sp ps-r">
+                            <div class="user-info mb-10">
+                                <p class="user-name">{{item.receiver}}</p>
+                                <p class="phones">{{item.phoneNumber}}</p>
+                                <div class="default" :class="{none:item.isDefaultActive == 0 ? true : false}" >默认地址</div>
+                            </div>
+                            <!-- 操作 -->
+                            <div class="operation" :class="{none : !item.is}">
+                                <p class="delete" @click="defaults(item)" :class="{none:item.isDefaultActive == 0 ? false : true}">设为默认</p>
+                                <span class="delete" @click="deleteAddress(item.id)">删除</span>
+                                <p class="delete" @click="edit(item)">编辑</p>
+                            </div>
                         </div>
-                        <!-- 操作 -->
-                        <div class="operation" :class="{none : !item.is}">
-                            
-                            <p class="delete" @click="defaults(item)" :class="{none:item.isDefaultActive == 0 ? false : true}">设为默认</p>
-                            <span class="delete" @click="deleteAddress(item.id)">删除</span>
-                            <p class="delete" @click="edit(item)">编辑</p>
-                            <!-- 提示是否删除 -->
-                           
+                        <!-- 地址 -->
+                        <div class="address">
+                            <p class="codeList">
+                                <span v-for="element in codeListGoRepeat">
+                                    <span class="pr-10" v-if="element.code == item.provinceCode">{{element.name}}</span> 
+                                    <span class="pr-10" v-if="element.code == item.cityCode">{{element.name}}</span> 
+                                    <span class="pr-10" v-if="element.code == item.areaCode">{{element.name}}</span>
+                                </span>
+                                <span>{{item.address}}</span>
+                            </p>
                         </div>
-                    </div>
-                    <!-- 地址 -->
-                    <div class="address">
-                        <p class="codeList">
-                            <span v-for="element in codeListGoRepeat">
-                                <span class="pr-10" v-if="element.code == item.provinceCode">{{element.name}}</span> 
-                                <span class="pr-10" v-if="element.code == item.cityCode">{{element.name}}</span> 
-                                <span class="pr-10" v-if="element.code == item.areaCode">{{element.name}}</span>
-                            </span>
-                            <span>{{item.address}}</span>
-                        </p>
-                    </div>
-                </div> 
-                <div class="order-add mb-20">
+                    </div> 
+                </div>
+                <div class="order-add mb-20" v-if="receiptList != ''">
                     <p class="view-all-add" @click="ViewAllAdd" :class="{none : isViewAllAdd}">查看全部地址</p>
                     <p class="stow-add" @click="StowAdd" :class="{none:isStowAdd}">收起地址</p>
                 </div>
@@ -154,11 +155,11 @@
                     <p>应付金额：<b class="order-submit_price">￥{{allPrice}}.00</b></p>
                 </div>
                 <!-- 无收货地址 -->
-                <!-- <div class="ship-to_add pd-20">
+                <div class="ship-to_add pd-20" v-if="receiptList == ''">
                     <span>无收货地址不可下单，<a href="#">点击填充</a></span>
-                </div> -->
+                </div>
                 <!-- 配送至 -->
-                <div class="delivery-to">
+                <div class="delivery-to" v-else>
                     <p class="delivery">配送至：</p>
                     <div>
                         <p>山西省 阳泉市 盂县 吸烟者 南村</p>
@@ -271,7 +272,7 @@ const mouseout = function(item:any){
 }
 
 
-let isViewAllAdd = ref(false)
+let isViewAllAdd = ref(false);
 let isStowAdd = ref(true);
 const ViewAllAdd = function(){
     isViewAllAdd.value = true;
@@ -383,6 +384,12 @@ const defaults = function(item:defaultAddress){
         }
     })
 }
+// 点击选择地址
+let indexs = ref(0);
+const choiceAddress = function(index:any){
+    indexs.value = index;
+    console.log(indexs.value);
+}
 </script>
 
 <style scoped>
@@ -440,10 +447,14 @@ main{
 }
 .consignee-content{
     padding: 16px;
-    border: 1px solid red;
+    border: 1px solid #f1f1f1;
+}
+.br{
+    border: 1px solid red !important;
 }
 .consignee-content:hover{
     cursor: pointer;
+    border: 1px solid #ccc;
 }
 .delete:hover{
     color: red;
