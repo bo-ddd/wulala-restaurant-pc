@@ -21,9 +21,9 @@
               <div class="header-fw">服务</div>
               <div class="header-fw">线下门店</div> -->
               <div class="header-fw" 
-              v-for="(item,        index) in routeList"
-              :class="{        active:        !(index        -        menuIndex)        }" 
-              @click="clickList(item.label,        index)">{{        item.name        }}</div>
+              v-for="(item,index) in routeList"
+              :class="{active:!(index-menuIndex)}" 
+              @click="clickList(item.label,index)">{{item.name}}</div>
               <el-icon class="icon" size="24">
                 <Search />
               </el-icon>
@@ -34,11 +34,11 @@
                   </el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu v-if="token == null">
+                  <el-dropdown-menu v-show="token == null">
                     <el-dropdown-item @click="navigator('login')">登录</el-dropdown-item>
                     <el-dropdown-item divided @click="navigator('register')">注册</el-dropdown-item>
                   </el-dropdown-menu>
-                  <el-dropdown-menu v-else>
+                  <el-dropdown-menu v-show="token != null">
                     <el-dropdown-item>个人中心</el-dropdown-item>
                     <el-dropdown-item divided @click="exitLogin">退出</el-dropdown-item>
                   </el-dropdown-menu>
@@ -54,7 +54,9 @@
       </el-header>
 
       <el-main>
-          <RouterView />     
+
+          <RouterView />
+      
       </el-main>
       <el-footer>
         <div>
@@ -157,49 +159,52 @@ import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';
 let router = useRouter();
 let route = useRoute()
-let token = ref(sessionStorage.getItem('token'))
+let token = sessionStorage.getItem('token')
 
 const isActive = ref(false)
 function navigator(name: string) {
   router.push({ name: name })
 }
-function clickList(name: string, i: number) {
+function clickList(name: string,i:number){
   router.push({ name: name })
   menuIndex.value = i
 }
-function exitLogin() {
-  sessionStorage.removeItem('token');
-  console.log(token.value);
-  
-  router.push({ name: 'home' });
+function exitLogin(){
+  sessionStorage.removeItem("token");
+  token = sessionStorage.getItem('token') 
+  // sessionStorage.setItem('token', '');
+  router.push({name:'login'});
+  router.push({name:'home'});
+console.log(token);
+
 }
 
-let menuIndex = ref(0);
+let menuIndex  = ref(0);
 let routeList = [
   {
-    name: '首页',
-    label: 'home',
-    index: 0
+    name:'首页',
+    label:'home',
+    index:0
   },
   {
-    name: '购物中心',
-    label: 'mall',
-    index: 1
+    name:'购物中心',
+    label:'mall',
+    index:1
   },
   {
-    name: '购物车',
-    label: 'shoppercar',
-    index: 2
+    name:'购物车',
+    label:'shoppercar',
+    index:2
   },
   {
-    name: '服务',
-    label: '',
-    index: 3
+    name:'服务',
+    label:'',
+    index:3
   },
   {
-    name: '线下门店',
-    label: '',
-    index: 4
+    name:'线下门店',
+    label:'',
+    index:4
   }
 ]
 routeList.forEach(el => {

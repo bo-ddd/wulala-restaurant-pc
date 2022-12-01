@@ -139,6 +139,12 @@ export const addressCreateApi = function (payload = {}) {
     return $axios.post('/delivery/address/create', payload)
 }
 /**
+ * @desscription 订单列表
+ */
+export const orderListApi = function (payload ={}) {
+    return $axios.post('/order/list', payload)
+}
+/*
  * @description 删除收货地址
  * @param payload object
  */
