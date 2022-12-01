@@ -34,11 +34,11 @@
                   </el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu v-if="token == ''">
+                  <el-dropdown-menu v-show="token == null">
                     <el-dropdown-item @click="navigator('login')">登录</el-dropdown-item>
                     <el-dropdown-item divided @click="navigator('register')">注册</el-dropdown-item>
                   </el-dropdown-menu>
-                  <el-dropdown-menu v-else>
+                  <el-dropdown-menu v-show="token != null">
                     <el-dropdown-item>个人中心</el-dropdown-item>
                     <el-dropdown-item divided @click="exitLogin">退出</el-dropdown-item>
                   </el-dropdown-menu>
@@ -159,7 +159,7 @@ import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';
 let router = useRouter();
 let route = useRoute()
-let token = sessionStorage.getItem('token') 
+let token = sessionStorage.getItem('token')
 
 const isActive = ref(false)
 function navigator(name: string) {
@@ -170,8 +170,12 @@ function clickList(name: string,i:number){
   menuIndex.value = i
 }
 function exitLogin(){
-  sessionStorage.setItem('token','');
+  sessionStorage.removeItem("token");
+  token = sessionStorage.getItem('token') 
+  // sessionStorage.setItem('token', '');
+  router.push({name:'login'});
   router.push({name:'home'});
+console.log(token);
 
 }
 
