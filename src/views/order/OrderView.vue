@@ -58,42 +58,20 @@
                 </tr>
                 <tr class="tr-bd">
                   <td class="td-shops">
-                  <tr class="tr-shop">
+
+                  <tr v-for="(item,index) in ordereRow" :key="index">
                     <td class="td-shop">
                     <div class="goods-item">
                       <div class="p-img">
-                        <img src="@/assets/images/jer.jpg" alt="" />
+                        <img :src="item.bannerUrl" alt="" />
                       </div>
                       <div class="p-msg">
                         <div class="p-name">
-                          京耳
-                          蓝牙耳机真无线运动跑步游戏音乐降噪电脑双耳适用智能手机
-                          白色
+                          {{item.productName}}
                         </div>
                       </div>
                     </div>
-                    <div class="goods-number">x1</div>
-                    <div class="goods-repair">
-                      <span class="br">申请售后</span>
-                      <span class="br">卖了换钱</span>
-                    </div>
-                  </td>
-                </tr>
-                  <tr class="tr-shop">
-                  <td>
-                    <div class="goods-item">
-                      <div class="p-img">
-                        <img src="@/assets/images/jer.jpg" alt="" />
-                      </div>
-                      <div class="p-msg">
-                        <div class="p-name">
-                          京耳
-                          蓝牙耳机真无线运动跑步游戏音乐降噪电脑双耳适用智能手机
-                          白色
-                        </div>
-                      </div>
-                    </div>
-                    <div class="goods-number">x1</div>
+                    <div class="goods-number">x{{item.num}}</div>
                     <div class="goods-repair">
                       <span class="br">申请售后</span>
                       <span class="br">卖了换钱</span>
@@ -118,7 +96,6 @@
                           <img
                             class="user-img"
                             src="@/assets/images/icon-user.png"
-                            alt=""
                           />
                         </div>
                       </template>
@@ -470,6 +447,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 };
 const input3 = ref("");
 const orderLists = ref({});
+const ordereRow = ref({});
 
 async function getUserId() {
   let res = await queryUserInfoApi();
@@ -478,6 +456,10 @@ async function getUserId() {
   });
   console.log(orderList.data.data.list);
   orderLists.value = orderList.data.data.list;
+  orderList.data.data.list.forEach(item => {
+    console.log(item.rows);
+      ordereRow.value = item.rows;
+  });
 }
 getUserId();
 </script>
@@ -589,6 +571,10 @@ td {
   margin: 0 14px;
   position: relative;
 }
+.p-img img{
+  width: 60px;
+  height: 60px;
+}
 .p-msg {
   width: 240px;
   float: left;
@@ -689,9 +675,6 @@ td {
 }
 .origin {
   color: #ff460a;
-}
-.tr-shop{
-  /* width: 400px; */
 }
 .td-shop{
   width: 450px;
