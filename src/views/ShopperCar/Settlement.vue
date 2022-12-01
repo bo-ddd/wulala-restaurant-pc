@@ -14,20 +14,17 @@
             </div>
             <!-- 收货人信息 -->
             <div class="content plr-20 m-20">
-                <!-- <div>
-                配送至：<elui-china-area-dht isall :leave="4" @change="onChange"></elui-china-area-dht>
-                </div> -->
                 <div class="df-sp m-20">
                     <h3>收货人信息</h3>
                     <div>
-                        <el-button text @click="dialogFormVisible = true">
+                        <el-button text @click="address">
                             新增收货地址
                         </el-button>
     
                         <el-dialog v-model="dialogFormVisible" title="新增收货人信息">
                             <el-form :model="form">
                                 <el-form-item label="所在地区" :label-width="formLabelWidth">
-                                    <elui-china-area-dht isall :leave="4" @change="onChange" placeholder="请选择地区"></elui-china-area-dht>
+                                    <elui-china-area-dht isall :leave="4" @change="onChange" v-model="option" placeholder="请选择地区"></elui-china-area-dht>
                                 </el-form-item>
                                 <el-form-item label="收货人" :label-width="formLabelWidth">
                                     <el-input v-model="form.name" autocomplete="off" />
@@ -62,41 +59,40 @@
                     </div>
                 </div>
                 <!-- consignee  收货人 -->
-                <div class="consignee-content mb-20" @mouseover="mouseover" @mouseout="mouseout" v-for="item in receiptList">
-                    <div class="df-sp">
-                        <div class="user-info mb-10">
-                            <p class="user-name">{{item.receiver}}</p>
-                            <p class="phones">{{item.phoneNumber}}</p>
-                            <div class="default" :class="{none:item.isDefaultActive == 0 ? true : false}" >默认地址</div>
+                <div v-for="(item,index) in receiptList">
+                    <div class="consignee-content mb-20" 
+                        @mouseover="mouseover(item)" 
+                        @mouseout="mouseout(item)" 
+                        @click="choiceAddress(index)"
+                        :class="{br:index == indexs?true:false}"
+                        >
+                        <div class="df-sp ps-r">
+                            <div class="user-info mb-10">
+                                <p class="user-name">{{item.receiver}}</p>
+                                <p class="phones">{{item.phoneNumber}}</p>
+                                <div class="default" :class="{none:item.isDefaultActive == 0 ? true : false}" >默认地址</div>
+                            </div>
+                            <!-- 操作 -->
+                            <div class="operation" :class="{none : !item.is}">
+                                <p class="delete" @click="defaults(item)" :class="{none:item.isDefaultActive == 0 ? false : true}">设为默认</p>
+                                <span class="delete" @click="deleteAddress(item.id)">删除</span>
+                                <p class="delete" @click="edit(item)">编辑</p>
+                            </div>
                         </div>
-                        <!-- 操作 -->
-                        <div class="operation" :class="{none : isActive}">
-                            <el-popconfirm 
-                            title="您确认要删除该地址吗?" 
-                            width="200px"
-                            confirm-button-text="确认"
-                            cancel-button-text="取消"
-                            >
-                                <template #reference>
-                                    <span class="delete">删除</span>
-                                </template>
-                            </el-popconfirm>
-                            <p class="delete" @click="dialogFormVisible = true">编辑</p>
+                        <!-- 地址 -->
+                        <div class="address">
+                            <p class="codeList">
+                                <span v-for="element in codeListGoRepeat">
+                                    <span class="pr-10" v-if="element.code == item.provinceCode">{{element.name}}</span> 
+                                    <span class="pr-10" v-if="element.code == item.cityCode">{{element.name}}</span> 
+                                    <span class="pr-10" v-if="element.code == item.areaCode">{{element.name}}</span>
+                                </span>
+                                <span>{{item.address}}</span>
+                            </p>
                         </div>
-                    </div>
-                    <!-- 地址 -->
-                    <div class="address">
-                        <p class="codeList">
-                            <span v-for="element in codeListGoRepeat">
-                                <span v-if="element.code == item.provinceCode">{{element.name}}</span> 
-                                <span v-if="element.code == item.cityCode">{{element.name}}</span> 
-                                <span v-if="element.code == item.areaCode">{{element.name}}</span>
-                            </span>
-                            <span>{{item.address}}</span>
-                        </p>
-                    </div>
-                </div> 
-                <div class="order-add mb-20">
+                    </div> 
+                </div>
+                <div class="order-add mb-20" v-if="receiptList != ''">
                     <p class="view-all-add" @click="ViewAllAdd" :class="{none : isViewAllAdd}">查看全部地址</p>
                     <p class="stow-add" @click="StowAdd" :class="{none:isStowAdd}">收起地址</p>
                 </div>
@@ -159,11 +155,11 @@
                     <p>应付金额：<b class="order-submit_price">￥{{allPrice}}.00</b></p>
                 </div>
                 <!-- 无收货地址 -->
-                <!-- <div class="ship-to_add pd-20">
+                <div class="ship-to_add pd-20" v-if="receiptList == ''">
                     <span>无收货地址不可下单，<a href="#">点击填充</a></span>
-                </div> -->
+                </div>
                 <!-- 配送至 -->
-                <div class="delivery-to">
+                <div class="delivery-to" v-else>
                     <p class="delivery">配送至：</p>
                     <div>
                         <p>山西省 阳泉市 盂县 吸烟者 南村</p>
@@ -184,58 +180,60 @@
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
 import { reactive, ref } from 'vue'
-import { addressListApi , addressCreateApi} from '@/api/api';
+import { addressListApi , addressCreateApi,addressDeleteApi ,addressUpdateApi} from '@/api/api';
 import  codeLists from './codeList';
 import {ElMessage} from 'element-plus';
 import AddAddressValidate from '@/validate/AddAddressValidate';
-let { selectedOptions } = codeLists()
-console.log(selectedOptions);
+let { selectedOptions } = codeLists(); //地址code码
+// console.log(selectedOptions);
 let receiptList = ref();//地址数据
 let codeList :any = [];//coed码对应是name
 let codeListGoRepeat = ref();
 // 获取收货地址
-addressListApi({}).then(res => {
-    console.log(res.data.data);
-    receiptList.value = res.data.data;
-    res.data.data.forEach((el:any) => {
-        selectedOptions.forEach((item:any)=>{
-            if (item.code == el.provinceCode) {
-                console.log(item);//拿到省的code码和name
-                codeList.push(item)
-            }
-            item.children.forEach((els:any)=>{
-                if (els.code == el.cityCode) {
-                    console.log(els);//拿到市的code码和name
-                    codeList.push(els)
+function addressList(){
+    addressListApi({}).then(res => {
+        receiptList.value = res.data.data;
+        res.data.data.forEach((el:any) => {
+            selectedOptions.forEach((item:any)=>{
+                if (item.code == el.provinceCode) {
+                    // console.log(item);//拿到省的code码和name
+                    codeList.push(item)
                 }
-                if (!els.children) {
-                    return
-                }else{
-                    els.children.forEach((elss:any) => {
-                        if (elss.code == el.areaCode) {
-                            console.log(elss);//拿到区的code码和name
-                            codeList.push(elss)
-                        }
-                    });
-                }
+                item.children.forEach((els:any)=>{
+                    if (els.code == el.cityCode) {
+                        // console.log(els);//拿到市的code码和name
+                        codeList.push(els)
+                    }
+                    if (!els.children) {
+                        return
+                    }else{
+                        els.children.forEach((elss:any) => {
+                            if (elss.code == el.areaCode) {
+                                // console.log(elss);//拿到区的code码和name
+                                codeList.push(elss)
+                            }
+                        });
+                    }
+                })
+                
             })
-            
+            codeListGoRepeat.value = [...new Set(codeList)]
+            // console.log([...new Set(codeList)]);
+            // console.log(el.areaCode);//地区
+            // console.log(el.cityCode);//城市
+            // console.log(el.provinceCode);//省份
         })
-        codeListGoRepeat.value = [...new Set(codeList)]
-        console.log([...new Set(codeList)]);
-        // console.log(el.areaCode);//地区
-        // console.log(el.cityCode);//城市
-        // console.log(el.provinceCode);//省份
-    })
-});
-    
+    });
+}
+addressList();
 // 车一页面选购的商品数据
 interface commodityInfo{
     quantity: number; 
     originalPrice: number;
 }
+// 获取商品信息
 let commodityInfo = JSON.parse(sessionStorage.getItem('commodityInfo') as any); 
-console.log(commodityInfo);
+// console.log(commodityInfo);
 let allPrice = ref(0.00);//结算金额
 commodityInfo.forEach((el:commodityInfo) => {
     allPrice.value += (el.quantity * el.originalPrice);
@@ -264,16 +262,17 @@ function onChange(e:any) {
     one.value = chinaData[e[0]]
     two.value = chinaData[e[1]]
     three.value = chinaData[e[2]]
-  console.log(one, two,three)
 }
-const isActive = ref(true);
-const mouseover = function(){
-    isActive.value = false;
+
+const mouseover = function(item:any){
+    item.is = true;
 }
-const mouseout = function(){
-    isActive.value = true;
+const mouseout = function(item:any){
+    item.is = false;
 }
-let isViewAllAdd = ref(false)
+
+
+let isViewAllAdd = ref(false);
 let isStowAdd = ref(true);
 const ViewAllAdd = function(){
     isViewAllAdd.value = true;
@@ -284,6 +283,12 @@ const StowAdd = function(){
     isStowAdd.value = true
 }
 // 新增收货地址
+const address = function(){
+    form.name = '';
+    form.phone = '';
+    form.address = '';
+    dialogFormVisible.value = true
+}
 const addCreate = function(){
     const formAddress = reactive({
         address:form.address,//详细地址
@@ -304,14 +309,86 @@ const addCreate = function(){
             receiver:formAddress.name,//收货人名字
         }).then(res => {
             if (res.data.msg == '成功') {
-                console.log(res);
-                ElMessage.warning('添加成功');
+                ElMessage.success('添加成功');
+                addressList();
                 dialogFormVisible.value = false;
             } else {
                 ElMessage.warning(res.data.msg)
             }
         })
     })
+}
+
+// 地址删除按钮
+const deleteAddress = function(ids:number){
+    addressDeleteApi({
+        id:ids
+    }).then(res =>{
+        console.log(res);
+        if (res.data.status == 1) {
+            addressList()
+        }else{
+            ElMessage({
+                message: res.data.msg,
+                type: 'warning',
+            })
+        }
+    })
+}
+// 地址编辑按钮
+let option = ref()
+const edit  = function(item:any){
+    console.log(item);
+    form.name = item.receiver;
+    form.phone = item.phoneNumber;
+    form.address = item.address;
+
+//   address:'',//详细地址
+//   phone:'',//手机号
+//   lockPhone:'',//固定手机号
+//   name: '',//收货人
+//   region: '',//地址别名
+    dialogFormVisible.value = true;
+
+}
+
+// 设为默认地址
+interface defaultAddress{
+    id?:number,
+    provinceCode?:number,
+    cityCode?:number,
+    areaCode?:number,
+    address?:string,
+    isDefaultActive?:number,
+    phoneNumber?:string,
+    receiver?:string
+}
+const defaults = function(item:defaultAddress){
+    addressUpdateApi({
+        id:item.id,
+        provinceCode:item.provinceCode,
+        cityCode:item.cityCode,
+        areaCode:item.areaCode,
+        address:item.address,
+        isDefaultActive:1,
+        phoneNumber:item.phoneNumber,
+        receiver:item.receiver,
+    }).then(res => {
+        if (res.data.status == 1) {
+            addressList()
+        }else{
+            ElMessage({
+                message: res.data.msg,
+                type: 'warning',
+            })
+        }
+    })
+}
+// 点击选择地址
+let indexs = ref(0);
+const choiceAddress = function(index:any){
+    indexs.value = index;
+    console.log(indexs.value);
 }
 </script>
 
@@ -370,10 +447,14 @@ main{
 }
 .consignee-content{
     padding: 16px;
-    border: 1px solid red;
+    border: 1px solid #f1f1f1;
+}
+.br{
+    border: 1px solid red !important;
 }
 .consignee-content:hover{
     cursor: pointer;
+    border: 1px solid #ccc;
 }
 .delete:hover{
     color: red;
@@ -601,6 +682,5 @@ main{
 .codeList{
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 </style>

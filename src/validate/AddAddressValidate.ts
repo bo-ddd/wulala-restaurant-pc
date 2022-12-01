@@ -1,13 +1,6 @@
 import type { AddressPayLoad } from "@/types/xhrPayLoad";
 import Validate from "./Validate";
-// const form = reactive({
-//     address:'',//详细地址
-//     phone:'',//手机号
-//     lockPhone:'',//固定手机号
-//     name: '',//收货人
-//     region: '',//地址别名
-//     type: [],
-//   })
+
 const rule = {
     chinaDatas : function(val:string){
         return {
