@@ -209,7 +209,6 @@ dishesEva();
 /**
  * 菜肴评价列表
  */
- 
 function dishesEva() {
     foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:pageSize.value,pageNum:currentPage.value}).then(res => {
         console.log(res.data.data.list);
@@ -228,7 +227,7 @@ function dishesEva() {
 }
 //加入购物车
 async function addShoppingCar(){
-    let res =await addShoppingCartApi({
+    let res = await addShoppingCartApi({
         productId:route.query.shoppingDetalisId,
         quantity:ShoppingNumber.value
     });

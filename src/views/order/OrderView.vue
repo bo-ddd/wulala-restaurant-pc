@@ -5,7 +5,7 @@
         <el-row class="tac">
           <el-col :span="12">
             <el-menu
-              default-active="1"
+              :default-active="1"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
@@ -13,12 +13,9 @@
               <el-menu-item index="1">
                 <span>我的订单</span>
               </el-menu-item>
-              <el-sub-menu index="2">
-                <template #title>
-                  <span>Navigator One</span>
-                </template>
-                <el-menu-item index="1-3">item three</el-menu-item>
-              </el-sub-menu>
+              <el-menu-item index="2" @click="navigitor('login')">
+                <span>商品详情</span>
+              </el-menu-item>
             </el-menu>
           </el-col>
         </el-row>
@@ -421,6 +418,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { TabsPaneContext } from "element-plus";
+import { useRouter } from "vue-router";
 import {
   Document,
   Menu as IconMenu,
@@ -442,6 +440,11 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 };
 
 const input3 = ref("");
+
+let router = useRouter();
+const navigitor = function(name:string){
+  router.push({name:name})
+}
 </script>
 
 <style scoped>
