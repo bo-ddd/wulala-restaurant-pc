@@ -59,11 +59,11 @@
                     </div>
                 </div>
                 <!-- consignee  收货人 -->
-                <div v-for="(item,index) in receiptList" :class="{ none : index == isCheck?false:true}">
+                <div v-for="(item,index) in receiptList" :class="{ none : index == isCheck?false:true && isDisplayAddress}">
                     <div class="consignee-content mb-20" 
                         @mouseover="mouseover(item)" 
                         @mouseout="mouseout(item)" 
-                        @click="choiceAddress(index)"
+                        @click="choiceAddress(index,item)"
                         :class="{br:index == indexs?true:false}"
                         >
                             <div class="df-sp ps-r">
@@ -162,13 +162,13 @@
                 <div class="delivery-to" v-else>
                     <p class="delivery">配送至：</p>
                     <div>
-                        <p>山西省 阳泉市 盂县 吸烟者 南村</p>
-                        <p>刘伟耨 13145674567</p>
+                        <p>{{addressForm.provinceCode}} {{addressForm.cityCode}} {{addressForm.areaCode}} {{addressForm.address}}</p>
+                        <p>{{addressForm.name}} {{addressForm.phoneNumber}}</p>
                     </div>
                 </div>
                 <!-- 结算按钮 -->
                 <div class="settlement-btn ptb-15">
-                    <a>提交订单</a>
+                    <a @click="submitOrder">提交订单</a>
                 </div>
             </div>
         </div>
@@ -180,10 +180,13 @@
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
 import { reactive, ref } from 'vue'
-import { addressListApi , addressCreateApi,addressDeleteApi ,addressUpdateApi} from '@/api/api';
+import type { Ref } from 'vue';
+import { addressListApi , addressCreateApi,addressDeleteApi ,addressUpdateApi,orderCreateApi} from '@/api/api';
 import  codeLists from './codeList';
 import {ElMessage} from 'element-plus';
 import AddAddressValidate from '@/validate/AddAddressValidate';
+import {useCounterStore} from '@/stores/counter';
+let {setAddressInfo,addressInfo} = useCounterStore()
 let { selectedOptions } = codeLists(); //地址code码
 // console.log(selectedOptions);
 let receiptList = ref();//地址数据
@@ -277,10 +280,12 @@ let isStowAdd = ref(true);
 const ViewAllAdd = function(){
     isViewAllAdd.value = true;
     isStowAdd.value = false;
+    isDisplayAddress.value = false;//显示全部地址
 }
 const StowAdd = function(){
     isViewAllAdd.value = false;
     isStowAdd.value = true;
+    isDisplayAddress.value = true;//收起地址
 }
 // 新增收货地址
 const address = function(){
@@ -385,13 +390,60 @@ const defaults = function(item:defaultAddress){
     })
 }
 // 点击选择地址
+interface code{ code: number; name: string; }
 let indexs = ref<number>(0);
 let isCheck = ref<number>(0);
-
-const choiceAddress = function(index:any){
+let isDisplayAddress = ref(true);//控制none全部显示
+const addressForm = reactive({
+    provinceCode:'xxx',
+    cityCode:'xxx',
+    areaCode:'xxx',
+    address:'xxx',//详细地址
+    phoneNumber:'xxxx',//电话
+    name:'xxx',//name
+})
+const choiceAddress = function(index:any,item:object){
     indexs.value = index;//控制border
-    isCheck.value = index;
-    console.log(indexs.value);
+    isCheck.value = index;//控制none
+    
+    setAddressInfo(item);
+    console.log(addressInfo);
+    addressForm.address = addressInfo.address;
+    addressForm.phoneNumber = addressInfo.phoneNumber;
+    addressForm.name = addressInfo.receiver;
+    codeListGoRepeat.value.forEach((element:code) => {
+        if (element.code == addressInfo.provinceCode) {
+            addressForm.provinceCode = element.name
+        }else if(element.code == addressInfo.cityCode){
+            addressForm.cityCode = element.name
+        }else if(element.code == addressInfo.areaCode){
+            addressForm.areaCode = element.name
+        }
+    });
+}
+// 提交订单btn
+interface orderInfo{
+    productId:number,//id
+    quantity:number,//数量
+}
+interface interfaceParameter{
+    skuId:number,
+    num:number,
+}
+// let rows = ref([]) as Ref<interfaceParameter[]>;
+let rows:interfaceParameter[] = []; 
+const submitOrder = function(){
+    console.log(commodityInfo);
+    commodityInfo.forEach((item:orderInfo) => {
+        rows.push({skuId:item.productId,num:item.quantity}); 
+    });
+    orderCreateApi({
+        addressId:74,
+        rows:rows,
+    }).then(res => {
+        console.log(res);
+        
+    })
 }
 </script>
 
