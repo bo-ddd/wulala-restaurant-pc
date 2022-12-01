@@ -138,3 +138,9 @@ export const addShoppingCartApi = function (payload = {}) {
 export const addressCreateApi = function (payload = {}) {
     return $axios.post('/delivery/address/create', payload)
 }
+/**
+ * @desscription 订单列表
+ */
+export const orderListApi = function (payload ={}) {
+    return $axios.post('/order/list', payload)
+}
