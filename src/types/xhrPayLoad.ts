@@ -10,3 +10,11 @@ export interface ArticleValidate {
     title: string,
     content: string
 }
+//购物车新增地址
+export interface AddressPayLoad {
+    address: string,
+    phone: string, 
+    lockPhone:string,
+    name:string,
+    chinaDatas:Function,
+}

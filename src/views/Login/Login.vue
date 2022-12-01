@@ -1,55 +1,54 @@
 <template>
     <div class="content">
-        <div class="register" v-if="isActiveRegister == true">
-            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
-            <div class="register_box">
-                <input type="text" name='name' id='username' v-model="registerFrom.username" required />
-                <label for="name">用户名</label>
+        <!-- <div>
+            <img class="content-bjt" src="@/assets/images/bg-color.jpg" alt="">
+        </div> -->
+        <!-- <div class="content-login"> -->
+            <div class="register" v-if="isActiveRegister == true">
+                <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
+                <div class="register_box">
+                    <input type="text" name='name' id='username' v-model="registerFrom.username" required />
+                    <label for="name">用户名</label>
+                </div>
+                <div class="register_box">
+                    <input type="text" name='name' id='password' v-model="registerFrom.password" required />
+                    <label for="name">密码</label>
+                </div>
+                <div class="register_box">
+                    <input type="text" name='name' id='nickname' v-model="registerFrom.avatarName" required />
+                    <label for="nickname">昵称</label>
+                </div>
+                <div class="register_box">
+                    <input type="text" name='name' id='phone' v-model="registerFrom.phoneNumber" required />
+                    <label for="name">手机号</label>
+                </div>
+                <a @click="userRegister">
+                    注册
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </a>
+                <div class="register_box">
+                    <div @click="toLoginView">已有账号，请登录</div>
+                </div>
             </div>
-            <div class="register_box">
-                <input type="text" name='name' id='password' v-model="registerFrom.password" required />
-                <label for="name">密码</label>
+            <div class="login" v-else>
+                <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
+                <div class="login_box username-login_box">
+                    <input type="text" name='name' id='name' v-model="loginFrom.username" required class="mb-30"/>
+                    <label for="name">用户名</label>
+                </div>
+                <div class="login_box">
+                    <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
+                    <label for="pwd">密码</label>
+                </div>
+                <div class="login_box">
+                    <div class="login-text" @click="toRegisterView">没有账号？注册一个</div>
+                </div>
+                <div class="login-btn" @click="submit">登录</div>
             </div>
-            <div class="register_box">
-                <input type="text" name='name' id='nickname' v-model="registerFrom.avatarName" required />
-                <label for="nickname">昵称</label>
-            </div>
-            <div class="register_box">
-                <input type="text" name='name' id='phone' v-model="registerFrom.phoneNumber" required />
-                <label for="name">手机号</label>
-            </div>
-            <a @click="userRegister">
-                注册
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
-            <div class="register_box">
-                <div @click="toLoginView">已有账号，请登录</div>
-            </div>
-        </div>
-        <div class="login" v-else>
-            <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
-            <div class="login_box username-login_box">
-                <input type="text" name='name' id='name' v-model="loginFrom.username" required class="mb-30"/>
-                <label for="name">用户名</label>
-            </div>
-            <div class="login_box">
-                <input type="password" name='pwd' id='pwd' v-model="loginFrom.password" required>
-                <label for="pwd">密码</label>
-            </div>
-            <div class="login_box">
-                <div class="login-text" @click="toRegisterView">没有账号，注册一个</div>
-            </div>
-            <a @click="submit">
-                登录
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -60,14 +59,33 @@
     justify-content: center;
     height: 100vh;
     min-height: 700px;
-    min-width: 1300px;
-    background-image: url('@/assets/images/login-bj.webp');
+    min-width: 1500px;
+    background-image: url('@/assets/images/bg-image.jpg');
+    background-repeat: no-repeat;
     background-size: 100% 100%;
+    /* position: relative; */
 }
-
+/* .content-login{
+    z-index: 1;
+} */
+/* .content-bjt{
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+} */
 .logo-wulala {
-    filter: invert(100%);
+    /* filter: invert(100%); */
     height: 100px;
+}
+.login-btn{
+    padding: 10px;
+    background-color:#03e6f4;
+    width: 100%;
+    text-align: center;
+    border-radius: 20px;
+    color: black;
 }
 body {
     /*弹性布局 让页面元素垂直+水平居中*/
@@ -87,14 +105,16 @@ body {
     align-items: center;
     width: 400px !important;
     padding: 40px;
-    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    /* background-color: #a8f2cf; */
+    background-color: #ffffffad;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
 }
 .login_box{
     text-align: left;
 }
 .login h2 {
-    color: #fff;
+    /* color: #fff; */
     margin-bottom: 30px;
 }
 
@@ -107,6 +127,7 @@ body {
     margin: 15px 0 20px 0;
     text-align: right;
     font-size: 12px;
+    color: black;
 }
 .login-text:hover{
     color: rgb(3, 233, 244);
@@ -114,12 +135,13 @@ body {
 .login .login_box input {
     outline: none;
     border: none;
+    text-indent: 2em;
     width: 100%;
     padding: 10px 0;
     /* margin-bottom: 30px; */
-    color: #fff;
+    color: rgb(0, 0, 0);
     font-size: 16px;
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid rgb(0, 0, 0);
     background-color: transparent;
 }
 
@@ -128,7 +150,7 @@ body {
     top: 0;
     left: 0;
     padding: 10px 0;
-    color: #fff;
+    color: rgb(0, 0, 0);
     pointer-events: none;
     transition: all 0.5s;
 }
@@ -258,7 +280,7 @@ body {
 }
 
 .logo-wulala {
-    filter: invert(100%);
+    /* filter: invert(100%); */
     height: 100px;
 }
 

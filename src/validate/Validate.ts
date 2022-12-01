@@ -15,7 +15,7 @@ export default abstract class Validate<T> {
     private rule: Rule<T>
 
     constructor(payload: T) {
-        this.payload = payload
+        this.payload = payload;
         this.rule = this.ruleConfig();
     }
 
@@ -34,7 +34,6 @@ export default abstract class Validate<T> {
             let fn: Function = this.rule[key]
             let v: ValidaResult = fn(this.payload[key])
             console.log('-----------v------------');
-            
             console.log(v);
             if (!v.isOk) return v;
         }

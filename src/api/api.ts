@@ -122,6 +122,33 @@ export const cartAddApi = function (payload = {}) {
  * @description 收货地址列表
  * @param payload object
  */
- export const addressListApi = function (payload = {}) {
+export const addressListApi = function (payload = {}) {
     return $axios.post('/delivery/address/list', payload)
+}
+/**
+ * @description 加入购物车
+ * @param payload object
+ */
+export const addShoppingCartApi = function (payload = {}) {
+    return $axios.post('/cart/add', payload)
+}
+/* @description 新增收货地址
+* @param payload object
+*/
+export const addressCreateApi = function (payload = {}) {
+    return $axios.post('/delivery/address/create', payload)
+}
+/**
+ * @description 删除收货地址
+ * @param payload object
+ */
+ export const addressDeleteApi = function (payload = {}) {
+    return $axios.post('/delivery/address/delete', payload)
+}
+/**
+ * @description 修改收货地址信息
+ * @param payload object
+ */
+ export const addressUpdateApi = function (payload = {}) {
+    return $axios.post('/delivery/address/update', payload)
 }
