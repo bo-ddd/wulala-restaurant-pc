@@ -39,13 +39,13 @@
                 <el-table-column label="状态" width="90" />
                 <el-table-column label="操作" width="80" />
               </el-table>
-              <tbody>
+              <tbody v-for="(item,index) in orderLists" :key="index">
                 <tr class="tr-th">
                   <td colspan="5" class="td">
-                    <span class="dealtime">2021-11-16 19:36:21</span>
+                    <!-- <span class="dealtime">{{item.createdAt}}</span> -->
+                    <span class="dealtime">{{new Date(item.createdAt).toLocaleDateString()}}</span>
                     <span class="number">订单号:</span>
-                    <span class="numbers">230307184410</span>
-                    <span class="titless">京耳官方旗舰店</span>
+                    <span class="numbers">{{item.orderSn}}</span>
                     <img
                       class="del"
                       src="@/assets/images/icon-del.png"
@@ -54,34 +54,49 @@
                   </td>
                 </tr>
                 <tr class="tr-bd">
-                  <td>
+                  <td class="td-shops">
+
+                  <tr v-for="(item,index) in ordereRow" :key="index">
+                    <td class="td-shop">
                     <div class="goods-item">
                       <div class="p-img">
-                        <img src="@/assets/images/jer.jpg" alt="" />
+                        <img :src="item.bannerUrl" alt="" />
                       </div>
                       <div class="p-msg">
                         <div class="p-name">
-                          京耳
-                          蓝牙耳机真无线运动跑步游戏音乐降噪电脑双耳适用智能手机
-                          白色
+                          {{item.productName}}
                         </div>
                       </div>
                     </div>
-                    <div class="goods-number">x1</div>
+                    <div class="goods-number">x{{item.num}}</div>
                     <div class="goods-repair">
                       <span class="br">申请售后</span>
                       <span class="br">卖了换钱</span>
                     </div>
                   </td>
+                </tr>
+              </td>
                   <td>
-                    <div class="user">
-                      <span class="txt">刘伟博</span>
-                      <img
-                        class="user-img"
-                        src="@/assets/images/icon-user.png"
-                        alt=""
-                      />
-                    </div>
+                    <el-popover
+                      placement="left-start"
+                      :width="200"
+                      trigger="hover"
+                    >
+                    <template #default>
+                      <p>{{item.receiver}}</p>
+                      <p>山西省阳泉市盂县西烟镇南社村</p>
+                      <p>{{item.phoneNumber}}</p>
+                    </template>
+                      <template #reference>
+                        <div class="user">
+                          <span class="txt">{{item.receiver}}</span>
+                          <img
+                            class="user-img"
+                            src="@/assets/images/icon-user.png"
+                          />
+                        </div>
+                      </template>
+                    </el-popover>
                   </td>
                   <td>
                     <div class="amount">
@@ -172,7 +187,7 @@
                 <td>
                   <div class="operate">
                     <span>剩余23时50时</span>
-                    <br>
+                    <br />
                     <span class="payment-pay">付款</span>
                     <br />
                     <span>取消订单</span>
@@ -183,82 +198,76 @@
           </el-tab-pane>
           <el-tab-pane label="待发货">
             <el-table stripe style="width: 100%" empty-text=" ">
-                <el-table-column label="订单详情" width="570" />
-                <el-table-column label="收货人" width="100" />
-                <el-table-column label="金额" width="90" />
-                <el-table-column label="状态" width="90" />
-                <el-table-column label="操作" width="80" />
-              </el-table>
+              <el-table-column label="订单详情" width="570" />
+              <el-table-column label="收货人" width="100" />
+              <el-table-column label="金额" width="90" />
+              <el-table-column label="状态" width="90" />
+              <el-table-column label="操作" width="80" />
+            </el-table>
 
             <tbody>
-                <tr class="tr-th">
-                  <td colspan="5" class="td">
-                    <span class="dealtime">2021-11-16 19:36:21</span>
-                    <span class="number">订单号:</span>
-                    <span class="numbers">230307184410</span>
-                    <span class="titless">京耳官方旗舰店</span>
+              <tr class="tr-th">
+                <td colspan="5" class="td">
+                  <span class="dealtime">2021-11-16 19:36:21</span>
+                  <span class="number">订单号:</span>
+                  <span class="numbers">230307184410</span>
+                  <span class="titless">京耳官方旗舰店</span>
+                  <img class="del" src="@/assets/images/icon-del.png" alt="" />
+                </td>
+              </tr>
+              <tr class="tr-bd">
+                <td>
+                  <div class="goods-item">
+                    <div class="p-img">
+                      <img src="@/assets/images/jer.jpg" alt="" />
+                    </div>
+                    <div class="p-msg">
+                      <div class="p-name">
+                        京耳
+                        蓝牙耳机真无线运动跑步游戏音乐降噪电脑双耳适用智能手机
+                        白色
+                      </div>
+                    </div>
+                  </div>
+                  <div class="goods-number">x1</div>
+                  <div class="goods-repair">
+                    <span class="br">退款/退货</span>
+                    <span class="br">投诉商家</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="user">
+                    <span class="txt">刘伟博</span>
                     <img
-                      class="del"
-                      src="@/assets/images/icon-del.png"
+                      class="user-img"
+                      src="@/assets/images/icon-user.png"
                       alt=""
                     />
-                  </td>
-                </tr>
-                <tr class="tr-bd">
-                  <td>
-                    <div class="goods-item">
-                      <div class="p-img">
-                        <img src="@/assets/images/jer.jpg" alt="" />
-                      </div>
-                      <div class="p-msg">
-                        <div class="p-name">
-                          京耳
-                          蓝牙耳机真无线运动跑步游戏音乐降噪电脑双耳适用智能手机
-                          白色
-                        </div>
-                      </div>
-                    </div>
-                    <div class="goods-number">x1</div>
-                    <div class="goods-repair">
-                      <span class="br">退款/退货</span>
-                      <span class="br">投诉商家</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="user">
-                      <span class="txt">刘伟博</span>
-                      <img
-                        class="user-img"
-                        src="@/assets/images/icon-user.png"
-                        alt=""
-                      />
-                    </div>
-                  </td>
-                  <td>
-                    <div class="amount">
-                      <span>￥9.90</span>
-                      <br />
-                      <span class="ftx-13">在线支付</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="status">
-                      <span class="amount">买家已付款</span>
-                      <br />
-                      <span>订单详情</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="operate">
-                      <span>修改订单</span>
-                      <br />
-                      <span>申请开票</span>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-
-            
+                  </div>
+                </td>
+                <td>
+                  <div class="amount">
+                    <span>￥9.90</span>
+                    <br />
+                    <span class="ftx-13">在线支付</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="status">
+                    <span class="amount">买家已付款</span>
+                    <br />
+                    <span>订单详情</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="operate">
+                    <span>修改订单</span>
+                    <br />
+                    <span>申请开票</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </el-tab-pane>
           <el-tab-pane label="待收货">
             <el-table stripe style="width: 100%" empty-text=" ">
@@ -319,20 +328,19 @@
                     <span class="amount">卖家已发货</span>
                     <br />
                     <span>订单详情</span>
-                    <br>
+                    <br />
                     <span class="origin">查看物流</span>
                   </div>
                 </td>
                 <td>
                   <div class="operate">
                     <span>剩余9天23时</span>
-                    <br>
+                    <br />
                     <span class="payment-pay">确认收货</span>
                   </div>
                 </td>
               </tr>
             </tbody>
-
           </el-tab-pane>
           <el-tab-pane label="待评价">
             <el-table stripe style="width: 100%" empty-text=" ">
@@ -393,9 +401,9 @@
                     <span>交易成功</span>
                     <br />
                     <span>订单详情</span>
-                    <br>
+                    <br />
                     <span class="origin">查看物流</span>
-                    <br>
+                    <br />
                     <span>对方已评</span>
                   </div>
                 </td>
@@ -406,8 +414,6 @@
                 </td>
               </tr>
             </tbody>
-
-
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -417,6 +423,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { orderListApi, queryUserInfoApi } from "@/api/api";
 import type { TabsPaneContext } from "element-plus";
 import { useRouter } from "vue-router";
 import {
@@ -432,19 +439,32 @@ const handleOpen = (key: string, keyPath: string[]) => {
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
-
 const activeName = ref("all");
-
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
 };
-
 const input3 = ref("");
 
 let router = useRouter();
 const navigitor = function(name:string){
   router.push({name:name})
 }
+const orderLists = ref({});
+const ordereRow = ref({});
+
+async function getUserId() {
+  let res = await queryUserInfoApi();
+  let orderList = await orderListApi({
+    userId: res.data.data.userId,
+  });
+  console.log(orderList.data.data.list);
+  orderLists.value = orderList.data.data.list;
+  orderList.data.data.list.forEach(item => {
+    console.log(item.rows);
+      ordereRow.value = item.rows;
+  });
+}
+getUserId();
 </script>
 
 <style scoped>
@@ -554,6 +574,10 @@ td {
   margin: 0 14px;
   position: relative;
 }
+.p-img img{
+  width: 60px;
+  height: 60px;
+}
 .p-msg {
   width: 240px;
   float: left;
@@ -652,7 +676,13 @@ td {
   text-align: center;
   font-weight: 700;
 }
-.origin{
+.origin {
   color: #ff460a;
+}
+.td-shop{
+  width: 450px;
+}
+.td-shops{
+  width: 590px;
 }
 </style>
