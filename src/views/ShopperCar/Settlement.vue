@@ -64,7 +64,7 @@
                         @mouseover="mouseover(item)" 
                         @mouseout="mouseout(item)" 
                         @click="choiceAddress(index,item)"
-                        :class="{br:index == indexs ? true||setIndex(item) : false}"
+                        :class="{br : index == indexs ? true : false}" 
                         >
                             <div class="df-sp ps-r">
                                 <div class="user-info mb-10">
@@ -179,14 +179,14 @@
 <script lang="ts" setup>
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import type { Ref } from 'vue';
 import { addressListApi , addressCreateApi,addressDeleteApi ,addressUpdateApi,orderCreateApi} from '@/api/api';
 import  codeLists from './codeList';
 import {ElMessage} from 'element-plus';
 import AddAddressValidate from '@/validate/AddAddressValidate';
 import {useCounterStore} from '@/stores/counter';
-let {setAddressInfo,addressInfo,setIndex,index} = useCounterStore()
+let {setAddressInfo,addressInfo} = useCounterStore()
 let { selectedOptions } = codeLists(); //地址code码
 // console.log(selectedOptions);
 let receiptList = ref();//地址数据
@@ -194,7 +194,7 @@ let codeList :any = [];//coed码对应是name
 let codeListGoRepeat = ref();
 // 获取收货地址
 function addressList(){
-    addressListApi({}).then(res => {
+    return addressListApi({}).then(res => {
         receiptList.value = res.data.data;
         res.data.data.forEach((el:any) => {
             selectedOptions.forEach((item:any)=>{
@@ -228,7 +228,15 @@ function addressList(){
         })
     });
 }
-addressList();
+onMounted(async()=>{
+    await addressList();
+    setIndexFun();
+})
+function setIndexFun(){
+    if(receiptList.value.length){
+        choiceAddress(indexs.value,receiptList.value[indexs.value])
+    }
+}
 // 车一页面选购的商品数据
 interface commodityInfo{
     quantity: number; 
@@ -402,12 +410,14 @@ const addressForm = reactive({
     phoneNumber:'xxxx',//电话
     name:'xxx',//name
 })
+let addressIds = ref();//地址id
 const choiceAddress = function(index:any,item:object){
     indexs.value = index;//控制border
     isCheck.value = index;//控制none
     
     setAddressInfo(item);
-    console.log(addressInfo);
+    addressIds.value = addressInfo.id;
+
     addressForm.address = addressInfo.address;
     addressForm.phoneNumber = addressInfo.phoneNumber;
     addressForm.name = addressInfo.receiver;
@@ -432,20 +442,20 @@ interface interfaceParameter{
 }
 // let rows = ref([]) as Ref<interfaceParameter[]>;
 let rows:interfaceParameter[] = []; //后端要的接口参数
-console.log(index);
 
 const submitOrder = function(){
-    
-    console.log(commodityInfo);
     commodityInfo.forEach((item:orderInfo) => {
         rows.push({skuId:item.productId,num:item.quantity}); 
     });
     orderCreateApi({
-        addressId:74,
+        addressId:addressIds.value,
         rows:rows,
     }).then(res => {
         console.log(res);
-        
+        if (res.data.status == 1) {
+            console.log('成功');
+            
+        }
     })
 }
 </script>

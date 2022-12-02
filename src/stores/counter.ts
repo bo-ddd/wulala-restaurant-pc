@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { queryUserInfoApi } from '@/api/api'
 interface address{
   provinceCode:number, cityCode:number, areaCode:number,
-  address:string,phoneNumber:string,receiver:string
+  address:string,phoneNumber:string,receiver:string,id:number,
 }
 export const useCounterStore = defineStore('counter', () => {
   // 周
@@ -15,11 +15,6 @@ export const useCounterStore = defineStore('counter', () => {
   const setAddressInfo = function(playolad={}){
     Object.assign(addressInfo,playolad)
   }
-  const index = reactive({});//收货地址下标 
-  const setIndex = function(playolad={}){
-    Object.assign(index,playolad)
-  }
-
 
   // 郝永祥
   const userId = ref();
@@ -28,5 +23,5 @@ export const useCounterStore = defineStore('counter', () => {
     userId.value = res.data.data.userId;
     console.log(userId.value);
   }
-  return { userId, getUserId ,setCommodityInfo ,commodityInfo,setAddressInfo,addressInfo,index,setIndex}
+  return { userId, getUserId ,setCommodityInfo ,commodityInfo,setAddressInfo,addressInfo}
 })
