@@ -6,12 +6,6 @@ interface address{
   address:string,phoneNumber:string,receiver:string
 }
 export const useCounterStore = defineStore('counter', () => {
-  // const count = ref(0);
-  // const doubleCount = computed(() => count.value * 2)
-  // function increment() {
-  //   count.value++
-  // }
-
   // 周
   const commodityInfo = reactive({});//商品信息
   const setCommodityInfo = function(playolad={}){
@@ -21,9 +15,9 @@ export const useCounterStore = defineStore('counter', () => {
   const setAddressInfo = function(playolad={}){
     Object.assign(addressInfo,playolad)
   }
-  const indexs = reactive({});//收货地址下标
+  const index = reactive({});//收货地址下标 
   const setIndex = function(playolad={}){
-    Object.assign(indexs,playolad)
+    Object.assign(index,playolad)
   }
 
 
@@ -34,5 +28,5 @@ export const useCounterStore = defineStore('counter', () => {
     userId.value = res.data.data.userId;
     console.log(userId.value);
   }
-  return { userId, getUserId ,setCommodityInfo ,commodityInfo,setAddressInfo,addressInfo}
+  return { userId, getUserId ,setCommodityInfo ,commodityInfo,setAddressInfo,addressInfo,index,setIndex}
 })

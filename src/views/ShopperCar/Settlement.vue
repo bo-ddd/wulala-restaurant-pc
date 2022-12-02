@@ -64,7 +64,7 @@
                         @mouseover="mouseover(item)" 
                         @mouseout="mouseout(item)" 
                         @click="choiceAddress(index,item)"
-                        :class="{br:index == indexs?true:false}"
+                        :class="{br:index == indexs ? true||setIndex(item) : false}"
                         >
                             <div class="df-sp ps-r">
                                 <div class="user-info mb-10">
@@ -186,7 +186,7 @@ import  codeLists from './codeList';
 import {ElMessage} from 'element-plus';
 import AddAddressValidate from '@/validate/AddAddressValidate';
 import {useCounterStore} from '@/stores/counter';
-let {setAddressInfo,addressInfo} = useCounterStore()
+let {setAddressInfo,addressInfo,setIndex,index} = useCounterStore()
 let { selectedOptions } = codeLists(); //地址code码
 // console.log(selectedOptions);
 let receiptList = ref();//地址数据
@@ -431,8 +431,11 @@ interface interfaceParameter{
     num:number,
 }
 // let rows = ref([]) as Ref<interfaceParameter[]>;
-let rows:interfaceParameter[] = []; 
+let rows:interfaceParameter[] = []; //后端要的接口参数
+console.log(index);
+
 const submitOrder = function(){
+    
     console.log(commodityInfo);
     commodityInfo.forEach((item:orderInfo) => {
         rows.push({skuId:item.productId,num:item.quantity}); 
