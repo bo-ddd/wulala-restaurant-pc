@@ -178,7 +178,7 @@
 
 <script lang="ts" setup>
 // 三级联动
-import { EluiChinaAreaDht}  from 'elui-china-area-dht'
+import { EluiChinaAreaDht}  from 'elui-china-area-dht';
 import { reactive, ref } from 'vue'
 import { addressListApi , addressCreateApi,addressDeleteApi ,addressUpdateApi} from '@/api/api';
 import  codeLists from './codeList';
