@@ -23,7 +23,7 @@
                 @selection-change="handleSelectionChange"
                 @select="handleValue"
             >
-                <el-table-column type="selection" width="55" />
+                <el-table-column type="selection" width="55" :checked="true"/>
                 <el-table-column label="商品" width="370px">
                     <template #default="scope">
                         <div class="commodity">
@@ -97,7 +97,7 @@
 <script lang="ts" setup>
 import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
 import { Search, User } from '@element-plus/icons-vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 // import { useCounterStore } from '@/stores/counter';
@@ -120,7 +120,7 @@ interface User {
   originalPrice:number
 }
 
-const multipleTableRef = ref<InstanceType<typeof ElTable>>()
+const multipleTableRef = ref<InstanceType<typeof ElTable>>();//设置默认选中
 const multipleSelection = ref<User[]>([]);
 const multipleSelectionLength = ref(0);//勾选商品数量
 const multipleSelectionPrice = ref(0.00);
@@ -230,6 +230,32 @@ const toSettlement = function(){
         router.push({name:'settlement'});
     }
 };
+// 设置默认选中
+interface row{
+avatarName:string, 
+bannerUrl:string, 
+categoryId:number, 
+categoryName:string, 
+id:number, 
+originalPrice:number, 
+productDesc:string, 
+productId:number, 
+productName:string, 
+quantity: number,
+totalPrice:number, 
+userId:number, 
+}
+let commodityInfo = sessionStorage.getItem('commodityInfo') as string;
+onMounted(()=>{
+    let row = JSON.parse(commodityInfo);
+    console.log(multipleTableRef.value);
+    console.log(JSON.parse(commodityInfo));
+    row.forEach((rows:row) => {
+        
+        // multipleTableRef.value!.toggleRowSelection(JSON.parse(commodityInfo),true)
+        multipleTableRef.value!.toggleAllSelection();
+    });
+})
 
 // 拿购物车列表
 let cartList = ref();
