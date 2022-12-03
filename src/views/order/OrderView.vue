@@ -13,7 +13,7 @@
               <el-menu-item index="1">
                 <span>我的订单</span>
               </el-menu-item>
-              <el-menu-item index="2" @click="navigitor('login')">
+              <el-menu-item index="2">
                 <span>商品详情</span>
               </el-menu-item>
             </el-menu>
@@ -42,7 +42,6 @@
               <tbody v-for="(item,index) in orderLists" :key="index">
                 <tr class="tr-th">
                   <td colspan="5" class="td">
-                    <!-- <span class="dealtime">{{item.createdAt}}</span> -->
                     <span class="dealtime">{{new Date(item.createdAt).toLocaleDateString()}}</span>
                     <span class="number">订单号:</span>
                     <span class="numbers">{{item.orderSn}}</span>
@@ -55,8 +54,26 @@
                 </tr>
                 <tr class="tr-bd">
                   <td class="td-shops">
-
-                  <tr v-for="(item,index) in ordereRow" :key="index">
+                    <tr v-for="(el,index) in item.rows" :key="index">
+                    <td class="td-shop">
+                    <div class="goods-item">
+                      <div class="p-img">
+                        <img :src="el.bannerUrl" alt="" />
+                      </div>
+                      <div class="p-msg">
+                        <div class="p-name">
+                          {{el.productName}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="goods-number">x{{el.num}}</div>
+                    <div class="goods-repair">
+                      <span class="br">申请售后</span>
+                      <span class="br">卖了换钱</span>
+                    </div>
+                  </td>
+                </tr>
+                  <!-- <tr v-for="(item,index) in ordereRow" :key="index">
                     <td class="td-shop">
                     <div class="goods-item">
                       <div class="p-img">
@@ -74,7 +91,9 @@
                       <span class="br">卖了换钱</span>
                     </div>
                   </td>
-                </tr>
+                </tr> -->
+
+
               </td>
                   <td>
                     <el-popover
@@ -100,7 +119,7 @@
                   </td>
                   <td>
                     <div class="amount">
-                      <span>￥9.90</span>
+                      <span>￥{{item.amount}}</span>
                       <br />
                       <span class="ftx-13">在线支付</span>
                     </div>
@@ -409,7 +428,7 @@
                 </td>
                 <td>
                   <div class="operate">
-                    <span class="payment-pay">评价</span>
+                    <span class="payment-pay" @click="appraise">评价</span>
                   </div>
                 </td>
               </tr>
@@ -418,14 +437,37 @@
         </el-tabs>
       </div>
     </div>
+    <el-dialog
+            v-model="centerDialogVisible"
+            title="评价此菜品"
+            width="400px"
+            align-center 
+            >
+            <div class="appraise-content">
+                <div><textarea rows="6" columns="30" v-model="appraiseContent" placeholder="评价内容"></textarea></div>
+                <input type="number" v-model="star">星评价 
+                <br>
+                <el-switch v-model="value1" />
+            </div>
+            <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="centerDialogVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="submitAppraise">
+                    提交
+                </el-button>
+            </span>
+            </template>
+        </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { orderListApi, queryUserInfoApi } from "@/api/api";
+import { orderListApi, queryUserInfoApi, addFoodAppraiseApi,foodAppraiseListApi } from "@/api/api";
 import type { TabsPaneContext } from "element-plus";
-import { useRouter } from "vue-router";
+import { useRouter,useRoute } from "vue-router";
+import { useId } from '@/stores/getUserId';
+import { storeToRefs } from "pinia";
 import {
   Document,
   Menu as IconMenu,
@@ -433,38 +475,79 @@ import {
   Setting,
   Search,
 } from "@element-plus/icons-vue";
+
+let centerDialogVisible = ref(false);
+let aa = useId();
+aa.getUserIds();
+let appraiseContent: any = ref('');
+let star = ref(0);
+const value1 = ref(true);
+let { userId } = storeToRefs(aa);
+const activeName = ref("all");
+const input3 = ref("");
+let router = useRouter();
+let route = useRoute();
+const currentPage = ref();     //当前页数
+const pageSize = ref(5);       //每页显示的条数
+const orderLists: any = ref({});
+const ordereRow = ref({});
+
+getUserId();
+
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
-const activeName = ref("all");
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
 };
-const input3 = ref("");
-
-let router = useRouter();
-const navigitor = function(name:string){
-  router.push({name:name})
-}
-const orderLists = ref({});
-const ordereRow = ref({});
-
 async function getUserId() {
   let res = await queryUserInfoApi();
   let orderList = await orderListApi({
     userId: res.data.data.userId,
   });
-  console.log(orderList.data.data.list);
+  // console.log(orderList.data.data.list);
   orderLists.value = orderList.data.data.list;
-  orderList.data.data.list.forEach(item => {
+  orderList.data.data.list.forEach((item: any) => {
     console.log(item.rows);
       ordereRow.value = item.rows;
   });
 }
-getUserId();
+
+//打开评论界面
+function appraise() {
+    centerDialogVisible.value = true; 
+}
+
+// //菜肴评论列表
+function dishesEva() {
+    foodAppraiseListApi({ 
+      foodId: route.query.shoppingDetalisId ,
+      pageSize:pageSize.value,
+      pageNum:currentPage.value
+    }).then(res => {
+        console.log(res.data.data.list);
+    })
+}
+
+async function submitAppraise() {
+    /**
+     * 新增菜肴评价
+     */
+    let res = await addFoodAppraiseApi({
+        userId: userId.value,
+        foodId: route.query.shoppingDetalisId,
+        content: appraiseContent.value,
+        star: star.value,
+        isRealName: value1.value == true ? 1 : 0
+    });
+    console.log(res);
+    console.log('又增加了一个评论');
+    dishesEva();
+    centerDialogVisible.value = false;
+}
 </script>
 
 <style scoped>
@@ -675,6 +758,7 @@ td {
   margin: 3px 0;
   text-align: center;
   font-weight: 700;
+  cursor: pointer;
 }
 .origin {
   color: #ff460a;
