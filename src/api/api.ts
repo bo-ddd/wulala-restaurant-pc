@@ -158,3 +158,10 @@ export const orderListApi = function (payload ={}) {
  export const addressUpdateApi = function (payload = {}) {
     return $axios.post('/delivery/address/update', payload)
 }
+/**
+ * @description 创建订单
+ * @param payload object
+ */
+ export const orderCreateApi = function (payload = {}) {
+    return $axios.post('/order/create', payload)
+}
