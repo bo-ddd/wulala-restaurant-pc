@@ -349,7 +349,7 @@ const defaults = function(item:defaultAddress){
     })
 }
 // 点击选择地址
-let indexs = ref<number>(0);
+let indexs = ref<number>(sessionStorage.getItem('addressIndex') as unknown as number);
 let isCheck = ref<number>(0);
 let isDisplayAddress = ref(true);//控制none全部显示
 const addressForm = reactive({
@@ -360,11 +360,13 @@ const addressForm = reactive({
     phoneNumber:'xxxx',//电话
     name:'xxx',//name
 })
+console.log();
+
 let addressIds = ref();//地址id
 const choiceAddress = function(index:any,item:object){
     indexs.value = index;//控制border
     isCheck.value = index;//控制none
-    
+    sessionStorage.setItem('addressIndex',index);
     setAddressInfo(item);
     addressIds.value = addressInfo.id;
 
