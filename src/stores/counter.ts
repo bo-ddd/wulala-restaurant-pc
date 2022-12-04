@@ -15,6 +15,10 @@ export const useCounterStore = defineStore('counter', () => {
   const setAddressInfo = function(playolad={}){
     Object.assign(addressInfo,playolad)
   }
+  const indexs = reactive({});//收货地址下标
+  const setIndex = function(playolad={}){
+    Object.assign(indexs,playolad);
+  }
 
   // 郝永祥
   const userId = ref();
