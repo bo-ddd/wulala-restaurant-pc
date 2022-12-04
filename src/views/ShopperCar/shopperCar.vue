@@ -245,17 +245,17 @@ quantity: number,
 totalPrice:number, 
 userId:number, 
 }
-let commodityInfo = sessionStorage.getItem('commodityInfo') as string;
-onMounted(()=>{
-    let row = JSON.parse(commodityInfo);
-    console.log(multipleTableRef.value);
-    console.log(JSON.parse(commodityInfo));
-    row.forEach((rows:row) => {
+// let commodityInfo = sessionStorage.getItem('commodityInfo') as string;
+// onMounted(()=>{
+//     let row = JSON.parse(commodityInfo);
+//     console.log(multipleTableRef.value);
+//     console.log(JSON.parse(commodityInfo));
+//     row.forEach((rows:row) => {
         
-        // multipleTableRef.value!.toggleRowSelection(JSON.parse(commodityInfo),true)
-        multipleTableRef.value!.toggleAllSelection();
-    });
-})
+//         // multipleTableRef.value!.toggleRowSelection(JSON.parse(commodityInfo),true)
+//         multipleTableRef.value!.toggleAllSelection();
+//     });
+// })
 
 // 拿购物车列表
 let cartList = ref();
