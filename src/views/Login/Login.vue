@@ -1,9 +1,5 @@
 <template>
     <div class="content">
-        <!-- <div>
-            <img class="content-bjt" src="@/assets/images/bg-color.jpg" alt="">
-        </div> -->
-        <!-- <div class="content-login"> -->
             <div class="register" v-if="isActiveRegister == true">
                 <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
                 <div class="register_box">
@@ -48,7 +44,6 @@
                 </div>
                 <div class="login-btn" @click="submit">登录</div>
             </div>
-        <!-- </div> -->
     </div>
 </template>
 
@@ -468,10 +463,7 @@ import { loginApi, registerApi } from "@/api/api.js";
 import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import LoginValidate from '@/validate/LoginValidate'
-// import { removeStyle } from 'element-plus/es/utils';
 let router = useRouter();
-// let {count} = useCounterStore();
-// console.log(count);
 let loginFrom = reactive({
     username: '',
     password: ''
@@ -496,7 +488,6 @@ function toLoginView() {
 }
 
 //校验用户名（正则表达式）
-// let regexp = '/^[a-zA-Z0-9_-]{4,16}$/';
 // regexp.match(registerFrom.value.username)
 function validate() {
     let res = { result: true };
