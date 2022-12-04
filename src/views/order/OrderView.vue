@@ -5,7 +5,7 @@
         <el-row class="tac">
           <el-col :span="12">
             <el-menu
-              :default-active="1"
+              :default-active="2"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
