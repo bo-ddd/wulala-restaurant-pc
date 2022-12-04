@@ -42,7 +42,6 @@
               <tbody v-for="(item,index) in orderLists" :key="index">
                 <tr class="tr-th">
                   <td colspan="5" class="td">
-                    <!-- <span class="dealtime">{{item.createdAt}}</span> -->
                     <span class="dealtime">{{new Date(item.createdAt).toLocaleDateString()}}</span>
                     <span class="number">订单号:</span>
                     <span class="numbers">{{item.orderSn}}</span>
@@ -55,8 +54,26 @@
                 </tr>
                 <tr class="tr-bd">
                   <td class="td-shops">
-
-                  <tr v-for="(item,index) in ordereRow" :key="index">
+                    <tr v-for="(el,index) in item.rows" :key="index">
+                    <td class="td-shop">
+                    <div class="goods-item">
+                      <div class="p-img">
+                        <img :src="el.bannerUrl" alt="" />
+                      </div>
+                      <div class="p-msg">
+                        <div class="p-name">
+                          {{el.productName}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="goods-number">x{{el.num}}</div>
+                    <div class="goods-repair">
+                      <span class="br">申请售后</span>
+                      <span class="br">卖了换钱</span>
+                    </div>
+                  </td>
+                </tr>
+                  <!-- <tr v-for="(item,index) in ordereRow" :key="index">
                     <td class="td-shop">
                     <div class="goods-item">
                       <div class="p-img">
@@ -74,7 +91,9 @@
                       <span class="br">卖了换钱</span>
                     </div>
                   </td>
-                </tr>
+                </tr> -->
+
+
               </td>
                   <td>
                     <el-popover
@@ -100,7 +119,7 @@
                   </td>
                   <td>
                     <div class="amount">
-                      <span>￥9.90</span>
+                      <span>￥{{item.amount}}</span>
                       <br />
                       <span class="ftx-13">在线支付</span>
                     </div>
@@ -470,7 +489,7 @@ let router = useRouter();
 let route = useRoute();
 const currentPage = ref();     //当前页数
 const pageSize = ref(5);       //每页显示的条数
-const orderLists = ref({});
+const orderLists: any = ref({});
 const ordereRow = ref({});
 
 getUserId();
@@ -484,13 +503,12 @@ const handleClose = (key: string, keyPath: string[]) => {
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
 };
-
 async function getUserId() {
   let res = await queryUserInfoApi();
   let orderList = await orderListApi({
     userId: res.data.data.userId,
   });
-  console.log(orderList.data.data.list);
+  // console.log(orderList.data.data.list);
   orderLists.value = orderList.data.data.list;
   orderList.data.data.list.forEach((item: any) => {
     console.log(item.rows);
