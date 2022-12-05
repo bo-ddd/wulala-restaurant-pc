@@ -15,7 +15,7 @@ export const useCounterStore = defineStore('counter', () => {
   const setAddressInfo = function(playolad={}){
     Object.assign(addressInfo,playolad)
   }
-
+  
   // 郝永祥
   const userId = ref();
   async function getUserId() {
