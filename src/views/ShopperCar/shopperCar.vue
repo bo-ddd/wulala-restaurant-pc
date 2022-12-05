@@ -1,12 +1,12 @@
 <template>
-    <!-- <template v-if="cartList == undefined || null ">
-        <el-empty image="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        description="你的购物车里面什么也没有"
+    <div v-if="(cartList == 0)">
+        <el-empty :image-size="200"
+        description="购物车空空的哦~，去看看心仪的商品吧~"
         >
-            <el-button type="primary">去逛逛</el-button>
+            <el-button type="primary" @click="router.push({name:'mall'})">去逛逛</el-button>
         </el-empty>
-    </template> -->
-    <div>
+    </div>
+    <div v-else>
         <div class="warp center" >
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
