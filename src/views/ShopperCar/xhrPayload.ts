@@ -25,3 +25,27 @@ export interface interfaceParameter{
     skuId:number,
     num:number,
 }
+
+
+export interface User {
+    date: string
+    address: string
+    totalPrice?:number
+    quantity:number
+    originalPrice:number
+  }
+  // 设置默认选中
+export interface row{
+    avatarName:string, 
+    bannerUrl:string, 
+    categoryId:number, 
+    categoryName:string, 
+    id:number, 
+    originalPrice:number, 
+    productDesc:string, 
+    productId:number, 
+    productName:string, 
+    quantity: number,
+    totalPrice:number, 
+    userId:number, 
+    }
