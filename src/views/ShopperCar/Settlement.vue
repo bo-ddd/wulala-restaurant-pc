@@ -349,7 +349,8 @@ const defaults = function(item:defaultAddress){
     })
 }
 // 点击选择地址
-let indexs = ref<number>(sessionStorage.getItem('addressIndex') as unknown as number);
+let index = sessionStorage.getItem('addressIndex') as unknown as number;
+let indexs = ref<number>(index != 0 ? index : 0);
 let isCheck = ref<number>(0);
 let isDisplayAddress = ref(true);//控制none全部显示
 const addressForm = reactive({
