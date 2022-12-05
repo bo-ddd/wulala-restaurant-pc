@@ -73,26 +73,6 @@
                     </div>
                   </td>
                 </tr>
-                  <!-- <tr v-for="(item,index) in ordereRow" :key="index">
-                    <td class="td-shop">
-                    <div class="goods-item">
-                      <div class="p-img">
-                        <img :src="item.bannerUrl" alt="" />
-                      </div>
-                      <div class="p-msg">
-                        <div class="p-name">
-                          {{item.productName}}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="goods-number">x{{item.num}}</div>
-                    <div class="goods-repair">
-                      <span class="br">申请售后</span>
-                      <span class="br">卖了换钱</span>
-                    </div>
-                  </td>
-                </tr> -->
-
 
               </td>
                   <td>
@@ -511,7 +491,7 @@ async function getUserId() {
   // console.log(orderList.data.data.list);
   orderLists.value = orderList.data.data.list;
   orderList.data.data.list.forEach((item: any) => {
-    console.log(item.rows);
+    // console.log(item.rows);
       ordereRow.value = item.rows;
   });
 }
