@@ -180,21 +180,50 @@
 // 三级联动
 import { EluiChinaAreaDht}  from 'elui-china-area-dht'
 import { onMounted, reactive, ref } from 'vue'
-import type { Ref } from 'vue';
 import { addressListApi , addressCreateApi,addressDeleteApi ,addressUpdateApi,orderCreateApi} from '@/api/api';
 import  codeLists from './codeList';
-import type {commodityInfo,defaultAddress,code,orderInfo,interfaceParameter} from '@/views/ShopperCar/xhrPayload';
+import type {commodityInfo,defaultAddress,code,orderInfo,interfaceParameter} from '@/types/xhrPayLoad';
 import {ElMessage} from 'element-plus';
 import AddAddressValidate from '@/validate/AddAddressValidate';
 import {useCounterStore} from '@/stores/counter';
 
-let {setAddressInfo,addressInfo} = useCounterStore()
+let {setAddressInfo,addressInfo} = useCounterStore();//pinia
 let { selectedOptions } = codeLists(); //地址code码
 let receiptList = ref();//地址数据
 let codeList :any = [];//coed码对应是name
-let codeListGoRepeat = ref();
+let codeListGoRepeat = ref();//地址列表(数据)
 // 提交订单btn
 let rows:interfaceParameter[] = []; //后端要的接口参数
+let checked = ref(false);//是否设为默认地址
+// 获取商品信息
+let commodityInfo = JSON.parse(sessionStorage.getItem('commodityInfo') as any); //获取商品列表
+let allPrice = ref(0.00);//结算金额
+commodityInfo.forEach((el:commodityInfo) => {
+    allPrice.value += (el.quantity * el.originalPrice);
+});
+
+const dialogFormVisible = ref(false);//新增收货地址弹层
+const formLabelWidth = '140px';//table表格 的labelwidth
+// 三级联动
+const one = ref();//省
+const two = ref();//市
+const three = ref();//县
+const chinaData = new EluiChinaAreaDht.ChinaArea().chinaAreaflat;//收货地址
+
+let isViewAllAdd = ref(false);//查看全部地址
+let isStowAdd = ref(true);//收起地址
+
+// 地址编辑按钮
+let option = ref();//请选择地区 绑定值
+// 点击选择地址
+let index = sessionStorage.getItem('addressIndex') as unknown as number;//获取用户上次点击地址的下标
+let indexs = ref<number>(index != 0 ? index : 0);//进页面默认选中地址的下标
+let isCheck = ref<number>(0);//控制地址显示隐藏
+let isDisplayAddress = ref(true);//控制none全部显示
+let addressIds = ref();//地址id
+
+
+// 提交订单按钮  (创建订单)
 const submitOrder = function(){
     commodityInfo.forEach((item:orderInfo) => {
         rows.push({skuId:item.productId,num:item.quantity}); 
@@ -210,24 +239,14 @@ const submitOrder = function(){
         }
     })
 }
-let checked = ref(false);//是否设为默认地址
 
+// 设置默认地址 (配送)
 onMounted(async()=>{
     await addressList();
     setIndexFun();
 })
-// 获取商品信息
-let commodityInfo = JSON.parse(sessionStorage.getItem('commodityInfo') as any); 
-// console.log(commodityInfo);
-let allPrice = ref(0.00);//结算金额
-commodityInfo.forEach((el:commodityInfo) => {
-    allPrice.value += (el.quantity * el.originalPrice);
-});
 
-const dialogTableVisible = ref(false);
-const dialogFormVisible = ref(false);//新增收货地址弹层
-const formLabelWidth = '140px'
-
+// 新增收货地址弹层
 const form = reactive({
   address:'',//详细地址
   phone:'',//手机号
@@ -237,40 +256,31 @@ const form = reactive({
   type: [],
 })
 
-// 三级联动
-const one = ref();
-const two = ref();
-const three = ref();
-const chinaData = new EluiChinaAreaDht.ChinaArea().chinaAreaflat;//收货地址
-
-const mouseover = function(item:any){
+const mouseover = function(item:any){//鼠标移动上去显示操作
     item.is = true;
 }
-const mouseout = function(item:any){
+const mouseout = function(item:any){//离开隐藏操作
     item.is = false;
 }
 
-
-let isViewAllAdd = ref(false);
-let isStowAdd = ref(true);
-const ViewAllAdd = function(){
+const ViewAllAdd = function(){//查看全部地址点击事件
     isViewAllAdd.value = true;
     isStowAdd.value = false;
     isDisplayAddress.value = false;//显示全部地址
 }
-const StowAdd = function(){
+const StowAdd = function(){//收起地址点击事件
     isViewAllAdd.value = false;
     isStowAdd.value = true;
     isDisplayAddress.value = true;//收起地址
 }
 // 新增收货地址
-const address = function(){
+const address = function(){//默认赋值空
     form.name = '';
     form.phone = '';
     form.address = '';
     dialogFormVisible.value = true
 }
-const addCreate = function(){
+const addCreate = function(){//新增收货地址 确定按钮
     const formAddress = reactive({
         address:form.address,//详细地址
         phone:form.phone,//手机号
@@ -317,7 +327,6 @@ const deleteAddress = function(ids:number){
     })
 }
 // 地址编辑按钮
-let option = ref()
 const edit  = function(item:any){
     console.log(item);
     form.name = item.receiver;
@@ -349,10 +358,6 @@ const defaults = function(item:defaultAddress){
     })
 }
 // 点击选择地址
-let index = sessionStorage.getItem('addressIndex') as unknown as number;
-let indexs = ref<number>(index != 0 ? index : 0);
-let isCheck = ref<number>(0);
-let isDisplayAddress = ref(true);//控制none全部显示
 const addressForm = reactive({
     provinceCode:'xxx',
     cityCode:'xxx',
@@ -361,7 +366,6 @@ const addressForm = reactive({
     phoneNumber:'xxxx',//电话
     name:'xxx',//name
 })
-let addressIds = ref();//地址id
 const choiceAddress = function(index:any,item:object){
     indexs.value = index;//控制border
     isCheck.value = index;//控制none
