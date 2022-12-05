@@ -5,7 +5,7 @@
         <el-row class="tac">
           <el-col :span="12">
             <el-menu
-              :default-active="2"
+              default-active="2"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
@@ -25,8 +25,7 @@
               <el-input
                 v-model="input3"
                 placeholder="输入商品标签或订单号进行搜索"
-                class="input-with-select"
-              >
+                class="input-with-select">
                 <template #append>
                   <el-button :icon="Search" />
                 </template>
@@ -445,7 +444,7 @@
             >
             <div class="appraise-content">
                 <div><textarea rows="6" columns="30" v-model="appraiseContent" placeholder="评价内容"></textarea></div>
-                <input type="number" v-model="star">星评价 
+                <el-rate v-model="rate" />
                 <br>
                 <el-switch v-model="value1" />
             </div>
@@ -491,7 +490,7 @@ const currentPage = ref();     //当前页数
 const pageSize = ref(5);       //每页显示的条数
 const orderLists: any = ref({});
 const ordereRow = ref({});
-
+let rate = ref();
 getUserId();
 
 const handleOpen = (key: string, keyPath: string[]) => {
@@ -520,31 +519,35 @@ async function getUserId() {
 function appraise() {
     centerDialogVisible.value = true; 
 }
-
 // //菜肴评论列表
 function dishesEva() {
     foodAppraiseListApi({ 
-      foodId: route.query.shoppingDetalisId ,
+      foodId: route.query.shoppingDetalisId,
       pageSize:pageSize.value,
       pageNum:currentPage.value
     }).then(res => {
-        console.log(res.data.data.list);
+        console.log(res.data.date.list);
     })
 }
+// console.log(rate.value);
 
 async function submitAppraise() {
     /**
      * 新增菜肴评价
      */
+    // console.log(rate.value);
+    
     let res = await addFoodAppraiseApi({
         userId: userId.value,
         foodId: route.query.shoppingDetalisId,
         content: appraiseContent.value,
-        star: star.value,
+        star: rate.value,
         isRealName: value1.value == true ? 1 : 0
     });
     console.log(res);
     console.log('又增加了一个评论');
+    // console.log(rate.value);
+    
     dishesEva();
     centerDialogVisible.value = false;
 }
