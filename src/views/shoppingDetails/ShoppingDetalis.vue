@@ -165,7 +165,6 @@ const handleCurrentChange = (val: number) => {
     // dishesEva();
 }
 
-
 const handleClick = (tab: TabsPaneContext, event: Event) => {
     console.log(tab, event)
 }
@@ -194,7 +193,12 @@ function dishesEva() {
         midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
         badAppraise.value = foodAppraise.value.filter((item: any) => item.star <= 2);
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
-        degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
+        if (goodAppraise.value.length == 0) {
+            degreePraise.value  = 0
+        }else{
+            degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
+
+        }
         allAppraiseLength.value = allAppraise.value.length;
         total.value = res.data.data.total;
 

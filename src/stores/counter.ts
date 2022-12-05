@@ -7,15 +7,15 @@ interface address{
 }
 export const useCounterStore = defineStore('counter', () => {
   // 周
-  const commodityInfo = reactive({});//商品信息
+  const commodityInfos = reactive({});//商品信息
   const setCommodityInfo = function(playolad={}){
-    Object.assign(commodityInfo , playolad);
+    Object.assign(commodityInfos , playolad);
   }
   const addressInfo = reactive({}) as address;//地址信息
   const setAddressInfo = function(playolad={}){
     Object.assign(addressInfo,playolad)
   }
-
+  
   // 郝永祥
   const userId = ref();
   async function getUserId() {
@@ -23,5 +23,5 @@ export const useCounterStore = defineStore('counter', () => {
     userId.value = res.data.data.userId;
     console.log(userId.value);
   }
-  return { userId, getUserId ,setCommodityInfo ,commodityInfo,setAddressInfo,addressInfo}
+  return { userId, getUserId ,setCommodityInfo ,commodityInfos,setAddressInfo,addressInfo}
 })
