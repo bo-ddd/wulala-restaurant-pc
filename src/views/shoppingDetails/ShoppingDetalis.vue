@@ -11,7 +11,6 @@
                 <div class="food-info">菜品介绍：{{ foodlist.description }}</div>
                 <el-input-number v-model="ShoppingNumber" :min="1" :max="30" @change="handleChange" />
                 <el-button class="add-shopping-cart_btn" type="primary" @click="addShoppingCar">加入购物车  +</el-button>
-                <!-- <el-button size='small' @click="appraise">评论此菜品</el-button> -->
             </div>
         </div>
         <div class="shop-appraise-text">商品评价</div>
@@ -98,31 +97,10 @@
                 @current-change="handleCurrentChange"
                 />
         </div>
-        <el-dialog
-            v-model="centerDialogVisible"
-            title="评价此菜品"
-            width="400px"
-            align-center 
-            >
-            <div class="appraise-content">
-                <div><textarea rows="6" columns="30" v-model="appraiseContent" placeholder="评价内容"></textarea></div>
-                <input type="number" v-model="star">星评价 
-                <br>
-                <el-switch v-model="value1" />
-            </div>
-            <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="centerDialogVisible = false">Cancel</el-button>
-                <el-button type="primary" @click="submitAppraise">
-                    提交
-                </el-button>
-            </span>
-            </template>
-        </el-dialog>
     </div>
 </template>
 <script setup lang="ts">
-import { gatFoodListApi, foodAppraiseListApi, addFoodAppraiseApi,addShoppingCartApi } from '@/api/api';
+import { gatFoodListApi, foodAppraiseListApi,addShoppingCartApi } from '@/api/api';
 import { useRoute } from 'vue-router';
 import type { TabsPaneContext } from 'element-plus';
 import { ref } from 'vue';
@@ -135,11 +113,8 @@ let { userId } = storeToRefs(aa);
 console.log(userId.value);
 
 let route = useRoute();
-let centerDialogVisible = ref(false);
 let foodlist: any = ref({});
 let foodAppraise = ref();
-let appraiseContent: any = ref('');
-let star = ref(0);
 let allAppraise = ref();
 let allAppraiseLength = ref();
 let goodAppraise = ref();
@@ -147,7 +122,7 @@ let midAppraise =ref();
 let badAppraise = ref();
 let degreePraise = ref(0);
 const activeName = ref('first');
-const value1 = ref(true);
+
 //分页
 const currentPage = ref();     //当前页数
 const pageSize = ref(5);       //每页显示的条数
@@ -190,7 +165,6 @@ const handleCurrentChange = (val: number) => {
     // dishesEva();
 }
 
-
 const handleClick = (tab: TabsPaneContext, event: Event) => {
     console.log(tab, event)
 }
@@ -209,7 +183,6 @@ dishesEva();
 /**
  * 菜肴评价列表
  */
- 
 function dishesEva() {
     foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:pageSize.value,pageNum:currentPage.value}).then(res => {
         console.log(res.data.data.list);
@@ -220,7 +193,12 @@ function dishesEva() {
         midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
         badAppraise.value = foodAppraise.value.filter((item: any) => item.star <= 2);
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
-        degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
+        if (goodAppraise.value.length == 0) {
+            degreePraise.value  = 0
+        }else{
+            degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
+
+        }
         allAppraiseLength.value = allAppraise.value.length;
         total.value = res.data.data.total;
 
@@ -228,7 +206,7 @@ function dishesEva() {
 }
 //加入购物车
 async function addShoppingCar(){
-    let res =await addShoppingCartApi({
+    let res = await addShoppingCartApi({
         productId:route.query.shoppingDetalisId,
         quantity:ShoppingNumber.value
     });
@@ -237,26 +215,7 @@ async function addShoppingCar(){
         router.push({name:'shoppercar'});
     }
 }
-//打开评论界面
-function appraise() {
-    centerDialogVisible.value = true; 
-}
-async function submitAppraise() {
-    /**
-     * 新增菜肴评价
-     */
-    let res = await addFoodAppraiseApi({
-        userId: userId.value,
-        foodId: route.query.shoppingDetalisId,
-        content: appraiseContent.value,
-        star: star.value,
-        isRealName: value1.value == true ? 1 : 0
-    });
-    console.log(res);
-    console.log('又增加了一个评论');
-    dishesEva();
-    centerDialogVisible.value = false;
-}
+
 dishesEva();
 </script>
 <style scoped>

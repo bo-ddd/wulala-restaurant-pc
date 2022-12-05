@@ -1,9 +1,5 @@
 <template>
     <div class="content">
-        <!-- <div>
-            <img class="content-bjt" src="@/assets/images/bg-color.jpg" alt="">
-        </div> -->
-        <!-- <div class="content-login"> -->
             <div class="register" v-if="isActiveRegister == true">
                 <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
                 <div class="register_box">
@@ -34,7 +30,7 @@
                 </div>
             </div>
             <div class="login" v-else>
-                <img src="@/assets/images/icon-bj_2.png" class="logo-wulala">
+                <img src="@/assets/images/icon-bj_2.png" class="logo-wulala" @click="keyDown">
                 <div class="login_box username-login_box">
                     <input type="text" name='name' id='name' v-model="loginFrom.username" required class="mb-30"/>
                     <label for="name">用户名</label>
@@ -48,7 +44,6 @@
                 </div>
                 <div class="login-btn" @click="submit">登录</div>
             </div>
-        <!-- </div> -->
     </div>
 </template>
 
@@ -65,6 +60,7 @@
     background-size: 100% 100%;
     /* position: relative; */
 }
+
 /* .content-login{
     z-index: 1;
 } */
@@ -79,14 +75,16 @@
     /* filter: invert(100%); */
     height: 100px;
 }
-.login-btn{
+
+.login-btn {
     padding: 10px;
-    background-color:#03e6f4;
+    background-color: #03e6f4;
     width: 100%;
     text-align: center;
     border-radius: 20px;
     color: black;
 }
+
 body {
     /*弹性布局 让页面元素垂直+水平居中*/
     display: flex;
@@ -110,9 +108,11 @@ body {
     background-color: #ffffffad;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
 }
-.login_box{
+
+.login_box {
     text-align: left;
 }
+
 .login h2 {
     /* color: #fff; */
     margin-bottom: 30px;
@@ -123,15 +123,17 @@ body {
     width: 100%;
 }
 
-.login-text{
+.login-text {
     margin: 15px 0 20px 0;
     text-align: right;
     font-size: 12px;
     color: black;
 }
-.login-text:hover{
+
+.login-text:hover {
     color: rgb(3, 233, 244);
 }
+
 .login .login_box input {
     outline: none;
     border: none;
@@ -458,13 +460,10 @@ body {
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import { loginApi, registerApi } from "@/api/api.js";
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import LoginValidate from '@/validate/LoginValidate'
-// import { removeStyle } from 'element-plus/es/utils';
 let router = useRouter();
-// let {count} = useCounterStore();
-// console.log(count);
 let loginFrom = reactive({
     username: '',
     password: ''
@@ -489,7 +488,6 @@ function toLoginView() {
 }
 
 //校验用户名（正则表达式）
-// let regexp = '/^[a-zA-Z0-9_-]{4,16}$/';
 // regexp.match(registerFrom.value.username)
 function validate() {
     let res = { result: true };
@@ -550,4 +548,19 @@ async function userRegister() {
         router.push({ name: 'login' });
     }
 }
+//添加回车登录事件
+onMounted(() => {
+    window.addEventListener('keydown', keyDown)
+})
+//监听回车登录事件
+const keyDown = (e :any) => {
+    //如果是回车则执行登录方法
+    if (e.keyCode == 13) {
+        submit();
+    }
+}
+//销毁登录回车事件
+onUnmounted(() => {
+    window.removeEventListener('keyDown', keyDown, false);
+})
 </script>

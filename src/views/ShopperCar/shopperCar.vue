@@ -1,12 +1,12 @@
 <template>
-    <!-- <template v-if="cartList == undefined || null ">
-        <el-empty image="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        description="你的购物车里面什么也没有"
+    <div v-if="(cartList == 0)">
+        <el-empty :image-size="200"
+        description="购物车空空的哦~，去看看心仪的商品吧~"
         >
-            <el-button type="primary">去逛逛</el-button>
+            <el-button type="primary" @click="router.push({name:'mall'})">去逛逛</el-button>
         </el-empty>
-    </template> -->
-    <div>
+    </div>
+    <div v-else>
         <div class="warp center" >
             <!-- 搜索框 -->
             <el-input v-model="input" class="w-300 m-20 input" size="large" placeholder="请输入您想要了解的美食" :suffix-icon="Search"/>
@@ -23,7 +23,7 @@
                 @selection-change="handleSelectionChange"
                 @select="handleValue"
             >
-                <el-table-column type="selection" width="55" />
+                <el-table-column type="selection" width="55" :checked="true"/>
                 <el-table-column label="商品" width="370px">
                     <template #default="scope">
                         <div class="commodity">
@@ -96,10 +96,11 @@
 
 <script lang="ts" setup>
 import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
-import { Search, User } from '@element-plus/icons-vue';
+import { Search } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
+import type {User} from '@/views/ShopperCar/xhrPayload';
 // import { useCounterStore } from '@/stores/counter';
 // let { setCommodityInfo } = useCounterStore();
 //修改table样式
@@ -108,19 +109,10 @@ import { useRouter } from 'vue-router';
 //     backgroundColor: '#fff4e8',
 //   }
 // }  
-
 let router = useRouter();
 const checked2 = ref(false)
 let input = ref();
-interface User {
-  date: string
-  address: string
-  totalPrice?:number
-  quantity:number
-  originalPrice:number
-}
-
-const multipleTableRef = ref<InstanceType<typeof ElTable>>()
+const multipleTableRef = ref<InstanceType<typeof ElTable>>();//设置默认选中
 const multipleSelection = ref<User[]>([]);
 const multipleSelectionLength = ref(0);//勾选商品数量
 const multipleSelectionPrice = ref(0.00);

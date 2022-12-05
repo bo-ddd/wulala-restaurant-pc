@@ -39,7 +39,7 @@
                     <el-dropdown-item divided @click="navigator('register')">注册</el-dropdown-item>
                   </el-dropdown-menu>
                   <el-dropdown-menu v-show="token != null">
-                    <el-dropdown-item>个人中心</el-dropdown-item>
+                    <el-dropdown-item @click="navigator('orderview')">个人中心</el-dropdown-item>
                     <el-dropdown-item divided @click="exitLogin">退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
