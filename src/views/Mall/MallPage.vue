@@ -33,16 +33,30 @@ import { ref } from 'vue'
 import { getCategoryListApi, gatFoodListApi } from '@/api/api'
 import { useRouter } from 'vue-router'
 let tapli: any = ref()
-let idxon = ref(0)
+let idxon:any = ref(0)
 let bomtxt: any = ref({})
 let router = useRouter()
+let categoryId = sessionStorage.getItem('CategoryId')
+let id =sessionStorage.getItem('id')
 getCategoryListApi({}).then(res => {
     tapli.value = res.data.data
+    if (categoryId != null) {
+    idxon.value = id
+    gatFoodListApi({
+        categoryId: categoryId
+    }).then(res => {
+        bomtxt.value = res.data.data.list
+    })
+    sessionStorage.removeItem('CategoryId')
+    sessionStorage.removeItem('id')
+}else{
+
     gatFoodListApi({
         categoryId: tapli.value[0].id
     }).then(res => {
         bomtxt.value = res.data.data.list
     })
+}
 })
 const tapqie = (index: number, el: any) => {
     gatFoodListApi({

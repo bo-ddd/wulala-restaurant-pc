@@ -39,7 +39,7 @@
                     <el-dropdown-item divided @click="navigator('register')">注册</el-dropdown-item>
                   </el-dropdown-menu>
                   <el-dropdown-menu v-show="token != null">
-                    <el-dropdown-item @click="navigator('orderview')">个人中心</el-dropdown-item>
+                    <el-dropdown-item @click="navigator('mineview')">个人中心</el-dropdown-item>
                     <el-dropdown-item divided @click="exitLogin">退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -60,7 +60,7 @@
       </el-main>
       <el-footer>
         <div>
-          akjdiojoijsdoij
+         
       </div>
     </el-footer>
     </el-container>
@@ -188,12 +188,12 @@ let routeList = [
   },
   {
     name:'购物中心',
-    label:'mall',
+    label:'mall' || 'shoppingDetalis',
     index:1
   },
   {
     name:'购物车',
-    label:'shoppercar',
+    label:'shoppercar' || 'settlement',
     index:2
   },
   {

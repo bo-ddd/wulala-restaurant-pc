@@ -24,9 +24,22 @@ const router = createRouter({
           component: () => import("@/views/Mall/MallPage.vue"),
         },
         {
-          path: '/orderview',
-          name: 'orderview',
-          component: () => import("@/views/order/OrderView.vue"),
+          path: '/personal',
+          name: 'personal',
+          component: () => import("@/views/personal/PersonalView.vue"),
+          children:[
+            {
+              path: '/mineview',
+              name: 'mineview',
+              component: () => import("@/views/mine/MineView.vue"),
+            },
+            {
+              path: '/orderview',
+              name: 'orderview',
+              component: () => import("@/views/order/OrderView.vue"),
+            }
+            
+          ]
         },
         {
           path:'/settlement',

@@ -2,23 +2,6 @@
   <div>
     <div class="warp">
       <div class="header">
-        <el-row class="tac">
-          <el-col :span="12">
-            <el-menu
-              :default-active="2"
-              class="el-menu-vertical-demo"
-              @open="handleOpen"
-              @close="handleClose"
-            >
-              <el-menu-item index="1">
-                <span>我的订单</span>
-              </el-menu-item>
-              <el-menu-item index="2">
-                <span>商品详情</span>
-              </el-menu-item>
-            </el-menu>
-          </el-col>
-        </el-row>
         <el-tabs type="border-card">
           <el-tab-pane label="所有订单">
             <div class="mt-4">
@@ -474,15 +457,6 @@ const ordereRow = ref({});
 
 getUserId();
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
-};
 async function getUserId() {
   let res = await queryUserInfoApi();
   let orderList = await orderListApi({
@@ -533,11 +507,6 @@ async function submitAppraise() {
 <style scoped>
 .header {
   display: flex;
-}
-::v-deep .el-col-12 {
-  max-width: 100%;
-  width: 200px;
-  flex: 0%;
 }
 .el-tabs {
   margin: 0 20px;
