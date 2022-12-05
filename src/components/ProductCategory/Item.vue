@@ -1,32 +1,45 @@
 <template >
     
    <div class="box-item" v-if="ProductCategory.direction == 'left'">
-    <div class="box-img"><img :src="ProductCategory.src" alt=""></div>
+    <div class="box-img"><img :src="ProductCategory.imgUrl" alt=""></div>
     <div class="texts" >
-        <div class="qqq">{{ProductCategory.text}}</div>
-        <el-button type="info" color="#000000" round>{{ProductCategory.btntext}}</el-button>
+        <div class="qqq">{{1}}</div>
+        <el-button type="info" color="#000000" @click="toCategory( id,ProductCategory.id )" round>查看全部{{ProductCategory.name}}</el-button>
     </div>
    </div>
    <div class="box-items" v-else>
        <div class="texts" >
-           <div class="qqq">{{ProductCategory.text}}</div>
-           <el-button type="info" color="#000000" round>{{ProductCategory.btntext}}</el-button>
+           <div class="qqq">{{1}}</div>
+           <el-button type="info" color="#000000" @click="toCategory( id,ProductCategory.id )" round>查看全部{{ProductCategory.name}}</el-button>
         </div>
-        <div class="box-imgs"><img :src="ProductCategory.src" alt=""></div>
+        <div class="box-imgs"><img :src="ProductCategory.imgUrl" alt=""></div>
    </div>
    
 </template>
 <script setup lang="ts">
+import { useRouter } from "vue-router"
+let router = useRouter()
+console.log(router);
+
    const props = defineProps<{
     ProductCategory:{
-        src:string,
-        btntext:string,
-        text:string,
-        direction:string
+        imgUrl:string,
+        name:string,
+        // text:string,
+        direction:string,
+        id :string
     }
+    id : any
     }>();
-    let{ ProductCategory } = props
-    console.log(ProductCategory.src);
+    let{ ProductCategory , id } = props
+    console.log(id);
+    console.log(ProductCategory.id);
+    let toCategory =function(id:string,CategoryId : string){
+      sessionStorage.setItem('id',id)
+      sessionStorage.setItem('CategoryId',CategoryId)
+      router.push({ name: "mall" })
+      
+    }
     
 </script>
 <style scoped>
