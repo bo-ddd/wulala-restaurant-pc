@@ -19,7 +19,7 @@
                 <div class="praise">好评度</div>
                 <div class="percent">{{ Math.ceil(degreePraise * 100) }}%</div>  
             </div>
-            <div>
+            <div class="appraise-label">
                 <el-tag>正宗品质</el-tag>
                 <el-tag class="penetrate_ml-10">非常地道</el-tag>
                 <el-tag class="penetrate_ml-10">颜值颇高</el-tag>
@@ -219,6 +219,10 @@ async function addShoppingCar(){
 dishesEva();
 </script>
 <style scoped>
+.appraise-label{
+    display: flex;
+    align-items: center;
+}
 .shop-detail {
     display: grid;
     grid-template-columns: 1fr 3fr;

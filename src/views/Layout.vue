@@ -60,7 +60,7 @@
       </el-main>
       <el-footer>
         <div>
-          akjdiojoijsdoij
+         
       </div>
     </el-footer>
     </el-container>

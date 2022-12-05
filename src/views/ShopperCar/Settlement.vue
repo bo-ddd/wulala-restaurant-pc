@@ -361,8 +361,6 @@ const addressForm = reactive({
     phoneNumber:'xxxx',//电话
     name:'xxx',//name
 })
-console.log();
-
 let addressIds = ref();//地址id
 const choiceAddress = function(index:any,item:object){
     indexs.value = index;//控制border
