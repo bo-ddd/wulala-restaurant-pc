@@ -2,30 +2,14 @@
   <div>
     <div class="warp">
       <div class="header">
-        <el-row class="tac">
-          <el-col :span="12">
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-              @open="handleOpen"
-              @close="handleClose"
-            >
-              <el-menu-item index="1">
-                <span>我的订单</span>
-              </el-menu-item>
-              <el-menu-item index="2">
-                <span>商品详情</span>
-              </el-menu-item>
-            </el-menu>
-          </el-col>
-        </el-row>
         <el-tabs type="border-card">
           <el-tab-pane label="所有订单">
             <div class="mt-4">
               <el-input
                 v-model="input3"
                 placeholder="输入商品标签或订单号进行搜索"
-                class="input-with-select">
+                class="input-with-select"
+              >
                 <template #append>
                   <el-button :icon="Search" />
                 </template>
@@ -424,7 +408,7 @@
             >
             <div class="appraise-content">
                 <div><textarea rows="6" columns="30" v-model="appraiseContent" placeholder="评价内容"></textarea></div>
-                <el-rate v-model="rate" />
+                <input type="number" v-model="star">星评价 
                 <br>
                 <el-switch v-model="value1" />
             </div>
@@ -470,18 +454,9 @@ const currentPage = ref();     //当前页数
 const pageSize = ref(5);       //每页显示的条数
 const orderLists: any = ref({});
 const ordereRow = ref({});
-let rate = ref();
+
 getUserId();
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
-};
 async function getUserId() {
   let res = await queryUserInfoApi();
   let orderList = await orderListApi({
@@ -499,35 +474,31 @@ async function getUserId() {
 function appraise() {
     centerDialogVisible.value = true; 
 }
+
 // //菜肴评论列表
 function dishesEva() {
     foodAppraiseListApi({ 
-      foodId: route.query.shoppingDetalisId,
+      foodId: route.query.shoppingDetalisId ,
       pageSize:pageSize.value,
       pageNum:currentPage.value
     }).then(res => {
-        console.log(res.data.date.list);
+        console.log(res.data.data.list);
     })
 }
-// console.log(rate.value);
 
 async function submitAppraise() {
     /**
      * 新增菜肴评价
      */
-    // console.log(rate.value);
-    
     let res = await addFoodAppraiseApi({
         userId: userId.value,
         foodId: route.query.shoppingDetalisId,
         content: appraiseContent.value,
-        star: rate.value,
+        star: star.value,
         isRealName: value1.value == true ? 1 : 0
     });
     console.log(res);
     console.log('又增加了一个评论');
-    // console.log(rate.value);
-    
     dishesEva();
     centerDialogVisible.value = false;
 }
@@ -536,11 +507,6 @@ async function submitAppraise() {
 <style scoped>
 .header {
   display: flex;
-}
-::v-deep .el-col-12 {
-  max-width: 100%;
-  width: 200px;
-  flex: 0%;
 }
 .el-tabs {
   margin: 0 20px;
