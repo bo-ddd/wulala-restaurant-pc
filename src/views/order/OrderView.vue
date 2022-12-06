@@ -17,8 +17,8 @@
 
               <el-table stripe style="width: 100%" empty-text=" ">
                 <el-table-column label="订单详情" width="590" />
-                <el-table-column label="收货人" width="80" />
-                <el-table-column label="金额" width="90" />
+                <el-table-column label="收货人" width="100" />
+                <el-table-column label="金额" width="100" />
                 <el-table-column label="状态" width="90" />
                 <el-table-column label="操作" width="80" />
               </el-table>
@@ -457,6 +457,15 @@ const ordereRow = ref({});
 
 getUserId();
 
+const handleOpen = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
+const handleClose = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
+// const handleClick = (tab: TabsPaneContext, event: Event) => {
+//   console.log(tab, event);
+// };
 async function getUserId() {
   let res = await queryUserInfoApi();
   let orderList = await orderListApi({
@@ -508,9 +517,14 @@ async function submitAppraise() {
 .header {
   display: flex;
 }
+::v-deep .el-col-12 {
+  max-width: 100%;
+  width: 200px;
+  flex: 0%;
+}
 .el-tabs {
   margin: 0 20px;
-  width: 1200px;
+  width: 1000px;
 }
 .input-with-select .el-input-group__prepend {
   background-color: var(--el-fill-color-blank);
@@ -584,7 +598,7 @@ async function submitAppraise() {
   padding: 7px 0 0;
 }
 .td {
-  width: 1200px;
+  width: 1000px;
 }
 td {
   padding: 14px 0;
