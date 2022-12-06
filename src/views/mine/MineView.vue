@@ -21,10 +21,10 @@
         <div class="guess-like">
             <h3 class="title">根据浏览，猜我喜欢</h3>
             <div class="like-of-shop">
-                <div v-for="item in foodList">
+                <div class="food-info" v-for="item in foodList">
                     <img :src=item.bannerUrl class="food-img-size" />
                     <div>{{ item.foodName }}</div>
-                    <div>{{ item.description }}</div>
+                    <div class="food-desc">{{ item.description }}</div>
                     <div>${{ item.price }}</div>
                 </div>
             </div>
@@ -120,11 +120,26 @@
 .like-of-shop{
     padding: 20px 15px;
     background-color: #f5f8fa;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
 }
 .food-img-size{
     width: 200px;
     height: 150px;
+}
+.food-info{
+    padding: 30px 20px;
+    width: 200px;
+}
+.food-info:hover{
+    border: 1px solid red;
+}
+.food-desc{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding:5px 0px;
 }
 </style>
 <script setup lang="ts">
