@@ -504,9 +504,6 @@ main{
     font-size: 12px;
     color: #aaa;
 }
-.none{
-    display: none;
-}
 .order-add p{
     font-size: 14px;
     color: #a4a4a4;
