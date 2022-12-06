@@ -23,9 +23,9 @@
             <div class="like-of-shop">
                 <div v-for="item in foodList">
                     <img :src=item.bannerUrl class="food-img-size" />
-                    <div>{{  }}</div>
-                    <div></div>
-                    <div></div>
+                    <div>{{ item.foodName }}</div>
+                    <div>{{ item.description }}</div>
+                    <div>${{ item.price }}</div>
                 </div>
             </div>
         </div>
@@ -120,6 +120,7 @@
 .like-of-shop{
     padding: 20px 15px;
     background-color: #f5f8fa;
+    display: flex;
 }
 .food-img-size{
     width: 200px;
