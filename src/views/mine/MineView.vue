@@ -9,7 +9,6 @@
                 </div>
             </div>
             <div class="my-delivery-address" @click="navigator('settlement')">我的收货地址</div>
-            <!-- <div class="my-discounts-infomation">我的优惠信息</div> -->
             <el-dropdown>
                 <span class="el-dropdown-link">
                     我的优惠信息
@@ -175,7 +174,7 @@
 import { ref } from 'vue';
 import { queryUserInfoApi,gatFoodListApi } from '@/api/api';
 import router from '@/router';
-import { ArrowDown } from '@element-plus/icons-vue'
+import { ArrowDown } from '@element-plus/icons-vue';
 
 let avatarImg = ref('');    // 头像
 let avatarName = ref('');   // 用户名
