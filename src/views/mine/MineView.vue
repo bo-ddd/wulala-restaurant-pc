@@ -9,7 +9,20 @@
                 </div>
             </div>
             <div class="my-delivery-address" @click="navigator('settlement')">我的收货地址</div>
-            <div class="my-discounts-infomation">我的优惠信息</div>
+            <!-- <div class="my-discounts-infomation">我的优惠信息</div> -->
+            <el-dropdown>
+                <span class="el-dropdown-link">
+                    我的优惠信息
+                    <el-icon class="el-icon--right">
+                        <arrow-down />
+                    </el-icon>
+                </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item>店铺优惠券 : -</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
         </div>
         <div class="s-my-counts">
             <div><span class="segmentation">|</span><span class="pd-52 counts-style">待付款</span></div>
@@ -151,11 +164,18 @@
     font-weight: 700;
     color: red;
 }
+.example-showcase .el-dropdown-link {
+  cursor: pointer;
+  color: var(--el-color-primary);
+  display: flex;
+  align-items: center;
+}
 </style>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { queryUserInfoApi,gatFoodListApi } from '@/api/api';
 import router from '@/router';
+import { ArrowDown } from '@element-plus/icons-vue'
 
 let avatarImg = ref('');    // 头像
 let avatarName = ref('');   // 用户名
