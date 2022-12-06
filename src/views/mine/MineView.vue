@@ -22,10 +22,9 @@
             <h3 class="title">根据浏览，猜我喜欢</h3>
             <div class="like-of-shop">
                 <div class="food-info" v-for="item in foodList">
-                    <img :src=item.bannerUrl class="food-img-size" />
-                    <div>{{ item.foodName }}</div>
+                    <img :src=item.bannerUrl class="food-img-size" :title='item.foodName' />
+                    <div class="food-price">${{ item.price }}</div>
                     <div class="food-desc">{{ item.description }}</div>
-                    <div>${{ item.price }}</div>
                 </div>
             </div>
         </div>
@@ -37,10 +36,10 @@
 }
 .s-userbar {
     height: 80px;
-    width: 100%;
+    width: 900px;
     background-color: #f5f8fa;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
     align-items: center;
     justify-items: center;
     border: 1px solid rgb(228, 234, 238);
@@ -89,6 +88,7 @@
     align-items: center;
     justify-items: center;
     border: 1px solid rgb(228, 234, 238);
+    background-color: white;
 }
 .segmentation{
     font-size: large;
@@ -122,7 +122,9 @@
     background-color: #f5f8fa;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
+    justify-items: center;
+    align-items: center;
+    row-gap: 20px;
 }
 .food-img-size{
     width: 200px;
@@ -131,6 +133,8 @@
 .food-info{
     padding: 30px 20px;
     width: 200px;
+    background-color: white;
+    border: 1px solid #fff;
 }
 .food-info:hover{
     border: 1px solid red;
@@ -139,7 +143,13 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding:5px 0px;
+    font-size: 14px;
+}
+.food-price{
+    padding:5px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: red;
 }
 </style>
 <script setup lang="ts">
@@ -150,11 +160,6 @@ import router from '@/router';
 let avatarImg = ref('');    // 头像
 let avatarName = ref('');   // 用户名
 let phoneNumber = ref();    // 手机号
-
-let foodImg = ref('');      // 菜品图片
-let foodName = ref('');     // 菜品名字
-let foodDesc = ref('');     // 菜品介绍
-let foodPrice = ref();      // 菜品价格
 let foodList = ref();       // 食物列表
 
 userInfomation();
@@ -174,7 +179,6 @@ async function userInfomation() {
 
 /**
  * 路由跳转
- * @param name 
  */
 function navigator(name:string){
     router.push({name:name})
@@ -187,9 +191,5 @@ async function getFoodList(){
     let res = await gatFoodListApi();
     console.log(res.data.data.list);
     foodList.value = res.data.data.list;
-    // foodImg.value =      // 菜品图片
-    // foodName.value =   // 菜品名字
-    // foodDesc.value =  // 菜品介绍
-    // foodPrice.value =
 }
 </script>
