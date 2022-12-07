@@ -189,7 +189,7 @@ getFoodList();
  * @author Mr.H
  */
 async function userInfomation() {
-    let res = await queryUserInfoApi();
+    let res = await queryUserInfoApi({ userId: 12});
     console.log(res);
     avatarImg.value = res.data.data.avatarImg;
     avatarName.value = res.data.data.avatarName;
@@ -207,7 +207,7 @@ function navigator(name:string){
  * 菜肴列表
  */
 async function getFoodList(){
-    let res = await gatFoodListApi();
+    let res = await gatFoodListApi({ pageSize:1 });
     console.log(res.data.data.list);
     foodList.value = res.data.data.list;
 }
