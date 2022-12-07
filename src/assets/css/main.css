@@ -83,3 +83,6 @@ ul li{
 .ps-r{
   position: relative;
 }
+.none{
+  display: none;
+}

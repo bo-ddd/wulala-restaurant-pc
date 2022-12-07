@@ -1,3 +1,5 @@
+import type { LocationQueryValue } from "vue-router";
+
 //登录
 export interface login{
     username?:string,
@@ -9,10 +11,6 @@ export interface register{
     password?:string,	
     avatarName?:string,	
     phoneNumber?:string,	
-}
-//查询用户信息
-export interface queryUserInfo{
-    userId?:number,
 }
 
 //获取菜肴列表接口
@@ -27,12 +25,14 @@ export interface gatFoodDetail{
 }
 //菜肴评价列表接口
 export interface foodAppraiseList{
-    foodId?:number,
+    foodId?:LocationQueryValue | LocationQueryValue[],
+    pageSize?:number,
+    pageNum?:number,
 }
 //新增菜肴评价
 export interface addFoodAppraise{
     userId?:number,
-    foodId?:number,
+    foodId?:LocationQueryValue | LocationQueryValue[],
     content?:string,
     star?:number,
     isRealName?:number,
