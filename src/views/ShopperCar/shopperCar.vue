@@ -1,5 +1,5 @@
 <template>
-    <div v-if="(cartList == 0)">
+    <div v-if="(cartList == 0)" class="subject">
         <el-empty :image-size="200"
         description="购物车空空的哦~，去看看心仪的商品吧~"
         >
@@ -13,7 +13,6 @@
             <div class="nav pd-10 df-al">
                 <p>全部商品 {{ cartListLength }}</p>
             </div>
-            <!-- :row-style="isSelected == true ? rowState : isRowState" -->
             <el-table
                 ref="multipleTableRef"
                 :data="cartList"
@@ -80,7 +79,6 @@
         <el-affix position="bottom" :offset="10">
             <div class="go-settlement mt-20 mb-20">
                 <div class="go-settlement_left">
-                    <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
                     <p class="ml-10" @click="deleteCommdoity">删除选中的商品</p>
                 </div>
                 <div class="go-settlement_right">
@@ -101,14 +99,7 @@ import { ref } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import type {User} from '@/types/xhrPayLoad';
-// import { useCounterStore } from '@/stores/counter';
-// let { setCommodityInfo } = useCounterStore();
-//修改table样式
-// const rowState = () => {
-//   return {
-//     backgroundColor: '#fff4e8',
-//   }
-// }  
+
 let router = useRouter();
 const checked2 = ref(false);//满200 
 let input = ref();//搜索框
@@ -364,9 +355,6 @@ cartLists();
 .cl-r{
     color: #E2231A;
 }
-/* .bj ::v-deep .el-table tr{
-    background: #fff4e8;
-} */
 .type{
     padding: 0 12PX;
     height: 20PX;
@@ -377,5 +365,11 @@ cartLists();
     display: inline-block;
     margin-right: 16PX;
     font-style: normal;
+}
+.subject{
+    height: calc(100vh - 180px);
+    display: flex;
+    justify-content: center;
+    min-height: 280px;
 }
 </style>

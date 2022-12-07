@@ -216,7 +216,13 @@ let isStowAdd = ref(true);//收起地址
 // 地址编辑按钮
 let option = ref();//请选择地区 绑定值
 // 点击选择地址
-let index = sessionStorage.getItem('addressIndex') as unknown as number;//获取用户上次点击地址的下标
+let supIndex = sessionStorage.getItem('addressIndex') as unknown as number;
+let index = 0;//获取用户上次点击地址的下标
+if (supIndex == null) {
+    index = 0
+}else{
+    index = supIndex
+}
 let indexs = ref<number>(index != 0 ? index : 0);//进页面默认选中地址的下标
 let isCheck = ref<number>(0);//控制地址显示隐藏
 let isDisplayAddress = ref(true);//控制none全部显示
@@ -502,9 +508,6 @@ main{
     gap: 10px;
     font-size: 12px;
     color: #aaa;
-}
-.none{
-    display: none;
 }
 .order-add p{
     font-size: 14px;
