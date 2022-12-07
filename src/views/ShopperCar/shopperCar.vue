@@ -114,7 +114,7 @@ const isPlusReduce = ref(false);
 let prices = ref();//小计价格
 let ids = ref();//拿到点击时候的id 与 上面判断是否一致
 // 拿购物车列表
-let cartList = ref();//购物车数据
+let cartList = ref([]);//购物车数据
 let cartListLength = ref();//购物车数据长度
 
 
@@ -221,11 +221,12 @@ const toSettlement = function(){
 const cartLists = function(){
     cartListApi().then(res => {
         if (res.data.status != 1) {
-            ElMessage({
-                message: '请先登录.',
-                type: 'success',
-            })
-            router.push({name:'login'})
+            // ElMessage({
+            //     message: '请先登录.',
+            //     type: 'success',
+            // })
+            // router.push({name:'login'})
+            return
         }else{
             cartList.value = res.data.data;
 
