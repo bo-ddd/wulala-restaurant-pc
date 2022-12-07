@@ -2,7 +2,6 @@ import axios from 'axios';
 import type { 
     login,
     register,
-    queryUserInfo,
     gatFoodList,
     gatFoodDetail,
     foodAppraiseList,
@@ -72,7 +71,7 @@ export const registerApi = function (payload : register) {
  * @description 查询用户信息
  * @params payload
  */
-export const queryUserInfoApi = function (payload :queryUserInfo) {
+export const queryUserInfoApi = function (payload ={}) {
     return $axios.post('/user/info', payload);
 }
 
