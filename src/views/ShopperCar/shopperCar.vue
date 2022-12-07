@@ -1,5 +1,5 @@
 <template>
-    <div v-if="(cartList == 0)" class="subject">
+    <div v-if="(cartList.length == 0)" class="subject">
         <el-empty :image-size="200"
         description="购物车空空的哦~，去看看心仪的商品吧~"
         >
