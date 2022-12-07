@@ -188,12 +188,12 @@ let routeList = [
   },
   {
     name:'购物中心',
-    label:'mall',
+    label:'mall' || 'shoppingDetalis',
     index:1
   },
   {
     name:'购物车',
-    label:'shoppercar',
+    label:'shoppercar' || 'settlement',
     index:2
   },
   {

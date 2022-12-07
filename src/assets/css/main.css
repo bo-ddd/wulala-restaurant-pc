@@ -19,6 +19,9 @@ ul li{
 .m-20{
   margin: 20px 0;
 }
+.mlr-20{
+  margin: 0 20px;
+}
 .pd-10{
   padding: 10px 0;
 }
