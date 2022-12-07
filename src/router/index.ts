@@ -37,7 +37,12 @@ const router = createRouter({
               path: '/orderview',
               name: 'orderview',
               component: () => import("@/views/order/OrderView.vue"),
-            }
+            },
+            {
+              path: '/updatePersonalInfo',
+              name: 'updatePersonalInfo',
+              component: () => import("@/views/updateInformation/UpdatePersonalInfo.vue"),
+            },
             
           ]
         },

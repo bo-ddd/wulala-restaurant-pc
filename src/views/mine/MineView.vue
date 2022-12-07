@@ -3,7 +3,7 @@
         <div class="s-userbar">
             <div class="avatar-name">
                 <img :src = avatarImg class="avatar"/>
-                <div class="name-phone">
+                <div class="name-phone" @click="navigator('updatePersonalInfo')">
                     <span class="avatarName-text">{{ avatarName }}</span>
                     <span class="phoneNumber-text">({{ phoneNumber }})</span>
                 </div>
@@ -48,7 +48,7 @@
 }
 .s-userbar {
     height: 80px;
-    width: 900px;
+    width: 60vw;
     background-color: #f5f8fa;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
@@ -189,7 +189,7 @@ getFoodList();
  * @author Mr.H
  */
 async function userInfomation() {
-    let res = await queryUserInfoApi({ userId: 12});
+    let res = await queryUserInfoApi({});
     console.log(res);
     avatarImg.value = res.data.data.avatarImg;
     avatarName.value = res.data.data.avatarName;
@@ -207,7 +207,7 @@ function navigator(name:string){
  * 菜肴列表
  */
 async function getFoodList(){
-    let res = await gatFoodListApi({ pageSize:1 });
+    let res = await gatFoodListApi({});
     console.log(res.data.data.list);
     foodList.value = res.data.data.list;
 }

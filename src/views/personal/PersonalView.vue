@@ -9,6 +9,9 @@
                     <el-menu-item index="2" @click="navigator('orderview')">
                         <span>我的订单</span>
                     </el-menu-item>
+                    <el-menu-item index="3" @click="navigator('updatePersonalInfo')">
+                        <span>修改个人信息</span>
+                    </el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>
