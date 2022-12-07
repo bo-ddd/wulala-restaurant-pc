@@ -186,6 +186,7 @@ import type {commodityInfo,defaultAddress,code,orderInfo,interfaceParameter} fro
 import {ElMessage} from 'element-plus';
 import AddAddressValidate from '@/validate/AddAddressValidate';
 import {useCounterStore} from '@/stores/counter';
+import router from '@/router';
 
 let {setAddressInfo,addressInfo} = useCounterStore();//pinia
 let { selectedOptions } = codeLists(); //地址code码
@@ -240,8 +241,7 @@ const submitOrder = function(){
     }).then(res => {
         console.log(res);
         if (res.data.status == 1) {
-            console.log('成功');
-            
+            router.push({name:'orderview'})
         }
     })
 }
