@@ -373,4 +373,7 @@ cartLists();
     justify-content: center;
     min-height: 280px;
 }
+::v-deep .el-table__cell{
+    text-align: center;
+}
 </style>
