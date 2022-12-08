@@ -103,6 +103,9 @@ import { ref } from 'vue';
 import { useIdStore } from '@/stores/getUserId';
 import { storeToRefs } from "pinia";
 import router from '@/router';
+// pinia
+import { useCounterStore } from '@/stores/counter';
+let {getCartLists} = useCounterStore();
 let aa=useIdStore();
 aa.getUserIds()
 let { userId } = storeToRefs(useIdStore());
@@ -211,6 +214,7 @@ async function addShoppingCar(){
     console.log(res);
     if(res.data.status == 1){
         router.push({name:'shoppercar'});
+        getCartLists();
     }
 }
 
