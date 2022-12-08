@@ -171,7 +171,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 /**
  * 菜肴列表接口
  */
-gatFoodListApi().then(res => {
+gatFoodListApi({}).then(res => {
     // console.log(res);
     res.data.data.list.forEach((item: any) => {
         if (route.query.shoppingDetalisId == item.foodId) {

@@ -44,7 +44,7 @@ export interface cartDelete{
 //加入购物车
 export interface addShoppingCart{
     id?:number,
-    productId?:number,
+    productId?:LocationQueryValue | LocationQueryValue[],
     quantity?:number,
 }
 //新增收货地址

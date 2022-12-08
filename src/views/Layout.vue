@@ -15,15 +15,12 @@
 
           <div class="box-rigth">
             <div class="login">
-              <!-- <div class="header-fw" :class="{active:isActive}" @click="navigator('home')">首页</div>
-              <div class="header-fw" @click="navigator('mall')">购物中心</div>
-              <div class="header-fw" @click="navigator('shoppercar')">购物车</div>
-              <div class="header-fw">服务</div>
-              <div class="header-fw">线下门店</div> -->
               <div class="header-fw" 
-              v-for="(item,index) in routeList"
-              :class="{active:!(index-menuIndex)}" 
-              @click="clickList(item.label,index)">{{item.name}}</div>
+                v-for="(item,index) in routeList"
+                :class="{active:!(index-menuIndex)}" 
+                @click="clickList(item.label,index)">
+                  {{item.name}}
+              </div>
               <el-icon class="icon" size="24">
                 <Search />
               </el-icon>
@@ -40,6 +37,7 @@
                   </el-dropdown-menu>
                   <el-dropdown-menu v-show="token != null">
                     <el-dropdown-item @click="navigator('mineview')">个人中心</el-dropdown-item>
+                    <el-dropdown-item divided @click="navigator('updatePersonalInfo')">修改个人信息</el-dropdown-item>
                     <el-dropdown-item divided @click="exitLogin">退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -188,12 +186,18 @@ let routeList = [
   },
   {
     name:'购物中心',
-    label:'mall' || 'shoppingDetalis',
+    label:'mall',
+    children:[{
+        name:'shoppingDetalis',
+      }],
     index:1
   },
   {
     name:'购物车',
-    label:'shoppercar' || 'settlement',
+    label:'shoppercar',
+    children:[{
+      name:'settlement'
+    }],
     index:2
   },
   {
@@ -209,7 +213,13 @@ let routeList = [
 ]
 routeList.forEach(el => {
   if (route.name == el.label) {
-    menuIndex.value = el.index
+    menuIndex.value = el.index;
+  }else if(el.children){
+    el.children.forEach(item =>{
+      if (item.name == route.name) {
+        menuIndex.value = el.index;
+      }
+    })
   }
 })
 </script>

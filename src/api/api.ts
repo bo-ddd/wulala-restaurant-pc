@@ -32,8 +32,6 @@ $axios.interceptors.request.use(config => {
     return config
 })
 
-
-
 $axios.interceptors.response.use(function (response) {
     if (response.data.status == 401) {
         window.location.href = '/login'
