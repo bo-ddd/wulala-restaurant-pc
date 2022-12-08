@@ -16,10 +16,11 @@ export const useCounterStore = defineStore('counter', () => {
   const setAddressInfo = function(playolad={}){
     Object.assign(addressInfo,playolad)
   }
-  const cartLists = reactive({});
-  async function getCartLists(playolad={}){
+  const cartLists : any = ref([]);
+  async function getCartLists(){
     let res = await cartListApi();//获取购物车列表
-    Object.assign(cartLists,res.data.data);
+    // Object.assign(cartLists,res.data.data);
+    cartLists.value=res.data.data;
   }
   
   // 郝永祥

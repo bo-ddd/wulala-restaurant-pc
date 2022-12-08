@@ -19,6 +19,7 @@
                 v-for="(item,index) in routeList"
                 :class="{active:!(index-menuIndex)}" 
                 @click="clickList(item.label,index)">
+                <div class="cartNum" v-if="(index == 2)">{{cartLists.length}}</div>
                   {{item.name}}
               </div>
               <el-icon class="icon" size="24">
@@ -125,6 +126,7 @@
   margin-right: 20px;
   cursor: pointer;
   /* color: v-bind(aa); */
+  position: relative;
 }
 
 
@@ -149,12 +151,36 @@
 .active {
   color: red;
 }
+.cartNum{
+  position: absolute;
+  right: -14px;
+  top: -8px;
+  padding: 1px 3px;
+  font-size: 12px;
+  line-height: 12px;
+  color: #fff;
+  background-color: #e1251b;
+  border-radius: 7px;
+  min-width: 12px;
+  text-align: center;
+
+}
 </style>
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, watchEffect } from "vue"
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';
+import { useCounterStore } from '@/stores/counter';
+import { storeToRefs } from "pinia";
+// 获取购物车数据(length)
+let {getCartLists} = useCounterStore();
+let {cartLists} = storeToRefs( useCounterStore());
+(async function () {
+  await getCartLists();
+})();
+
+
 let router = useRouter();
 let route = useRoute()
 let token = sessionStorage.getItem('token')
