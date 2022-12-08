@@ -10,7 +10,7 @@
                 <div class="food-info">菜品价格：{{ foodlist.price }}</div>
                 <div class="food-info">菜品介绍：{{ foodlist.description }}</div>
                 <el-input-number v-model="ShoppingNumber" :min="1" :max="30" @change="handleChange" />
-                <el-button class="add-shopping-cart_btn" type="primary" @click="addShoppingCar">加入购物车  +</el-button>
+                <el-button class="add-shopping-cart_btn" type="info" @click="addShoppingCar">加入购物车  +</el-button>
             </div>
         </div>
         <div class="shop-appraise-text">商品评价</div>
@@ -40,7 +40,6 @@
                         <div>
                             <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
                             <div class="user-appraise">{{ item.content }}</div>
-                            <div>用户上传的图片</div>
                         </div>
                     </div>
                 </el-tab-pane>
@@ -53,7 +52,6 @@
                             <div  v-if="item.star >= 4" class="bj-white">
                                 <el-rate disabled v-model="item.star" :max="5" allow-half :colors="['#409eff', '#67c23a', '#FF9900']"/>
                                 <div class="user-appraise">{{ item.content }}</div>
-                                <div>用户上传的图片</div>
                             </div>
                     </div>
                 </el-tab-pane>
@@ -66,7 +64,6 @@
                             <div v-if="item.star == 3" class="bj-white">
                                 <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
                                 <div class="user-appraise">{{ item.content }}</div>
-                                <div>用户上传的图片</div>
                             </div>
                     </div>
                 </el-tab-pane>
@@ -79,7 +76,6 @@
                             <div v-if="item.star <= 2" class="bj-white">
                                 <el-rate disabled v-model="item.star" :max="5" allow-half  :colors="['#409eff', '#67c23a', '#FF9900']"/>
                                 <div class="user-appraise">{{ item.content }}</div>
-                                <div>用户上传的图片</div>
                             </div>
                     </div>
                 </el-tab-pane>
