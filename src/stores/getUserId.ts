@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive, computed , ref} from "vue";
 import { queryUserInfoApi } from "@/api/api";
-export const useId = defineStore('counter', () => {
+export const useIdStore = defineStore('id', () => {
     let userIds = ref({
         userId: 0
     });
@@ -14,5 +14,5 @@ export const useId = defineStore('counter', () => {
     const setUserid = (payload: any) => {
         userIds.value = payload;
     }
-    return { userId, getUserIds }
+    return { userId, getUserIds,setUserid }
 })

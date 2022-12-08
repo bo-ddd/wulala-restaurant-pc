@@ -100,16 +100,16 @@ import { gatFoodListApi, foodAppraiseListApi,addShoppingCartApi } from '@/api/ap
 import { useRoute } from 'vue-router';
 import type { TabsPaneContext } from 'element-plus';
 import { ref } from 'vue';
-import { useId } from '@/stores/getUserId';
+import { useIdStore } from '@/stores/getUserId';
 import { storeToRefs } from "pinia";
 import router from '@/router';
-let aa = useId()
-aa.getUserIds();
-let { userId } = storeToRefs(aa);
+let aa=useIdStore();
+aa.getUserIds()
+let { userId } = storeToRefs(useIdStore());
 console.log(userId.value);
 
 let route = useRoute();
-let foodlist: any = ref({});
+let foodlist:any = ref({});
 let foodAppraise = ref();
 let allAppraise = ref();
 let allAppraiseLength = ref();
@@ -171,6 +171,8 @@ gatFoodListApi({}).then(res => {
     // console.log(res);
     res.data.data.list.forEach((item: any) => {
         if (route.query.shoppingDetalisId == item.foodId) {
+            console.log(item);
+            
             foodlist.value = item;
         }
     })
