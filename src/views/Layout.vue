@@ -180,7 +180,6 @@ let {cartLists} = storeToRefs( useCounterStore());
   await getCartLists();
 })();
 
-
 let router = useRouter();
 let route = useRoute()
 let token = sessionStorage.getItem('token')
