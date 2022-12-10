@@ -14,5 +14,5 @@ export const useIdStore = defineStore('id', () => {
     const setUserid = (payload: any) => {
         userIds.value = payload;
     }
-    return { userId, getUserIds,setUserid }
+    return { userId, getUserIds }
 })
