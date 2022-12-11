@@ -232,12 +232,12 @@ const toSettlement = function(){
 const cartLists = function(){
     cartListApi().then(res => {
         if (res.data.status != 1) {
-            ElMessage({
-                message: '请先登录.',
-                type: 'success',
-            })
-            router.push({name:'login'})
-            return
+            // ElMessage({
+            //     message: '请先登录.',
+            //     type: 'success',
+            // })
+            // router.push({name:'login'})
+            // return
         }else{
             cartList.value = res.data.data;
 

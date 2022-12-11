@@ -33,9 +33,9 @@ $axios.interceptors.request.use(config => {
 })
 
 $axios.interceptors.response.use(function (response) {
-    // if (response.data.status == 401) {
-    //     window.location.href = '/login'
-    // }
+    if (response.data.status == 401) {
+        window.location.href = '/login'
+    }
     return response;
 }, function (error) {
     return Promise.reject(error);
