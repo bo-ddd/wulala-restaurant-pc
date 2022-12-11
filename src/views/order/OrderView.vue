@@ -54,7 +54,6 @@
                   <el-popover placement="left-start" :width="200" trigger="hover">
                     <template #default>
                       <p>{{ item.receiver }}</p>
-                      <!-- <p>山西省阳泉市盂县西烟镇南社村</p> -->
                       <span v-for="element in codeListGoRepeat">
                         <span v-if="(element.code == item.provinceCode)">{{ element.name }}</span>
                         <span v-if="(element.code == item.cityCode)">{{ element.name }}</span>
@@ -415,12 +414,9 @@ let codeList: any = [];//coed码对应是name
 let codeListGoRepeat = ref();
 
 let centerDialogVisible = ref(false);
-let aa = useId();
-aa.getUserIds();
 let appraiseContent: any = ref('');
 let star = ref(0);
 const value1 = ref(true);
-let { userId } = storeToRefs(aa);
 const activeName = ref("all");
 const input3 = ref("");
 let router = useRouter();
