@@ -22,7 +22,7 @@
                 <div class="update-avatar-phone ml-30">{{ phoneNumber }}</div>
                 <div class="update-avatar-right">修改</div>
             </div>
-            <div class="update-avatar grid">
+            <div class="update-avatar grid border-bottom">
                 <div class="update-avatar-left">登录密码</div>
                 <div class="update-avatar-phone ml-30">安全强度 : 弱</div>
                 <div class="update-avatar-right">修改</div>
@@ -34,13 +34,13 @@
 .personal-info-update{
     width: 58vw;
     background-color: white;
-    border: 1px solid red;
+    border: 1px solid #E5E5E5;
 }
 .pd-30{
     padding: 30px;
 }
 .update-avatar{
-    border-top: 1px solid red;
+    border-top: 1px solid #E5E5E5;
     padding: 15px;
 }
 .grid{
@@ -50,19 +50,22 @@
 }
 .update-avatar-left{
     font-size: 18px;
-    border-right: 1px solid red;
+    border-right: 1px solid #E5E5E5;
     text-align: center;
 }
 .update-avatar-middle{
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     border-radius: 24px;
 }
 .update-avatar-right{
     padding: 10px;
-    border: 1px solid red;
+    border: 1px solid #E5E5E5;
     text-align: center;
     border-radius: 30px;
+}
+.border-bottom{
+    border-bottom: 1px solid #E5E5E5;
 }
 </style>
 <script lang="ts" setup>
@@ -74,6 +77,7 @@ let avatarImg = ref('');
 let avatarName = ref('');
 let phoneNumber = ref();
 let birthday = ref('');
+
 getuserInfo();
 
 async function getuserInfo(){
