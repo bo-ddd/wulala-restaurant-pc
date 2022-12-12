@@ -4,8 +4,8 @@
             <h3>个人信息修改</h3>
             <div class="update-avatar grid mt-30">
                 <div class="update-avatar-left">头像</div>
-                <img class="update-avatar-middle ml-30" :src = avatarImg />
-                <div class="update-avatar-right">修改</div>
+                <UploadAvatar class="update-avatar-middle ml-30"></UploadAvatar>
+                <div class="update-avatar-right" @click="updateUserInfo">修改</div>
             </div>
             <div class="update-avatar grid">
                 <div class="update-avatar-left">昵称</div>
@@ -54,8 +54,8 @@
     text-align: center;
 }
 .update-avatar-middle{
-    width: 36px;
-    height: 36px;
+    width: 60px;
+    height: 60px;
     border-radius: 24px;
 }
 .update-avatar-right{
@@ -73,7 +73,8 @@
 import { queryUserInfoApi }  from '@/api/api';
 import { ref } from 'vue';
 import { getTime } from '@/assets/util/index';
-  
+import UploadAvatar from '@/components/UploadAvatar.vue';
+
 let avatarImg = ref('');
 let avatarName = ref('');
 let phoneNumber = ref();
@@ -88,5 +89,8 @@ async function getuserInfo(){
     avatarName.value = res.data.data.avatarName;
     phoneNumber.value = res.data.data.phoneNumber;
     birthday.value = res.data.data.birthday;
+}
+function updateUserInfo(){
+    
 }
 </script>
