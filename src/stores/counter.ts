@@ -2,10 +2,8 @@ import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { queryUserInfoApi } from '@/api/api'
 import { cartListApi } from '@/api/api';
-interface address{
-  provinceCode:number, cityCode:number, areaCode:number,
-  address:string,phoneNumber:string,receiver:string,id:number,
-}
+import type { address } from "@/types/xhrPayLoadApi";
+
 export const useCounterStore = defineStore('counter', () => {
   // 周
   const commodityInfos = reactive({});//商品信息

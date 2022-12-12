@@ -1,5 +1,9 @@
 import type { LocationQueryValue } from "vue-router";
-
+//api
+export interface address{
+    provinceCode:number, cityCode:number, areaCode:number,
+    address:string,phoneNumber:string,receiver:string,id:number,
+}
 //登录
 export interface login{
     username?:string,

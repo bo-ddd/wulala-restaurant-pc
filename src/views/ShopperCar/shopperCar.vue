@@ -95,16 +95,18 @@
 <script lang="ts" setup>
 import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
 import { Search } from '@element-plus/icons-vue';
-import { ref } from 'vue';
+import { onMounted, ref,toRefs } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import type {User} from '@/types/xhrPayLoad';
 import { useCounterStore } from '@/stores/counter';
+
 let {getCartLists} = useCounterStore();
 let router = useRouter();
 const checked2 = ref(false);//满200 
 let input = ref();//搜索框
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();//设置默认选中
+
 const multipleSelection = ref<User[]>([]);//选中商品
 const multipleSelectionLength = ref(0);//勾选商品数量
 const multipleSelectionPrice = ref(0.00);//总价
@@ -117,8 +119,6 @@ let ids = ref();//拿到点击时候的id 与 上面判断是否一致
 // 拿购物车列表
 let cartList = ref([]);//购物车数据
 let cartListLength = ref();//购物车数据长度
-
-
 //计算总价方法
 const handleSelectionChange = (val: User[]) => {
   vals.value = val;
@@ -228,10 +228,9 @@ const cartLists = function(){
             //     type: 'success',
             // })
             // router.push({name:'login'})
-            return
+            // return
         }else{
             cartList.value = res.data.data;
-
             cartListLength.value =cartList.value.length;
         }
     }).catch(err => {
