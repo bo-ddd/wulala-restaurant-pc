@@ -168,7 +168,7 @@
 </style>
 <script setup lang="ts">
 import FooderBar from "@/components/footerBar.vue"
-import { ref, watchEffect } from "vue";
+import { ref, watch } from "vue";
 
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
@@ -238,15 +238,17 @@ let routeList = [
     index:4
   }
 ]
-routeList.forEach(el => {
-  if (route.name == el.label) {
-    menuIndex.value = el.index;
-  }else if(el.children){
-    el.children.forEach(item =>{
-      if (item.name == route.name) {
-        menuIndex.value = el.index;
-      }
-    })
-  }
+watch((route),(newArr,newLoa)=>{
+  routeList.forEach(el => {
+    if (route.name == el.label) {
+      menuIndex.value = el.index;
+    }else if(el.children){
+      el.children.forEach(item =>{
+        if (item.name == route.name) {
+          menuIndex.value = el.index;
+        }
+      })
+    }
+  })
 })
 </script>
