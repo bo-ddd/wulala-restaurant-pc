@@ -398,8 +398,6 @@ import { ref } from "vue";
 import codeLists from '@/views/ShopperCar/codeList';
 import { orderListApi, queryUserInfoApi, addFoodAppraiseApi, foodAppraiseListApi } from "@/api/api";
 import { useRouter, useRoute } from "vue-router";
-import { useId } from '@/stores/getUserId';
-import { storeToRefs } from "pinia";
 import {
   Document,
   Menu as IconMenu,
