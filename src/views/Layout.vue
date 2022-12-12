@@ -19,7 +19,7 @@
                 v-for="(item,index) in routeList"
                 :class="{active:!(index-menuIndex)}" 
                 @click="clickList(item.label,index)">
-                <div class="cartNum" v-if="(index == 2)">{{cartLists.length}}</div>
+                <div class="cartNum" v-if="(index == 2)">{{cartLists==null?0:cartLists.length}}</div>
                   {{item.name}}
               </div>
               <el-icon class="icon" size="24">
