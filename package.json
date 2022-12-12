@@ -15,6 +15,7 @@
     "element-plus": "^2.2.20",
     "elui-china-area-dht": "^2.0.0",
     "pinia": "^2.0.23",
+    "sass": "^1.56.1",
     "vue": "^3.2.41",
     "vue-router": "^4.1.5"
   },

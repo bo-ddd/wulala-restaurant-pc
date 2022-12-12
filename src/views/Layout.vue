@@ -19,7 +19,7 @@
                 v-for="(item,index) in routeList"
                 :class="{active:!(index-menuIndex)}" 
                 @click="clickList(item.label,index)">
-                <div class="cartNum" v-if="(index == 2)">{{cartLists.length}}</div>
+                <div class="cartNum" v-if="(index == 2)">{{cartLists==null?0:cartLists.length}}</div>
                   {{item.name}}
               </div>
               <el-icon class="icon" size="24">
@@ -58,9 +58,7 @@
       
       </el-main>
       <el-footer>
-        <div>
-         
-      </div>
+       <FooderBar></FooderBar>
     </el-footer>
     </el-container>
 </template>
@@ -140,7 +138,9 @@
 .el-main {
   padding: 20px 0px;
 }
-
+.el-footer{
+  --el-footer-height: 100%
+}
 .el-carousel__container {
   min-height: 600px;
   border-bottom: 1px solid #ccc;
@@ -167,7 +167,9 @@
 }
 </style>
 <script setup lang="ts">
+import FooderBar from "@/components/footerBar.vue"
 import { ref, watchEffect } from "vue";
+
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';
