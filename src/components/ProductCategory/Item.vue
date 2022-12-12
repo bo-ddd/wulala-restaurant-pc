@@ -3,13 +3,13 @@
    <div class="box-item" v-if="ProductCategory.direction == 'left'">
     <div class="box-img"><img :src="ProductCategory.imgUrl" alt=""></div>
     <div class="texts" >
-        <div class="qqq">{{1}}</div>
+        <div class="qqq">{{ProductCategory.description}}</div>
         <el-button type="info" color="#000000" @click="toCategory( id,ProductCategory.id )" round>查看全部{{ProductCategory.name}}</el-button>
     </div>
    </div>
    <div class="box-items" v-else>
        <div class="texts" >
-           <div class="qqq">{{1}}</div>
+           <div class="qqq">{{ProductCategory.description}}</div>
            <el-button type="info" color="#000000" @click="toCategory( id,ProductCategory.id )" round>查看全部{{ProductCategory.name}}</el-button>
         </div>
         <div class="box-imgs"><img :src="ProductCategory.imgUrl" alt=""></div>
@@ -25,7 +25,7 @@ console.log(router);
     ProductCategory:{
         imgUrl:string,
         name:string,
-        // text:string,
+        description:string,
         direction:string,
         id :string
     }
