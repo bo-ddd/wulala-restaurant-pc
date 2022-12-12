@@ -1,5 +1,5 @@
 <template>
-    <div v-if="(cartList == 0)">
+    <div v-if="(cartList.length == 0)" class="subject">
         <el-empty :image-size="200"
         description="购物车空空的哦~，去看看心仪的商品吧~"
         >
@@ -13,7 +13,6 @@
             <div class="nav pd-10 df-al">
                 <p>全部商品 {{ cartListLength }}</p>
             </div>
-            <!-- :row-style="isSelected == true ? rowState : isRowState" -->
             <el-table
                 ref="multipleTableRef"
                 :data="cartList"
@@ -24,7 +23,7 @@
                 @select="handleValue"
             >
                 <el-table-column type="selection" width="55" :checked="true"/>
-                <el-table-column label="商品" width="370px">
+                <el-table-column label="商品" show-overflow-tooltip>
                     <template #default="scope">
                         <div class="commodity">
                             <img class="commodity-icon" :src="scope.row.bannerUrl" alt="">
@@ -41,30 +40,15 @@
                 <el-table-column label="单价" show-overflow-tooltip>
                     <template #default="scope">
                         <p>￥{{scope.row.originalPrice}}</p>
-                        <el-tooltip
-                            class="box-item"
-                            effect="dark"
-                            content="Bottom Right prompts info"
-                            placement="bottom-end"
-                        >
-                            <template #content>
-                                <span class="checked-content">
-                                    <el-checkbox v-model="checked2">
-                                        满2000元减20元，包邮（限中国内地）
-                                    </el-checkbox>
-                                </span>
-                            </template>
-                            <el-button>促销</el-button>
-                        </el-tooltip>
                     </template>
                 </el-table-column>
-                <el-table-column label="数量" width="180" >
+                <el-table-column label="数量" show-overflow-tooltip >
                     <template #default="scope">
                         <el-input-number v-model="scope.row.quantity" :min="1" :max="111000" @change="handleChange(scope.row.quantity,
                         scope.row.id,scope.row.originalPrice,scope.row)" />
                     </template>
                 </el-table-column>
-                <el-table-column label="小计" width="120" >
+                <el-table-column label="小计" show-overflow-tooltip>
                     <template #default="scope">
                         <span class="cl-r">￥{{scope.row.id == ids ? prices : scope.row.totalPrice}}.00</span>
                     </template>
@@ -80,8 +64,22 @@
         <el-affix position="bottom" :offset="10">
             <div class="go-settlement mt-20 mb-20">
                 <div class="go-settlement_left">
-                    <!-- <el-checkbox v-model="checked2" class="pl-10">全选</el-checkbox> -->
                     <p class="ml-10" @click="deleteCommdoity">删除选中的商品</p>
+                    <!-- <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        content="Bottom Right prompts info"
+                        placement="bottom-end"
+                    >
+                        <template #content>
+                            <span class="checked-content">
+                                <el-checkbox v-model="checked2">
+                                    满2000元减20元，包邮（限中国内地）
+                                </el-checkbox>
+                            </span>
+                        </template>
+                        <el-button>促销</el-button>
+                    </el-tooltip> -->
                 </div>
                 <div class="go-settlement_right">
                     <p>已选择 <span class="cl-red">{{multipleSelectionLength}}</span> 件商品</p>
@@ -97,42 +95,45 @@
 <script lang="ts" setup>
 import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
 import { Search } from '@element-plus/icons-vue';
-import { ref } from 'vue';
+import { onMounted, ref,toRefs } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
-import type {User} from '@/views/ShopperCar/xhrPayload';
-// import { useCounterStore } from '@/stores/counter';
-// let { setCommodityInfo } = useCounterStore();
-//修改table样式
-// const rowState = () => {
-//   return {
-//     backgroundColor: '#fff4e8',
-//   }
-// }  
+import type {User} from '@/types/xhrPayLoad';
+import { useCounterStore } from '@/stores/counter';
+
+let {getCartLists} = useCounterStore();
 let router = useRouter();
-const checked2 = ref(false)
-let input = ref();
+const checked2 = ref(false);//满200 
+let input = ref();//搜索框
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();//设置默认选中
-const multipleSelection = ref<User[]>([]);
+
+const multipleSelection = ref<User[]>([]);//选中商品
 const multipleSelectionLength = ref(0);//勾选商品数量
-const multipleSelectionPrice = ref(0.00);
-let vals = ref();
+const multipleSelectionPrice = ref(0.00);//总价
+let vals = ref();//选中数据、
+let isSelected = ref();// 选中
+// 计算加减
+const isPlusReduce = ref(false);
+let prices = ref();//小计价格
+let ids = ref();//拿到点击时候的id 与 上面判断是否一致
+// 拿购物车列表
+let cartList = ref([]);//购物车数据
+let cartListLength = ref();//购物车数据长度
+//计算总价方法
 const handleSelectionChange = (val: User[]) => {
   vals.value = val;
   multipleSelection.value = val;
   multipleSelectionLength.value = multipleSelection.value.length;
-//   console.log(val); //选中的商品
   multipleSelectionPrice.value =  0 
   val.forEach(el => {
     multipleSelectionPrice.value += (el.quantity * el.originalPrice)
   })
 }
 // 选中
-let isSelected = ref();
 const handleValue = (select : any,val : any) => {
     isSelected.value = select.length && select.indexOf(val) !== -1  // true就是选中，0或者false是取消选中  
 }
-
+//删除选中商品
 const deleteCommdoity = function(){
     if (multipleSelection.value.length == 0) {
         ElMessage({
@@ -153,13 +154,14 @@ const deleteCommdoity = function(){
         })
     }
 }
-
+//操作 ----》 删除
 const deletes = (scope : any)=>{
     cartDeleteApi({
         id:scope.id
     }).then(res => {
         if (res.data.status == 1) {
-            cartLists()
+            cartLists();
+            getCartLists();//pinia
         }
     }).catch(err => {
         console.log(err);
@@ -167,10 +169,7 @@ const deletes = (scope : any)=>{
 }
 
 // 计算加减
-const isPlusReduce = ref(false);
-let prices = ref();
-let ids = ref();
-const handleChange = (value: number,id:number,price:number,scope:any) => {
+const handleChange = (value: number,id:number,price:number,scope:any) => {//修改商品数量
   isPlusReduce.value = true
   ids.value = id;
   prices.value = price * value;
@@ -186,10 +185,7 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
             type: 'warning',
         })
     }else{
-        // console.log('成功');
         let commodityId = ref([]);
-        // console.log(vals.value); //选中数据
-        
         vals.value.forEach((el: { id: any; }) => {
             return commodityId.value.push(el.id as never);
         });
@@ -207,7 +203,7 @@ const handleChange = (value: number,id:number,price:number,scope:any) => {
     }).catch(err=>{
         console.log(err);
     })
-    }
+}
 // 结算按钮
 const toSettlement = function(){
     if(multipleSelection.value.length == 0){
@@ -224,19 +220,17 @@ const toSettlement = function(){
 };
 
 // 拿购物车列表
-let cartList = ref();
-let cartListLength = ref();
 const cartLists = function(){
     cartListApi().then(res => {
         if (res.data.status != 1) {
-            ElMessage({
-                message: '请先登录.',
-                type: 'success',
-            })
-            router.push({name:'login'})
+            // ElMessage({
+            //     message: '请先登录.',
+            //     type: 'success',
+            // })
+            // router.push({name:'login'})
+            // return
         }else{
             cartList.value = res.data.data;
-
             cartListLength.value =cartList.value.length;
         }
     }).catch(err => {
@@ -266,7 +260,7 @@ cartLists();
     padding: 0 20px;
 }
 .commodity-icon{
-    width: 30%;
+    width: 50%;
     height: 100%;
     border-radius: 7px;
 }
@@ -363,9 +357,6 @@ cartLists();
 .cl-r{
     color: #E2231A;
 }
-/* .bj ::v-deep .el-table tr{
-    background: #fff4e8;
-} */
 .type{
     padding: 0 12PX;
     height: 20PX;
@@ -374,7 +365,15 @@ cartLists();
     color: #fff;
     background: #cb1f17;
     display: inline-block;
-    margin-right: 16PX;
     font-style: normal;
+}
+.subject{
+    height: calc(100vh - 180px);
+    display: flex;
+    justify-content: center;
+    min-height: 280px;
+}
+::v-deep .el-table__cell{
+    text-align: center;
 }
 </style>

@@ -2,30 +2,10 @@
   <div>
     <div class="warp">
       <div class="header">
-        <el-row class="tac">
-          <el-col :span="12">
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-              @open="handleOpen"
-              @close="handleClose"
-            >
-              <el-menu-item index="1">
-                <span>我的订单</span>
-              </el-menu-item>
-              <el-menu-item index="2">
-                <span>商品详情</span>
-              </el-menu-item>
-            </el-menu>
-          </el-col>
-        </el-row>
         <el-tabs type="border-card">
           <el-tab-pane label="所有订单">
             <div class="mt-4">
-              <el-input
-                v-model="input3"
-                placeholder="输入商品标签或订单号进行搜索"
-                class="input-with-select">
+              <el-input v-model="input3" placeholder="输入商品标签或订单号进行搜索" class="input-with-select">
                 <template #append>
                   <el-button :icon="Search" />
                 </template>
@@ -33,39 +13,35 @@
 
               <el-table stripe style="width: 100%" empty-text=" ">
                 <el-table-column label="订单详情" width="590" />
-                <el-table-column label="收货人" width="80" />
-                <el-table-column label="金额" width="90" />
+                <el-table-column label="收货人" width="100" />
+                <el-table-column label="金额" width="100" />
                 <el-table-column label="状态" width="90" />
                 <el-table-column label="操作" width="80" />
               </el-table>
-              <tbody v-for="(item,index) in orderLists" :key="index">
+              <tbody v-for="(item, index) in orderLists" :key="index">
                 <tr class="tr-th">
                   <td colspan="5" class="td">
-                    <span class="dealtime">{{new Date(item.createdAt).toLocaleDateString()}}</span>
+                    <span class="dealtime">{{ new Date(item.createdAt).toLocaleDateString() }}</span>
                     <span class="number">订单号:</span>
-                    <span class="numbers">{{item.orderSn}}</span>
-                    <img
-                      class="del"
-                      src="@/assets/images/icon-del.png"
-                      alt=""
-                    />
+                    <span class="numbers">{{ item.orderSn }}</span>
+                    <img class="del" src="@/assets/images/icon-del.png" alt="" />
                   </td>
                 </tr>
                 <tr class="tr-bd">
                   <td class="td-shops">
-                    <tr v-for="(el,index) in item.rows" :key="index">
-                    <td class="td-shop">
+                <tr v-for="(el, index) in item.rows" :key="index">
+                  <td class="td-shop">
                     <div class="goods-item">
                       <div class="p-img">
                         <img :src="el.bannerUrl" alt="" />
                       </div>
                       <div class="p-msg">
                         <div class="p-name">
-                          {{el.productName}}
+                          {{ el.productName }}
                         </div>
                       </div>
                     </div>
-                    <div class="goods-number">x{{el.num}}</div>
+                    <div class="goods-number">x{{ el.num }}</div>
                     <div class="goods-repair">
                       <span class="br">申请售后</span>
                       <span class="br">卖了换钱</span>
@@ -73,50 +49,48 @@
                   </td>
                 </tr>
 
-              </td>
-                  <td>
-                    <el-popover
-                      placement="left-start"
-                      :width="200"
-                      trigger="hover"
-                    >
+                </td>
+                <td>
+                  <el-popover placement="left-start" :width="200" trigger="hover">
                     <template #default>
-                      <p>{{item.receiver}}</p>
-                      <p>山西省阳泉市盂县西烟镇南社村</p>
-                      <p>{{item.phoneNumber}}</p>
+                      <p>{{ item.receiver }}</p>
+                      <span v-for="element in codeListGoRepeat">
+                        <span v-if="(element.code == item.provinceCode)">{{ element.name }}</span>
+                        <span v-if="(element.code == item.cityCode)">{{ element.name }}</span>
+                        <span v-if="(element.code == item.areaCode)">{{ element.name }}</span>
+                      </span>
+                      <span>{{ item.address }}</span>
+                      <p>{{ item.phoneNumber }}</p>
                     </template>
-                      <template #reference>
-                        <div class="user">
-                          <span class="txt">{{item.receiver}}</span>
-                          <img
-                            class="user-img"
-                            src="@/assets/images/icon-user.png"
-                          />
-                        </div>
-                      </template>
-                    </el-popover>
-                  </td>
-                  <td>
-                    <div class="amount">
-                      <span>￥{{item.amount}}</span>
-                      <br />
-                      <span class="ftx-13">在线支付</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="status">
-                      <span class="amount">已完成</span>
-                      <br />
-                      <span>订单详情</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="operate">
-                      <span>查看发票</span>
-                      <br />
-                      <span>追加评论</span>
-                    </div>
-                  </td>
+                    <template #reference>
+                      <div class="user">
+                        <span class="txt">{{ item.receiver }}</span>
+                        <img class="user-img" src="@/assets/images/icon-user.png" />
+                      </div>
+                    </template>
+                  </el-popover>
+                </td>
+                <td>
+                  <div class="amount">
+                    <span>￥{{ item.amount }}</span>
+                    <br />
+                    <span class="ftx-13">在线支付</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="status">
+                    <span class="amount">已完成</span>
+                    <br />
+                    <span>订单详情</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="operate">
+                    <span>查看发票</span>
+                    <br />
+                    <span>追加评论</span>
+                  </div>
+                </td>
                 </tr>
               </tbody>
             </div>
@@ -159,11 +133,7 @@
                 <td>
                   <div class="user">
                     <span class="txt">刘伟博</span>
-                    <img
-                      class="user-img"
-                      src="@/assets/images/icon-user.png"
-                      alt=""
-                    />
+                    <img class="user-img" src="@/assets/images/icon-user.png" alt="" />
                   </div>
                 </td>
                 <td>
@@ -236,11 +206,7 @@
                 <td>
                   <div class="user">
                     <span class="txt">刘伟博</span>
-                    <img
-                      class="user-img"
-                      src="@/assets/images/icon-user.png"
-                      alt=""
-                    />
+                    <img class="user-img" src="@/assets/images/icon-user.png" alt="" />
                   </div>
                 </td>
                 <td>
@@ -305,11 +271,7 @@
                 <td>
                   <div class="user">
                     <span class="txt">刘伟博</span>
-                    <img
-                      class="user-img"
-                      src="@/assets/images/icon-user.png"
-                      alt=""
-                    />
+                    <img class="user-img" src="@/assets/images/icon-user.png" alt="" />
                   </div>
                 </td>
                 <td>
@@ -378,11 +340,7 @@
                 <td>
                   <div class="user">
                     <span class="txt">刘伟博</span>
-                    <img
-                      class="user-img"
-                      src="@/assets/images/icon-user.png"
-                      alt=""
-                    />
+                    <img class="user-img" src="@/assets/images/icon-user.png" alt="" />
                   </div>
                 </td>
                 <td>
@@ -416,35 +374,30 @@
         </el-tabs>
       </div>
     </div>
-    <el-dialog
-            v-model="centerDialogVisible"
-            title="评价此菜品"
-            width="400px"
-            align-center 
-            >
-            <div class="appraise-content">
-                <div><textarea rows="6" columns="30" v-model="appraiseContent" placeholder="评价内容"></textarea></div>
-                <el-rate v-model="rate" />
-                <br>
-                <el-switch v-model="value1" />
-            </div>
-            <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="centerDialogVisible = false">Cancel</el-button>
-                <el-button type="primary" @click="submitAppraise">
-                    提交
-                </el-button>
-            </span>
-            </template>
-        </el-dialog>
+    <el-dialog v-model="centerDialogVisible" title="评价此菜品" width="400px" align-center>
+      <div class="appraise-content">
+        <div><textarea rows="6" columns="30" v-model="appraiseContent" placeholder="评价内容"></textarea></div>
+        <input type="number" v-model="star">星评价
+        <br>
+        <el-switch v-model="value1" />
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="submitAppraise">
+            提交
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { orderListApi, queryUserInfoApi, addFoodAppraiseApi,foodAppraiseListApi } from "@/api/api";
-import type { TabsPaneContext } from "element-plus";
-import { useRouter,useRoute } from "vue-router";
+import codeLists from '@/views/ShopperCar/codeList';
+import { orderListApi, queryUserInfoApi, addFoodAppraiseApi, foodAppraiseListApi } from "@/api/api";
+import { useRouter, useRoute } from "vue-router";
 import { useId } from '@/stores/getUserId';
 import { storeToRefs } from "pinia";
 import {
@@ -455,13 +408,15 @@ import {
   Search,
 } from "@element-plus/icons-vue";
 
+
+let { selectedOptions } = codeLists(); //地址code码
+let codeList: any = [];//coed码对应是name
+let codeListGoRepeat = ref();
+
 let centerDialogVisible = ref(false);
-let aa = useId();
-aa.getUserIds();
 let appraiseContent: any = ref('');
 let star = ref(0);
 const value1 = ref(true);
-let { userId } = storeToRefs(aa);
 const activeName = ref("all");
 const input3 = ref("");
 let router = useRouter();
@@ -470,7 +425,7 @@ const currentPage = ref();     //当前页数
 const pageSize = ref(5);       //每页显示的条数
 const orderLists: any = ref({});
 const ordereRow = ref({});
-let rate = ref();
+
 getUserId();
 
 const handleOpen = (key: string, keyPath: string[]) => {
@@ -478,9 +433,6 @@ const handleOpen = (key: string, keyPath: string[]) => {
 };
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
-};
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
 };
 async function getUserId() {
   let res = await queryUserInfoApi();
@@ -490,46 +442,67 @@ async function getUserId() {
   // console.log(orderList.data.data.list);
   orderLists.value = orderList.data.data.list;
   orderList.data.data.list.forEach((item: any) => {
-    // console.log(item.rows);
-      ordereRow.value = item.rows;
+    ordereRow.value = item.rows;
+    selectedOptions.forEach((el: any) => {
+      // console.log(el);
+      if (item.provinceCode == el.code) {
+        // console.log(el);
+        codeList.push(el);
+      }
+      el.children.forEach((els: any) => {
+        if (item.cityCode == els.code) {
+          // console.log(els);
+          codeList.push(els);
+        }
+        if(!els.children){
+          return
+        } else {
+          els.children.forEach((elss: any) => {
+            if(item.areaCode == elss.code){
+              // console.log(elss);
+              codeList.push(elss);
+            }
+          });
+        }
+      });
+    });
+    codeListGoRepeat.value = [...new Set(codeList)]
+    
   });
 }
 
+
 //打开评论界面
 function appraise() {
-    centerDialogVisible.value = true; 
+  centerDialogVisible.value = true;
 }
+
 // //菜肴评论列表
 function dishesEva() {
-    foodAppraiseListApi({ 
-      foodId: route.query.shoppingDetalisId,
-      pageSize:pageSize.value,
-      pageNum:currentPage.value
-    }).then(res => {
-        console.log(res.data.date.list);
-    })
+  foodAppraiseListApi({
+    foodId: route.query.shoppingDetalisId,
+    pageSize: pageSize.value,
+    pageNum: currentPage.value
+  }).then(res => {
+    console.log(res.data.data.list);
+  })
 }
-// console.log(rate.value);
 
 async function submitAppraise() {
-    /**
-     * 新增菜肴评价
-     */
-    // console.log(rate.value);
-    
-    let res = await addFoodAppraiseApi({
-        userId: userId.value,
-        foodId: route.query.shoppingDetalisId,
-        content: appraiseContent.value,
-        star: rate.value,
-        isRealName: value1.value == true ? 1 : 0
-    });
-    console.log(res);
-    console.log('又增加了一个评论');
-    // console.log(rate.value);
-    
-    dishesEva();
-    centerDialogVisible.value = false;
+  /**
+   * 新增菜肴评价
+   */
+  let res = await addFoodAppraiseApi({
+    userId: userId.value,
+    foodId: route.query.shoppingDetalisId,
+    content: appraiseContent.value,
+    star: star.value,
+    isRealName: value1.value == true ? 1 : 0
+  });
+  console.log(res);
+  console.log('又增加了一个评论');
+  dishesEva();
+  centerDialogVisible.value = false;
 }
 </script>
 
@@ -537,33 +510,41 @@ async function submitAppraise() {
 .header {
   display: flex;
 }
+
 ::v-deep .el-col-12 {
   max-width: 100%;
   width: 200px;
   flex: 0%;
 }
+
 .el-tabs {
   margin: 0 20px;
-  width: 1200px;
+  width: 990px;
 }
+
 .input-with-select .el-input-group__prepend {
   background-color: var(--el-fill-color-blank);
 }
+
 ::v-deep .el-table__empty-block {
   display: none;
 }
+
 ::v-deep .el-scrollbar {
   display: none;
 }
+
 ::v-deep .cell {
   text-align: center;
 }
+
 .tbody {
   display: table-row-group;
   vertical-align: middle;
   border: 1px solid #e5e5e5;
   border-color: inherit;
 }
+
 .tr-th {
   background: #f5f5f5;
   height: 31px;
@@ -573,6 +554,7 @@ async function submitAppraise() {
   padding: 10px 0 0;
   border-bottom-color: #f5f5f5;
 }
+
 .dealtime {
   font-family: verdana;
   float: left;
@@ -583,6 +565,7 @@ async function submitAppraise() {
   margin-right: 30px;
   margin: 0 14px;
 }
+
 .number {
   font-family: verdana;
   float: left;
@@ -591,6 +574,7 @@ async function submitAppraise() {
   padding: 10px 0 0;
   font-size: 14px;
 }
+
 .numbers {
   font-family: verdana;
   float: left;
@@ -601,6 +585,7 @@ async function submitAppraise() {
   color: #000;
   margin: 0 10px;
 }
+
 .titless {
   font-family: verdana;
   float: left;
@@ -612,26 +597,32 @@ async function submitAppraise() {
   margin: 0 10px;
   margin-left: 50px;
 }
+
 .del {
   width: 24px;
   float: right;
   padding: 7px 0 0;
 }
+
 .td {
-  width: 1200px;
+  width: 1000px;
 }
+
 td {
   padding: 14px 0;
 }
+
 .tr-bd {
   text-align: center;
   vertical-align: top;
 }
+
 .goods-item {
   margin-right: 20px;
   float: left;
   display: block;
 }
+
 .p-img {
   float: left;
   width: 60px;
@@ -640,14 +631,17 @@ td {
   margin: 0 14px;
   position: relative;
 }
-.p-img img{
+
+.p-img img {
   width: 60px;
   height: 60px;
 }
+
 .p-msg {
   width: 240px;
   float: left;
 }
+
 .p-name {
   height: 36px;
   line-height: 18px;
@@ -656,6 +650,7 @@ td {
   text-align: left;
   font-size: 12px;
 }
+
 .goods-number {
   float: left;
   text-align: left;
@@ -666,12 +661,14 @@ td {
 .goods-repair {
   text-align: center;
 }
+
 .br {
   display: block;
   color: #666;
   text-decoration: none;
   font-size: 12px;
 }
+
 .user {
   position: relative;
   margin: 0 auto;
@@ -679,6 +676,7 @@ td {
   cursor: pointer;
   color: #333;
 }
+
 .txt {
   display: inline-block;
   white-space: nowrap;
@@ -688,6 +686,7 @@ td {
   vertical-align: middle;
   font-size: 12px;
 }
+
 .user-img {
   display: inline-block;
   white-space: nowrap;
@@ -697,11 +696,13 @@ td {
   vertical-align: middle;
   width: 20px;
 }
+
 .amount {
   color: #aaa;
   font-size: 12px;
   margin-right: 5px;
 }
+
 .ftx-13 {
   display: block;
   margin: 0 8px;
@@ -712,6 +713,7 @@ td {
   height: 19px;
   overflow: hidden;
 }
+
 .status {
   position: relative;
   z-index: 5;
@@ -719,15 +721,18 @@ td {
   line-height: 22px;
   font-size: 12px;
 }
+
 .operate {
   line-height: 22px;
   font-size: 12px;
 }
+
 .payment {
   font-family: verdana;
   color: #333;
   font-weight: 600;
 }
+
 .payment-pay {
   display: inline-block;
   background: #fff;
@@ -743,13 +748,16 @@ td {
   font-weight: 700;
   cursor: pointer;
 }
+
 .origin {
   color: #ff460a;
 }
-.td-shop{
+
+.td-shop {
   width: 450px;
 }
-.td-shops{
+
+.td-shops {
   width: 590px;
 }
 </style>

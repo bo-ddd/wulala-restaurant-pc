@@ -1,82 +1,122 @@
-body,p,h1,h2,h3,h4,h5,h6{
+body, p, h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
-ul li{
+
+ul li {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.warp{
+
+.warp {
   width: 1200px;
   margin: 0 auto;
 }
-.mb-10{
+
+.mb-10 {
   margin-bottom: 10px;
 }
-.w-300{
+
+.w-300 {
   width: 300px;
-} 
-.m-20{
+}
+
+.m-20 {
   margin: 20px 0;
 }
-.pd-10{
+
+.mlr-20 {
+  margin: 0 20px;
+}
+
+.pd-10 {
   padding: 10px 0;
 }
-.pr-10{
+
+.pr-10 {
   padding-right: 10px;
 }
-.mb-20{
+
+.mb-20 {
   margin-bottom: 20px;
 }
-.pl-10{
+
+.pl-10 {
   padding-left: 10px;
 }
-.mr-20{
+
+.mr-20 {
   margin-right: 20px;
 }
-.mb-30{
+
+.mb-30 {
   margin-bottom: 30px;
 }
-.ml-10{
+
+.ml-10 {
   margin-left: 10px;
 }
-.pd-20{
+
+.ml-30 {
+  margin-left: 30px;
+}
+.mr-30{
+  margin-right: 30px;
+}
+.pd-20 {
   padding: 20px;
 }
-.cl-red{
+
+.cl-red {
   color: #E2231A;
   font-weight: 550;
 }
-.df-al{
+
+.df-al {
   display: flex;
   align-items: center;
   justify-content: space-between;
   clear: both;
 }
-.plr-20{
+
+.plr-20 {
   padding: 0 20px;
 }
-.df-sp{
+
+.df-sp {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.pd{
+
+.pd {
   padding: 40px 40px 16px;
 }
-.ptb-15{
+
+.ptb-15 {
   padding: 15px 0;
 }
-.mt-20{
+
+.mt-20 {
   margin-top: 10px;
 }
-.df-sub{
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.df-sub {
   display: flex;
   flex-direction: column;
   /* flex-wrap: nowrap; */
   justify-content: space-around;
   align-items: flex-start;
 }
-.ps-r{
+
+.ps-r {
   position: relative;
+}
+
+.none {
+  display: none;
 }

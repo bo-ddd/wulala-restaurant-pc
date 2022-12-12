@@ -1,5 +1,21 @@
 import axios from 'axios';
-// import type { LoginPayLoad } from "@/types/xhrPayLoad";
+import type { 
+    login,
+    register,
+    gatFoodList,
+    gatFoodDetail,
+    foodAppraiseList,
+    addFoodAppraise,
+    cartDelete,
+    addShoppingCart,
+    addressCreate,
+    orderList,
+    addressDelete,
+    addressUpdate,
+    orderCreate,
+} from "@/types/xhrPayLoadApi";
+
+const BASE_URL = '/api'
 
 const $axios = axios.create({
     baseURL: '/api',
@@ -18,12 +34,10 @@ $axios.interceptors.request.use(config => {
     return config
 })
 
-
-
 $axios.interceptors.response.use(function (response) {
-    if (response.data.status == 401) {
-        window.location.href = '/login'
-    }
+    // if (response.data.status == 401) {
+    //     // window.location.href = '/login'
+    // }
     return response;
 }, function (error) {
     return Promise.reject(error);
@@ -35,7 +49,7 @@ $axios.interceptors.response.use(function (response) {
  * @param payload.username string 用户名  6-20位
  * @param payload.password string 密码  6-20位
  */
-export const loginApi = function (payload = {}) {
+export const loginApi = function (payload : login) {
     //payload 是不是服务端要的入参
     //就是网页的预览
     return $axios.post('/user/login', payload)
@@ -48,7 +62,7 @@ export const loginApi = function (payload = {}) {
  * @param payload.username string 昵称  6-20位
  * @param payload.password string 手机号  6-20位
  */
-export const registerApi = function (payload = {}) {
+export const registerApi = function (payload : register) {
     //payload 是不是服务端要的入参
     //就是网页的预览
     return $axios.post('/user/register', payload)
@@ -57,7 +71,7 @@ export const registerApi = function (payload = {}) {
  * @description 查询用户信息
  * @params payload
  */
-export const queryUserInfoApi = function (payload = {}) {
+export const queryUserInfoApi = function (payload ={}) {
     return $axios.post('/user/info', payload);
 }
 
@@ -73,28 +87,28 @@ export const getCategoryListApi = function (payload = {}) {
  * @description 获取菜肴列表接口
  * @param payload object
  */
-export const gatFoodListApi = function (payload = {}) {
+export const gatFoodListApi = function (payload :gatFoodList) {
     return $axios.post('/food/list', payload)
 }
 /**
  * @description 获取菜肴详情接口
  * @param payload object
  */
-export const gatFoodDetailApi = function (payload = {}) {
+export const gatFoodDetailApi = function (payload :gatFoodDetail) {
     return $axios.post('/food/detail', payload)
 }
 /**
  * @description 菜肴评价列表接口
  * @param payload object
  */
-export const foodAppraiseListApi = function (payload = {}) {
+export const foodAppraiseListApi = function (payload :foodAppraiseList) {
     return $axios.post('comment/food/list', payload)
 }
 /**
  * @description 新增菜肴评价
  * @param payload object
  */
-export const addFoodAppraiseApi = function (payload = {}) {
+export const addFoodAppraiseApi = function (payload :addFoodAppraise) {
     return $axios.post('/comment/food/create', payload)
 }
 /**
@@ -108,14 +122,14 @@ export const cartListApi = function (payload = {}) {
  * @description 删除我的购物车
  * @param payload object
  */
-export const cartDeleteApi = function (payload = {}) {
+export const cartDeleteApi = function (payload:cartDelete) {
     return $axios.post('/cart/delete', payload)
 }
 /**
  * @description 加入购物车
  * @param payload object
  */
-export const cartAddApi = function (payload = {}) {
+export const cartAddApi = function (payload :addShoppingCart) {
     return $axios.post('/cart/add', payload)
 }
 /**
@@ -129,39 +143,43 @@ export const addressListApi = function (payload = {}) {
  * @description 加入购物车
  * @param payload object
  */
-export const addShoppingCartApi = function (payload = {}) {
+export const addShoppingCartApi = function (payload :addShoppingCart) {
     return $axios.post('/cart/add', payload)
 }
 /* @description 新增收货地址
 * @param payload object
 */
-export const addressCreateApi = function (payload = {}) {
+export const addressCreateApi = function (payload :addressCreate) {
     return $axios.post('/delivery/address/create', payload)
 }
 /**
  * @desscription 订单列表
  */
-export const orderListApi = function (payload ={}) {
+export const orderListApi = function (payload :orderList) {
     return $axios.post('/order/list', payload)
 }
 /*
  * @description 删除收货地址
  * @param payload object
  */
- export const addressDeleteApi = function (payload = {}) {
+ export const addressDeleteApi = function (payload :addressDelete) {
     return $axios.post('/delivery/address/delete', payload)
 }
 /**
  * @description 修改收货地址信息
  * @param payload object
  */
- export const addressUpdateApi = function (payload = {}) {
+ export const addressUpdateApi = function (payload :addressUpdate) {
     return $axios.post('/delivery/address/update', payload)
 }
 /**
  * @description 创建订单
  * @param payload object
  */
- export const orderCreateApi = function (payload = {}) {
+ export const orderCreateApi = function (payload :orderCreate) {
     return $axios.post('/order/create', payload)
 }
+/**
+ * @description 上传用户头像
+ */
+export const upadteAvatarApi = `${BASE_URL}/upload/avatar`;
