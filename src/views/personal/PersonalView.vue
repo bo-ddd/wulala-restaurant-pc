@@ -12,9 +12,6 @@
                     <el-menu-item index="updatePersonalInfo" @click="navigator('updatePersonalInfo')">
                         <span>修改个人信息</span>
                     </el-menu-item>
-                    <el-menu-item index="uploadAvatar" @click="navigator('uploadAvatar')">
-                        <span>修改头像</span>
-                    </el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>

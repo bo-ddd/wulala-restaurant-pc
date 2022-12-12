@@ -43,12 +43,6 @@ const router = createRouter({
               name: 'updatePersonalInfo',
               component: () => import("@/views/updateInformation/UpdatePersonalInfo.vue"),
             },
-            {
-              path: '/uploadAvatar',
-              name: 'uploadAvatar',
-              component: () => import("@/views/updateInformation/UploadAvatar.vue"),
-            },
-            
           ]
         },
         {
