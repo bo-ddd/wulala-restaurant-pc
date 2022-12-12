@@ -95,27 +95,18 @@
 <script lang="ts" setup>
 import { cartListApi , cartDeleteApi , cartAddApi} from '@/api/api';
 import { Search } from '@element-plus/icons-vue';
-import { nextTick, onMounted, ref } from 'vue';
+import { onMounted, ref,toRefs } from 'vue';
 import { ElTable ,ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import type {User} from '@/types/xhrPayLoad';
 import { useCounterStore } from '@/stores/counter';
+
 let {getCartLists} = useCounterStore();
 let router = useRouter();
 const checked2 = ref(false);//满200 
 let input = ref();//搜索框
 const multipleTableRef = ref<InstanceType<typeof ElTable>>();//设置默认选中
-onMounted(()=>{
-    nextTick(()=>{
-    // aaa()
-    console.log(multipleTableRef);
-    
-});
-})
-let aaa=()=>{
 
-    multipleTableRef.value!.toggleAllSelection()
-}
 const multipleSelection = ref<User[]>([]);//选中商品
 const multipleSelectionLength = ref(0);//勾选商品数量
 const multipleSelectionPrice = ref(0.00);//总价
@@ -232,15 +223,14 @@ const toSettlement = function(){
 const cartLists = function(){
     cartListApi().then(res => {
         if (res.data.status != 1) {
-            ElMessage({
-                message: '请先登录.',
-                type: 'success',
-            })
-            router.push({name:'login'})
-            return
+            // ElMessage({
+            //     message: '请先登录.',
+            //     type: 'success',
+            // })
+            // router.push({name:'login'})
+            // return
         }else{
             cartList.value = res.data.data;
-
             cartListLength.value =cartList.value.length;
         }
     }).catch(err => {

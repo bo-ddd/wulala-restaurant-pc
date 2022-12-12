@@ -7,7 +7,6 @@
   </el-carousel>
   <div class="boxs">
          <div class="title">每日推荐</div>
-       
          <Scroll.Wrapper class="scroll">
       <Scroll.Item v-for="item in recommendGoodsList" @click="">
         <template #image>

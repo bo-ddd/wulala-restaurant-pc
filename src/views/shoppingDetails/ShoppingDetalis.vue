@@ -30,7 +30,7 @@
             <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
                 <el-tab-pane name="first">
                     <template #label>
-                        全部评价({{ allAppraiseLength}})
+                        全部评价({{ allAppraiseLength }})
                     </template>
                     <div class="bj-white grid" v-for="item in foodAppraise">
                         <div v-for="users in item.users">
@@ -96,7 +96,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { gatFoodListApi, foodAppraiseListApi,addShoppingCartApi } from '@/api/api';
+import { gatFoodListApi, foodAppraiseListApi, addShoppingCartApi } from '@/api/api';
 import { useRoute } from 'vue-router';
 import type { TabsPaneContext } from 'element-plus';
 import { ref } from 'vue';
@@ -105,19 +105,19 @@ import { storeToRefs } from "pinia";
 import router from '@/router';
 // pinia
 import { useCounterStore } from '@/stores/counter';
-let {getCartLists} = useCounterStore();
-let aa=useIdStore();
+let { getCartLists } = useCounterStore();
+let aa = useIdStore();
 aa.getUserIds()
 let { userId } = storeToRefs(useIdStore());
 console.log(userId.value);
 
 let route = useRoute();
-let foodlist:any = ref({});
+let foodlist: any = ref({});
 let foodAppraise = ref();
 let allAppraise = ref();
 let allAppraiseLength = ref();
 let goodAppraise = ref();
-let midAppraise =ref();
+let midAppraise = ref();
 let badAppraise = ref();
 let degreePraise = ref(0);
 const activeName = ref('first');
@@ -135,32 +135,32 @@ let total = ref(0);              //总数
  * @description  分页方法 
  */
 const handleSizeChange = (val: number) => {
-//   console.log(`${val} items per page`)
+    //   console.log(`${val} items per page`)
     pageSize.value = val;
     dishesEva();
 }
 const ShoppingNumber = ref(1);
 const handleChange = (value: number) => {
-  console.log(value);
+    console.log(value);
 }
 const handleCurrentChange = (val: number) => {
-//   console.log(`current page: ${val}`)
+    //   console.log(`current page: ${val}`)
     currentPage.value = val;
-    foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:5,pageNum:currentPage.value}).then(res => {
+    foodAppraiseListApi({ foodId: route.query.shoppingDetalisId, pageSize: 5, pageNum: currentPage.value }).then(res => {
         foodAppraise.value = res.data.data.list;
         // 好评 差评
         goodAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 4);
         midAppraise.value = foodAppraise.value.filter((item: any) => item.star == 3);
         badAppraise.value = foodAppraise.value.filter((item: any) => item.star <= 2);
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
-        degreePraise.value =(goodAppraise.value.length / allAppraise.value.length);
+        degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
         console.log(degreePraise.value);
-        
+
         allAppraiseLength.value = allAppraise.value.length;
         currentPage.value = res.data.data.pageNum;
         // pageSize.value = res.data.data.pageSize;
     })
-    console.log( currentPage.value);
+    console.log(currentPage.value);
     // dishesEva();
 }
 
@@ -175,7 +175,7 @@ gatFoodListApi({}).then(res => {
     res.data.data.list.forEach((item: any) => {
         if (route.query.shoppingDetalisId == item.foodId) {
             console.log(item);
-            
+
             foodlist.value = item;
         }
     })
@@ -185,9 +185,9 @@ dishesEva();
  * 菜肴评价列表
  */
 function dishesEva() {
-    foodAppraiseListApi({ foodId: route.query.shoppingDetalisId ,pageSize:pageSize.value,pageNum:currentPage.value}).then(res => {
+    foodAppraiseListApi({ foodId: route.query.shoppingDetalisId, pageSize: pageSize.value, pageNum: currentPage.value }).then(res => {
         console.log(res.data.data.list);
-        
+
         foodAppraise.value = res.data.data.list;
         // 好评 差评
         goodAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 4);
@@ -195,8 +195,8 @@ function dishesEva() {
         badAppraise.value = foodAppraise.value.filter((item: any) => item.star <= 2);
         allAppraise.value = foodAppraise.value.filter((item: any) => item.star >= 1);
         if (goodAppraise.value.length == 0) {
-            degreePraise.value  = 0
-        }else{
+            degreePraise.value = 0
+        } else {
             degreePraise.value = (goodAppraise.value.length / allAppraise.value.length);
 
         }
@@ -206,25 +206,29 @@ function dishesEva() {
     })
 }
 //加入购物车
-async function addShoppingCar(){
+async function addShoppingCar() {
+
     let res = await addShoppingCartApi({
-        productId:route.query.shoppingDetalisId,
-        quantity:ShoppingNumber.value
+        productId: route.query.shoppingDetalisId,
+        quantity: ShoppingNumber.value
     });
     console.log(res);
-    if(res.data.status == 1){
-        router.push({name:'shoppercar'});
+    if (res.data.status == 1) {
+        router.push({ name: 'shoppercar' });
         getCartLists();
+    } else if (res.data.status == 401) {
+        router.push({ name: 'login' });
     }
 }
 
 dishesEva();
 </script>
 <style scoped>
-.appraise-label{
+.appraise-label {
     display: flex;
     align-items: center;
 }
+
 .shop-detail {
     display: grid;
     grid-template-columns: 1fr 3fr;
@@ -261,9 +265,10 @@ dishesEva();
     grid-template-columns: 1fr 6fr;
 }
 
-.add-shopping-cart_btn{
+.add-shopping-cart_btn {
     margin-left: 20px;
 }
+
 .percent {
     color: red;
     font-size: 40px;

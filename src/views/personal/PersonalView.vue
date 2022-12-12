@@ -2,15 +2,18 @@
     <div class="header">
         <el-row class="tac">
             <el-col :span="12">
-                <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-                    <el-menu-item index="1" @click="navigator('mineview')">
+                <el-menu :default-active = "route.name" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+                    <el-menu-item index="mineview" @click="navigator('mineview')">
                         <span>个人信息</span>
                     </el-menu-item>
-                    <el-menu-item index="2" @click="navigator('orderview')">
+                    <el-menu-item index="orderview" @click="navigator('orderview')">
                         <span>我的订单</span>
                     </el-menu-item>
-                    <el-menu-item index="3" @click="navigator('updatePersonalInfo')">
+                    <el-menu-item index="updatePersonalInfo" @click="navigator('updatePersonalInfo')">
                         <span>修改个人信息</span>
+                    </el-menu-item>
+                    <el-menu-item index="uploadAvatar" @click="navigator('uploadAvatar')">
+                        <span>修改头像</span>
                     </el-menu-item>
                 </el-menu>
             </el-col>
@@ -31,6 +34,8 @@ import {
 } from "@element-plus/icons-vue";
 import { useRouter, useRoute } from 'vue-router';
 let router = useRouter();
+let route =useRoute();
+// const defaultActive = route.name;
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };

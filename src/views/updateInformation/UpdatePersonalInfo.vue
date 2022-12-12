@@ -64,6 +64,7 @@
     text-align: center;
     border-radius: 30px;
 }
+
 .border-bottom{
     border-bottom: 1px solid #E5E5E5;
 }
@@ -72,7 +73,7 @@
 import { queryUserInfoApi }  from '@/api/api';
 import { ref } from 'vue';
 import { getTime } from '@/assets/util/index';
-
+  
 let avatarImg = ref('');
 let avatarName = ref('');
 let phoneNumber = ref();
