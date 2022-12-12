@@ -23,7 +23,7 @@
               <div class="header-fw" 
               v-for="(item,index) in routeList"
               :class="{active:!(index-menuIndex)}" 
-              @click="clickList(item.label,index)">{{item.name}}</div>
+              @click="clickList(item.label,index)" :key="index">{{item.name}}</div>
               <el-icon class="icon" size="24">
                 <Search />
               </el-icon>
@@ -59,9 +59,7 @@
       
       </el-main>
       <el-footer>
-        <div>
-         
-      </div>
+       <FooderBar></FooderBar>
     </el-footer>
     </el-container>
 </template>
@@ -140,7 +138,9 @@
 .el-main {
   padding: 20px 0px;
 }
-
+.el-footer{
+  --el-footer-height: 100%
+}
 .el-carousel__container {
   min-height: 600px;
   border-bottom: 1px solid #ccc;
@@ -153,6 +153,7 @@
 }
 </style>
 <script setup lang="ts">
+import FooderBar from "@/components/footerBar.vue"
 import { ref } from "vue"
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
