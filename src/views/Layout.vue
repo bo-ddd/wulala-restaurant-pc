@@ -167,7 +167,7 @@
 }
 </style>
 <script setup lang="ts">
-import { ref, watchEffect } from "vue"
+import { ref, watchEffect } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';

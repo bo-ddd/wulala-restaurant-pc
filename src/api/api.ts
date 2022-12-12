@@ -15,6 +15,8 @@ import type {
     orderCreate,
 } from "@/types/xhrPayLoadApi";
 
+const BASE_URL = '/api'
+
 const $axios = axios.create({
     baseURL: '/api',
     timeout: 5000,  //如果接口一秒都没有返回结果，则axios会自动帮我们做一个失败(reject)的处理
@@ -33,9 +35,9 @@ $axios.interceptors.request.use(config => {
 })
 
 $axios.interceptors.response.use(function (response) {
-    if (response.data.status == 401) {
-        window.location.href = '/login'
-    }
+    // if (response.data.status == 401) {
+    //     // window.location.href = '/login'
+    // }
     return response;
 }, function (error) {
     return Promise.reject(error);
@@ -177,3 +179,7 @@ export const orderListApi = function (payload :orderList) {
  export const orderCreateApi = function (payload :orderCreate) {
     return $axios.post('/order/create', payload)
 }
+/**
+ * @description 上传用户头像
+ */
+export const upadteAvatarApi = `${BASE_URL}/upload/avatar`;
