@@ -5,7 +5,11 @@
                 <img class="food-picture" :src="foodlist.bannerUrl" />
             </div>
             <div>
-                <div class="food-name">{{ foodlist.foodName }}</div><el-rate max="1"/>
+                <div class="food-name">{{ foodlist.foodName }}</div>
+                <div class="collections">
+                    <el-rate v-model="value" max="1" clearable />
+                    <p>收藏</p>
+                </div>
                 <div class="cuisine food-info">菜品菜系：{{ foodlist.categoryName }}</div>
                 <div class="food-info">菜品价格：{{ foodlist.price }}</div>
                 <div class="food-info">菜品介绍：{{ foodlist.description }}</div>
@@ -103,8 +107,10 @@ import { ref } from 'vue';
 import { useIdStore } from '@/stores/getUserId';
 import { storeToRefs } from "pinia";
 import router from '@/router';
+
 // pinia
 import { useCounterStore } from '@/stores/counter';
+const value = ref(0)
 let { getCartLists } = useCounterStore();
 let aa = useIdStore();
 aa.getUserIds()
@@ -312,5 +318,9 @@ dishesEva();
     margin-right: 10px;
     vertical-align: middle;
     border-radius: 10px;
+}
+/* 收藏 */
+.collections{
+    font-size: 12px;
 }
 </style>
