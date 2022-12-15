@@ -53,13 +53,11 @@
       </el-header>
 
       <el-main>
-
           <RouterView />
-      
-      </el-main>
+      </el-main> 
       <el-footer>
-       <FooderBar></FooderBar>
-    </el-footer>
+        <FooderBar></FooderBar>
+      </el-footer>
     </el-container>
 </template>
 <style>
@@ -174,6 +172,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
 import { Edit, Search, User } from '@element-plus/icons-vue';
 import { useCounterStore } from '@/stores/counter';
+
 import { storeToRefs } from "pinia";
 // 获取购物车数据(length)
 let {getCartLists} = useCounterStore();
@@ -183,10 +182,11 @@ let {cartLists} = storeToRefs( useCounterStore());
 })();
 
 let router = useRouter();
-let route = useRoute()
-let token = sessionStorage.getItem('token')
+let route = useRoute();
+let token = sessionStorage.getItem('token');
 
-const isActive = ref(false)
+const isActive = ref(false);
+
 function navigator(name: string) {
   router.push({ name: name })
 }
@@ -238,15 +238,17 @@ let routeList = [
     index:4
   }
 ]
-routeList.forEach(el => {
-  if (route.name == el.label) {
-    menuIndex.value = el.index;
-  }else if(el.children){
-    el.children.forEach(item =>{
-      if (item.name == route.name) {
-        menuIndex.value = el.index;
-      }
-    })
-  }
+watchEffect(()=>{
+  routeList.forEach(el => {
+    if (route.name == el.label) {
+      menuIndex.value = el.index;
+    }else if(el.children){
+      el.children.forEach(item =>{
+        if (item.name == route.name) {
+          menuIndex.value = el.index;
+        }
+      })
+    }
+  })
 })
 </script>

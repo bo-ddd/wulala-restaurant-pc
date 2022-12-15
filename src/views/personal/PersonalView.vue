@@ -21,9 +21,7 @@
                 </el-menu>
             </el-col>
         </el-row>
-
         <RouterView />
-
     </div>
 </template>
 

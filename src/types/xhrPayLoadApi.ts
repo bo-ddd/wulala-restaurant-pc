@@ -1,3 +1,4 @@
+import type { Ref } from "vue";
 import type { LocationQueryValue } from "vue-router";
 //api
 export interface address{
@@ -86,4 +87,16 @@ export interface addressUpdate{
 export interface orderCreate{
     addressId?:number,
     rows:any
+}
+//更新用户信息
+export interface updateUserInfo{
+    userId:Ref<number>,
+    avatarImg?:string,
+    phoneNumber?:string,
+    avatarName?:string,
+    sex?:number,
+    birthday?:Date,
+    personalSignature?:string,
+    hobby?:string,
+    address?:string
 }

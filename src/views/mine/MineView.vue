@@ -24,7 +24,7 @@
             </el-dropdown>
         </div>
         <div class="s-my-counts">
-            <div><span class="segmentation">|</span><span class="pd-52 counts-style">待付款</span></div>
+            <div><span class="pd-52 counts-style">待付款</span></div>
             <div><span class="segmentation">|</span><span class="pd-52 counts-style">待发货</span></div>
             <div><span class="segmentation">|</span><span class="pd-52 counts-style">待收货</span></div>
             <div><span class="segmentation">|</span><span class="pd-52 counts-style">待评价</span></div>
@@ -49,13 +49,14 @@
 .s-userbar {
     height: 80px;
     width: 60vw;
+    padding: 0 20px;
     background-color: #f5f8fa;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    display: flex;
     align-items: center;
-    justify-items: center;
+    justify-content: space-between;
     border: 1px solid rgb(228, 234, 238);
     border-bottom: none;
+    box-sizing: border-box;
 }
 .avatar-name{
     display: flex;
@@ -95,10 +96,10 @@
 }
 .s-my-counts{
     height: 50px;
-    display: grid;
-    grid-template-columns:repeat(5,1fr);
+    display: flex;
     align-items: center;
-    justify-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
     border: 1px solid rgb(228, 234, 238);
     background-color: white;
 }
