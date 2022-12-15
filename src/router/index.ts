@@ -48,6 +48,11 @@ const router = createRouter({
               name: 'uploadAvatar',
               component: () => import("@/views/updateInformation/UploadAvatar.vue"),
             },
+            {
+              path: '/collectView',
+              name: 'collectView',
+              component: () => import("@/views/collect/CollectView.vue"),
+            },
             
           ]
         },

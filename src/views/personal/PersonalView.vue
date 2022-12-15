@@ -15,6 +15,9 @@
                     <el-menu-item index="uploadAvatar" @click="navigator('uploadAvatar')">
                         <span>修改头像</span>
                     </el-menu-item>
+                    <el-menu-item index="collectView" @click="navigator('collectView')">
+                        <span>我的收藏</span>
+                    </el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>
