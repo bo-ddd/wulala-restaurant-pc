@@ -241,7 +241,7 @@ const submitOrder = function(){
     }).then(res => {
         console.log(res);
         if (res.data.status == 1) {
-            router.push({name:'orderview'})
+            router.push({name:'success'})
         }
     })
 }

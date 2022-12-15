@@ -63,6 +63,10 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login,
+    },{
+      path:'/success',
+      name:'success',
+      component:()=>import("@/views/ShopperCar/Success.vue"),
     }
 
   ]
