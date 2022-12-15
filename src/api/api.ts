@@ -13,6 +13,7 @@ import type {
     addressDelete,
     addressUpdate,
     orderCreate,
+    updateUserInfo
 } from "@/types/xhrPayLoadApi";
 
 const BASE_URL = '/api'
@@ -178,6 +179,13 @@ export const orderListApi = function (payload :orderList) {
  */
  export const orderCreateApi = function (payload :orderCreate) {
     return $axios.post('/order/create', payload)
+}
+/**
+ * @description 更新用户信息
+ * @param payload object
+ */
+ export const updateUserInfoApi= function (payload :updateUserInfo) {
+    return $axios.post('/user/update', payload)
 }
 /**
  * @description 上传用户头像

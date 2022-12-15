@@ -5,7 +5,7 @@
                 <img class="food-picture" :src="foodlist.bannerUrl" />
             </div>
             <div>
-                <div class="food-name">{{ foodlist.foodName }}</div>
+                <div class="food-name">{{ foodlist.foodName }}</div><el-rate max="1"/>
                 <div class="cuisine food-info">菜品菜系：{{ foodlist.categoryName }}</div>
                 <div class="food-info">菜品价格：{{ foodlist.price }}</div>
                 <div class="food-info">菜品介绍：{{ foodlist.description }}</div>

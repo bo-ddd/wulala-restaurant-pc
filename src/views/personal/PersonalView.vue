@@ -16,7 +16,6 @@
             </el-col>
         </el-row>
         <RouterView />
-
     </div>
 </template>
 

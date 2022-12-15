@@ -5,27 +5,27 @@
             <div class="update-avatar grid mt-30">
                 <div class="update-avatar-left">头像</div>
                 <UploadAvatar class="update-avatar-middle ml-30"></UploadAvatar>
-                <div class="update-avatar-right" @click="updateUserInfo">修改</div>
             </div>
             <div class="update-avatar grid">
                 <div class="update-avatar-left">昵称</div>
                 <div class="update-avatar-name ml-30">{{ avatarName }}</div>
-                <div class="update-avatar-right">修改</div>
             </div>
             <div class="update-avatar grid">
                 <div class="update-avatar-left">生日</div>
                 <div class="update-avatar-phone ml-30">{{ getTime(birthday) }}</div>
-                <div class="update-avatar-right">修改</div>
             </div>
             <div class="update-avatar grid">
                 <div class="update-avatar-left">手机号</div>
                 <div class="update-avatar-phone ml-30">{{ phoneNumber }}</div>
-                <div class="update-avatar-right">修改</div>
             </div>
             <div class="update-avatar grid border-bottom">
                 <div class="update-avatar-left">登录密码</div>
                 <div class="update-avatar-phone ml-30">安全强度 : 弱</div>
-                <div class="update-avatar-right">修改</div>
+            </div>
+            <div class="flex update-user-btn mt-20">
+                <el-button @click="updateUserInfo" type="success">确认修改</el-button>
+                <div class="update-btn"></div>
+                <div class="update-btn" @click="">取消</div>
             </div>
         </div>
     </div>
@@ -68,13 +68,32 @@
 .border-bottom{
     border-bottom: 1px solid #E5E5E5;
 }
+.update-btn{
+    padding: 5px;
+    border: 1px solid red;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+}
+.update-user-btn{
+    width: 30%;
+}
+.flex{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 </style>
 <script lang="ts" setup>
-import { queryUserInfoApi }  from '@/api/api';
+import { queryUserInfoApi,updateUserInfoApi }  from '@/api/api';
 import { ref } from 'vue';
 import { getTime } from '@/assets/util/index';
 import UploadAvatar from '@/components/UploadAvatar.vue';
-
+import { useIdStore } from '@/stores/getUserId';
+import { storeToRefs } from "pinia";
+let aa = useIdStore();
+aa.getUserIds();
+let { userId } = storeToRefs(useIdStore());
 let avatarImg = ref('');
 let avatarName = ref('');
 let phoneNumber = ref();
@@ -90,7 +109,14 @@ async function getuserInfo(){
     phoneNumber.value = res.data.data.phoneNumber;
     birthday.value = res.data.data.birthday;
 }
-function updateUserInfo(){
+async function updateUserInfo(){
+    let res = await updateUserInfoApi({
+        userId:userId,
+        avatarImg:avatarImg.value,
+        phoneNumber:phoneNumber.value
+    })
+    console.log(res);
+    
     
 }
 </script>
